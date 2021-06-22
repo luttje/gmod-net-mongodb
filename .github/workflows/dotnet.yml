@@ -39,7 +39,7 @@ jobs:
       run: zip -r GmodMongoDb.zip GmodMongoDb/bin/Release/net5.0/
     - 
       name: Install DocFx
-      run: ~/.linuxbrew/brew install docfx
+      run: /home/linuxbrew/.linuxbrew/bin/brew install docfx
     - 
       name: Build Documentation
       run: docfx DocFx/docfx.json
