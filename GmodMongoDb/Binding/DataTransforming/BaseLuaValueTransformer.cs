@@ -12,10 +12,12 @@ namespace GmodMongoDb.Binding.DataTransforming
     /// <example>
     /// Showing how to get all transformers:
     /// <code>
+    /// <![CDATA[
     /// var transformerBaseType = typeof(BaseLuaValueTransformer);
     /// var types = AppDomain.CurrentDomain.GetAssemblies()
     ///     .SelectMany(a => a.GetTypes())
     ///     .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(transformerBaseType));
+    /// ]]>
     /// </code>
     /// </example>
     public abstract class BaseLuaValueTransformer

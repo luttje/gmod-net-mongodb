@@ -13,7 +13,9 @@ namespace GmodMongoDb.Binding.DataTransforming
     /// <example>
     /// Your subclass MUST register which type it converts to and from by registering with the following attribute.
     /// <code>
+    /// <![CDATA[
     /// [ConvertsNetType(typeof(ExampleClass))]
+    /// ]]>
     /// </code>
     /// </example>
     /// <typeparam name="TTarget">The type to return or accept in the methods</typeparam>
