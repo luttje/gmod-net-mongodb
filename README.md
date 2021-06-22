@@ -1,6 +1,6 @@
 # Gmod MongoDB Wrapper (WIP)
 
-This is a Garry's Mod module to expose all [.NET MongoDB Driver](https://docs.mongodb.com/drivers/csharp/) functionality to Lua. This module is built using [Gmod.NET](https://github.com/GmodNET/GmodDotNet)
+This is a Garry's Mod module to expose all [.NET MongoDB Driver](https://docs.mongodb.com/drivers/csharp/) functionality to Lua. This module is built using [Gmod.NET](https://github.com/GmodNET/GmodDotNet).
 
 ## 🚧 WIP! (Unstable Code)
 This project is under active development. There is no versioning yet and there is only these guarantees:
@@ -9,9 +9,11 @@ This project is under active development. There is no versioning yet and there i
 
 ## Requirements
 
-* Install [Gmod.NET](https://github.com/GmodNET/GmodDotNet)
-* You must be on the x64 branch of Garry's Mod
-* You must have a MongoDB Server installed and running ([Get the MongoDB Community Server](https://www.mongodb.com/try/download/community))
+* Install the correct version of [Gmod.NET](https://github.com/GmodNET/GmodDotNet).    
+    [&raquo; Check the dependencies for the version](https://github.com/luttje/gmod-net-mongodb/network/dependencies)
+* You must be on the `x86_64` beta branch of Garry's Mod.
+* You must have a MongoDB Server installed and running.    
+    [&raquo; Get the MongoDB Community Server here](https://www.mongodb.com/try/download/community)
 
 ## Documentation
 
@@ -101,6 +103,10 @@ This asynchronous function doesn't require a callback (but it does support it). 
 ```lua
 client:DropDatabaseAsync("remove_me")
 ```
+
+## Known issues
+
+When connecting and swiftly unloading the module with `dotnet.unload("GmodMongoDb")` some handles may linger. Because of this the module fails to unload. You may have to restart Garry's Mod, because it keeps the module `.dll` in use.
 
 ## Contributing
 
