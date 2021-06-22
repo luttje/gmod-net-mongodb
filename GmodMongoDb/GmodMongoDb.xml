@@ -70,7 +70,7 @@
             <param name="lua"></param>
             <param name="type">The expected type of the value on the stack</param>
             <param name="stackPos">The position of the value</param>
-            <param name="forceKeep">Order the function not to pop after getting the value</param>
+            <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
             <returns>The .NET object</returns>
         </member>
         <member name="M:GmodMongoDb.Binding.BindingHelper.PullType(GmodNET.API.ILua,System.Int32,System.Boolean)">
@@ -79,7 +79,7 @@
             </summary>
             <param name="lua"></param>
             <param name="stackPos">The position of the value</param>
-            <param name="forceKeep">Order the function not to pop after getting the value</param>
+            <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
             <returns>The .NET object</returns>
         </member>
         <member name="M:GmodMongoDb.Binding.BindingHelper.PullType``1(GmodNET.API.ILua,System.Int32,System.Boolean)">
@@ -89,7 +89,7 @@
             <typeparam name="T">The expected type of the value on the stack</typeparam>
             <param name="lua"></param>
             <param name="stackPos">The position of the value</param>
-            <param name="forceKeep">Order the function not to pop after getting the value</param>
+            <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
             <returns>The .NET object</returns>
         </member>
         <member name="M:GmodMongoDb.Binding.BindingHelper.LuaTypeToDotNetType(GmodNET.API.TYPES)">

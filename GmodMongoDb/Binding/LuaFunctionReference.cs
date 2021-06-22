@@ -17,8 +17,8 @@ namespace GmodMongoDb.Binding
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="stackPos">The stack position of the function to reference</param>
-        public LuaFunctionReference(ILua lua, int stackPos = -1)
-            :base(lua, stackPos)
+        public LuaFunctionReference(ILua lua, int stackPos = -1, bool forceKeepOnStack = false)
+            :base(lua, stackPos, forceKeepOnStack)
         {
             
         }
@@ -51,7 +51,7 @@ namespace GmodMongoDb.Binding
                 for (int i = 0; i < arguments.Length; i++)
                 {
                     var argument = arguments[i];
-                    stack += BindingHelper.PushType(lua, argument.GetType(), argument);
+                    stack += TypeConverter.PushType(lua, argument.GetType(), argument);
                 }
             }
 
@@ -75,7 +75,7 @@ namespace GmodMongoDb.Binding
                 for (int i = 0; i < arguments.Length; i++)
                 {
                     var argument = arguments[i];
-                    stack += BindingHelper.PushType(lua, argument.GetType(), argument);
+                    stack += TypeConverter.PushType(lua, argument.GetType(), argument);
                 }
             }
 
@@ -103,13 +103,13 @@ namespace GmodMongoDb.Binding
                 for (int i = 0; i < arguments.Length; i++)
                 {
                     var argument = arguments[i];
-                    stack += BindingHelper.PushType(lua, argument.GetType(), argument);
+                    stack += TypeConverter.PushType(lua, argument.GetType(), argument);
                 }
             }
 
             lua.MCall(stack, 1);
 
-            return BindingHelper.PullType<T>(lua, -1);
+            return TypeConverter.PullType<T>(lua, -1);
         }
 
         /// <summary>

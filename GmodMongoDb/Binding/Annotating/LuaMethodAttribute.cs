@@ -34,19 +34,24 @@ namespace GmodMongoDb.Binding.Annotating
                 lua.Push(1);
                 int callerCopy = lua.ReferenceCreate(); // Will be freed before returning to Lua
 
-                LuaMetaObjectBinding? instance = BindingHelper.PullManagedObject(lua, metaTableTypeId, 1) as LuaMetaObjectBinding;
-
-                if (instance == null)
+                if (TypeConverter.PullManagedObject(lua, metaTableTypeId, 1) is not LuaMetaObjectBinding instance)
                     throw new NullReferenceException("Invalid instance!");
 
                 instance.Reference = callerCopy;
 
-                if (this.IsOverloaded && !forceWithoutFinder)
+                try
                 {
-                    return RunFindFunction(instance, lua, method.Name);
-                }
+                    if (this.IsOverloaded && !forceWithoutFinder)
+                    {
+                        return FindAndExecuteMethod(instance, lua, method.Name);
+                    }
 
-                return RunFunction(instance, lua, method);
+                    return ExecuteMethod(instance, lua, method);
+                }
+                finally
+                {
+                    instance.Reference = null;
+                }
             });
             ReferenceManager.Add(handle);
         }
@@ -58,21 +63,16 @@ namespace GmodMongoDb.Binding.Annotating
         /// <param name="lua"></param>
         /// <param name="method">The method to execute</param>
         /// <returns></returns>
-        protected static int RunFunction(LuaMetaObjectBinding instance, ILua lua, MethodInfo method)
+        protected static int ExecuteMethod(LuaMetaObjectBinding instance, ILua lua, MethodInfo method)
         {
             var parameters = method.GetParameters();
             var newParameters = new object[parameters.Length];
 
             for (int i = 0; i < parameters.Length; i++)
             {
-                // Commented because:
-                // This would break when calling a method like Example(Some=1, Other="asd")
-                // like this: Example(nil, "okaok")
-                //if (parameters[i].IsOptional && (TYPES)lua.GetType(1) == TYPES.NIL)
-                //    break;
-                
-                newParameters[i] = BindingHelper.PullType(lua, parameters[i].ParameterType, 1);
+                newParameters[i] = TypeConverter.PullType(lua, parameters[i].ParameterType, 1);
 
+                // Get ready to throw away unused references on close (so methods don't have to do this themselves.
                 if (newParameters[i] is LuaReference reference)
                     ReferenceManager.Add(reference);
             }
@@ -81,51 +81,21 @@ namespace GmodMongoDb.Binding.Annotating
             var returned = method.Invoke(instance, newParameters);
 
             if (method.ReturnType == typeof(void))
-            {
-                instance.Reference = null;
-
                 return 0;
-            }
+
+            Type? returnedType = returned?.GetType();
 
             // Convert value returned by method to a Lua recognized type (or metatable if possible)
-            bool handledReturnValue = false;
-            int stack = 0;
-            var returnAttributes = method.ReturnTypeCustomAttributes.GetCustomAttributes(true);
-
-            // Let [LuaValueTransformer] help us if possible
-            foreach (var returnAttribute in returnAttributes)
+            if (returnedType == null || returned is not LuaMetaObjectBinding binding)
+                return TypeConverter.PushType(lua, returnedType, returned);
+            else
             {
-                if (returnAttribute is LuaValueTransformerAttribute)
-                {
-                    var transformerAttribute = returnAttribute as LuaValueTransformerAttribute;
-                    stack = lua.ApplyTransformerConvert(transformerAttribute.Transformer, returned);
-                    handledReturnValue = true;
-                }
+                TypeConverter.GenerateUserDataFromObject(lua, binding);
+                return 1;
             }
-
-            if (!handledReturnValue)
-            {
-                Type returnedType = returned.GetType();
-
-                if (returned is LuaMetaObjectBinding binding)
-                {
-                    BindingHelper.GenerateUserDataFromObject(lua, binding);
-
-                    stack = 1;
-                }
-                else
-                {
-                    // Simply return the raw type
-                    stack = BindingHelper.PushType(lua, returnedType, returned);
-                }
-            }
-
-            instance.Reference = null;
-
-            return stack;
         }
 
-        protected static int RunFindFunction(LuaMetaObjectBinding instance, ILua lua, string methodName)
+        protected static int FindAndExecuteMethod(LuaMetaObjectBinding instance, ILua lua, string methodName)
         {
             var stack = lua.Top();
             var signature = new Type[stack];
@@ -133,19 +103,19 @@ namespace GmodMongoDb.Binding.Annotating
 
             for (int i = 0; i < stack; i++)
             {
-                signature[i] = BindingHelper.LuaTypeToDotNetType(lua.GetType(i + 1));
+                signature[i] = TypeConverter.LuaTypeToDotNetType(lua.GetType(i + 1));
             }
 
-            // Try find an appropriate method by the provided signature
+            // Try find an appropriate method by the provided parameter signature
             MethodInfo? method = instanceType.GetMethod(methodName, signature);
 
             if (method == null)
                 throw new ArgumentException($"Method `{methodName}` cannot be called with these types: {string.Join<Type>(", ", signature)}");
 
-            if (method.GetCustomAttributes<LuaMethodAttribute>().Count() == 0)
+            if (!method.GetCustomAttributes<LuaMethodAttribute>().Any())
                 throw new AccessViolationException($"Method `{methodName}` cannot be called from Lua! Did you forget to mark it with [LuaMethod]?");
 
-            return RunFunction(instance, lua, method);
+            return ExecuteMethod(instance, lua, method);
         }
 #nullable disable
     }

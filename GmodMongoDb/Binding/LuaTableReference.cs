@@ -14,8 +14,8 @@ namespace GmodMongoDb.Binding
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="stackPos">The stack position of the function to reference</param>
-        public LuaTableReference(ILua lua, int stackPos = -1)
-            : base(lua, stackPos)
+        public LuaTableReference(ILua lua, int stackPos = -1, bool forceKeepOnStack = false)
+            : base(lua, stackPos, forceKeepOnStack)
         {
 
         }
@@ -42,8 +42,8 @@ namespace GmodMongoDb.Binding
             this.Push();
             for (lua.PushNil(); lua.Next(-2) != 0; lua.Pop(1))
             {
-                object key = BindingHelper.PullType(lua, -2, true);
-                object value = BindingHelper.PullType(lua, -1, true);
+                object key = TypeConverter.PullType(lua, -2, true);
+                object value = TypeConverter.PullType(lua, -1, true);
 
                 action(key, value);
             }

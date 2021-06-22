@@ -14,9 +14,10 @@ using System.Threading.Tasks;
 
 namespace GmodMongoDb.Binding
 {
-    public class BindingHelper
+    public class TypeConverter
     {
-        public static Dictionary<int, Type> MetaTableTypeIds = new Dictionary<int, Type>();
+        private static readonly Dictionary<int, Type> MetaTableTypeIds = new();
+        private static readonly Dictionary<Type, Type> TransformerTypes = new();
 
         /// <summary>
         /// Generates userdata with a metatable by looking at attributes on the given object. Pushes the userdata onto the stack.
@@ -89,10 +90,12 @@ namespace GmodMongoDb.Binding
         /// <param name="typeId">The metatable type id of the userdata as returned by <see cref="PushManagedObject"/> or <see cref="GenerateUserDataFromObject"/></param>
         /// <param name="stackPos">The position of the managed object</param>
         /// <returns></returns>
-        public static object? PullManagedObject(ILua lua, int typeId, int stackPos)
+        public static object? PullManagedObject(ILua lua, int typeId, int stackPos = -1, bool forceKeepOnStack = false)
         {
             var handle = lua.GetUserType(stackPos, typeId);
-            lua.Remove(stackPos); // Remove the object
+
+            if(!forceKeepOnStack)
+                lua.Remove(stackPos); // Remove the object
 
             if (handle == IntPtr.Zero)
                 throw new NullReferenceException("Invalid instance pointer!");
@@ -153,15 +156,11 @@ namespace GmodMongoDb.Binding
 
                 return 1;
             }
-            else if (type == typeof(List<BsonDocument>))
-                return lua.ApplyTransformerConvert(typeof(BetweenBsonDocumentListAndTable), value);
-            else if (type == typeof(List<string>))
-                return lua.ApplyTransformerConvert(typeof(BetweenStringListAndTable), value);
-            else if (type == typeof(object[]))
-                return lua.ApplyTransformerConvert(typeof(BetweenObjectArrayAndMultipleResults), value);
+            else if (TransformerTypes.ContainsKey(type))
+                return lua.ApplyTransformerConvert(TransformerTypes[type], value);
             else
                 // TODO
-                throw new NotImplementedException($"Still prototyping. TODO! Type is: {type.FullName}");
+                throw new NotImplementedException($"This type is not registered for conversion to Lua from .NET! Consider building a Transformer. Type is: {type.FullName}");
 
             return 0;
         }
@@ -172,9 +171,9 @@ namespace GmodMongoDb.Binding
         /// <param name="lua"></param>
         /// <param name="type">The expected type of the value on the stack</param>
         /// <param name="stackPos">The position of the value</param>
-        /// <param name="forceKeep">Order the function not to pop after getting the value</param>
+        /// <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
         /// <returns>The .NET object</returns>
-        public static object PullType(ILua lua, Type type, int stackPos, bool forceKeep = false)
+        public static object PullType(ILua lua, Type type, int stackPos = -1, bool forceKeepOnStack = false)
         {
             bool pop = true;
             object value;
@@ -189,23 +188,36 @@ namespace GmodMongoDb.Binding
                 value = lua.GetNumber(stackPos);
             else if (type == typeof(LuaFunctionReference))
             {
-                value = new LuaFunctionReference(lua, stackPos);
+                value = new LuaFunctionReference(lua, stackPos, forceKeepOnStack);
                 pop = false;
             }
             else if (type == typeof(LuaTableReference))
             {
-                value = new LuaTableReference(lua, stackPos);
-                pop = false;
-            }            
-            else if (type == typeof(LuaReference))
-            {
-                value = new LuaReference(lua, stackPos);
+                value = new LuaTableReference(lua, stackPos, forceKeepOnStack);
                 pop = false;
             }
-            else // TODO
-                throw new NotImplementedException($"Still prototyping. TODO! Type is: {type.FullName}");
+            else if (type == typeof(LuaReference))
+            {
+                value = new LuaReference(lua, stackPos, forceKeepOnStack);
+                pop = false;
+            }
+            // Handle managed objects before trying the transformers
+            else if (TryGetMetaTableType(lua.GetType(stackPos), out Type metaTableType) && metaTableType == type)
+            {
+                value = PullManagedObject(lua, lua.GetType(stackPos), stackPos, forceKeepOnStack);
+                pop = false;
+            }
+            // Find a transformer to do the work
+            else if (TransformerTypes.ContainsKey(type))
+            {
+                var transformerType = TransformerTypes[type];
+                pop = lua.ApplyTransformerParse(transformerType, out value, stackPos, forceKeepOnStack);
+            }
+            else
+                // TODO
+                throw new NotImplementedException($"This type is not registered for conversion from Lua to .NET! Consider building a Transformer. Type is: {type.FullName}");
 
-            if (pop && !forceKeep)
+            if (pop && !forceKeepOnStack)
                 lua.Remove(stackPos);
 
             return value;
@@ -216,14 +228,14 @@ namespace GmodMongoDb.Binding
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="stackPos">The position of the value</param>
-        /// <param name="forceKeep">Order the function not to pop after getting the value</param>
+        /// <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
         /// <returns>The .NET object</returns>
-        public static object PullType(ILua lua, int stackPos, bool forceKeep = false)
+        public static object PullType(ILua lua, int stackPos = -1, bool forceKeepOnStack = false)
         {
             TYPES luaType = (TYPES)lua.GetType(stackPos);
             Type type = LuaTypeToDotNetType(luaType);
 
-            return PullType(lua, type, stackPos, forceKeep);
+            return PullType(lua, type, stackPos, forceKeepOnStack);
         }
 
         /// <summary>
@@ -232,11 +244,29 @@ namespace GmodMongoDb.Binding
         /// <typeparam name="T">The expected type of the value on the stack</typeparam>
         /// <param name="lua"></param>
         /// <param name="stackPos">The position of the value</param>
-        /// <param name="forceKeep">Order the function not to pop after getting the value</param>
+        /// <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
         /// <returns>The .NET object</returns>
-        public static T PullType<T>(ILua lua, int stackPos, bool forceKeep = false)
+        public static T PullType<T>(ILua lua, int stackPos = -1, bool forceKeepOnStack = false)
         {
-            return (T) PullType(lua, typeof(T), stackPos, forceKeep);
+            return (T) PullType(lua, typeof(T), stackPos, forceKeepOnStack);
+        }
+
+        /// <summary>
+        /// Try to convert a Lua type to a metatable.
+        /// </summary>
+        /// <param name="luaType">The type id that's suspected to be a metatable type</param>
+        /// <param name="result">The converted .NET type on success. Null otherwise.</param>
+        /// <returns>If the type is succesfully converted to a metatable type.</returns>
+        public static bool TryGetMetaTableType(int luaType, out Type result)
+        {
+            if (MetaTableTypeIds.ContainsKey((int)luaType))
+            {
+                result = MetaTableTypeIds[(int)luaType];
+                return true;
+            }
+
+            result = null;
+            return false;
         }
 
         /// <summary>
@@ -246,8 +276,8 @@ namespace GmodMongoDb.Binding
         /// <returns>The converted .NET type</returns>
         public static Type LuaTypeToDotNetType(TYPES luaType)
         {
-            if (MetaTableTypeIds.ContainsKey((int)luaType))
-                return MetaTableTypeIds[(int)luaType];
+            if (TryGetMetaTableType((int) luaType, out Type result))
+                return result;
 
             return luaType switch
             {
@@ -268,5 +298,23 @@ namespace GmodMongoDb.Binding
         /// <returns>The converted .NET type</returns>
         public static Type LuaTypeToDotNetType(int luaType)
             => LuaTypeToDotNetType((TYPES)luaType);
+
+        /// <summary>
+        /// Iterates all Transformers and registers their Type for later use. In order to create a transformer you should inherit LuaValueTransformer
+        /// </summary>
+        internal static void DiscoverDataTransformers()
+        {
+            var transformerBaseType = typeof(BaseLuaValueTransformer);
+            var discoveredTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(transformerBaseType));
+
+            foreach (var transformerType in discoveredTypes)
+            {
+                var genericArguments = transformerType.BaseType.GetGenericArguments();
+
+                TransformerTypes.Add(genericArguments[0], transformerType);
+            }
+        }
     }
 }

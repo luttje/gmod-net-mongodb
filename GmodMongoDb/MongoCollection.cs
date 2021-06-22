@@ -77,13 +77,6 @@ namespace GmodMongoDb
 
         [LuaMethod(IsOverloaded = true)]
         [LuaMethod("FindSync", IsOverloaded = true)]
-        public List<MongoDB.Bson.BsonDocument> Find(LuaTableReference filterTable)
-        {
-            return Find(MongoBsonDocument.FromLuaTable(lua, filterTable));
-        }
-
-        [LuaMethod(IsOverloaded = true)]
-        [LuaMethod("FindSync", IsOverloaded = true)]
         public List<MongoDB.Bson.BsonDocument> Find(MongoBsonDocument filter)
         {
             var results = collection.Find(filter.BsonDocument);

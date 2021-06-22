@@ -75,7 +75,7 @@ namespace GmodMongoDb
             lua.PushMetaTable((int) this.MetaTableTypeId);
             lua.GetField(-1, key);
 
-            result = BindingHelper.PullType(lua, -1);
+            result = TypeConverter.PullType(lua, -1);
             lua.Pop(1); // pop the metatable
 
             return result;
@@ -113,7 +113,7 @@ namespace GmodMongoDb
                 lua.PushString(nextKey);
                 stack++;
 
-                stack += BindingHelper.PushType(lua, nextValue?.GetType(), nextValue);
+                stack += TypeConverter.PushType(lua, nextValue?.GetType(), nextValue);
             }
 
             return stack;

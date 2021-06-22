@@ -13,10 +13,11 @@ namespace GmodMongoDb
         public void Load(ILua lua, bool is_serverside, ModuleAssemblyLoadContext assembly_context)
         {
             LuaTaskScheduler.RegisterLuaCallback(lua);
+            TypeConverter.DiscoverDataTransformers();
 
             Mongo mongo = new(lua);
 
-            BindingHelper.GenerateUserDataFromObject(lua, mongo);
+            TypeConverter.GenerateUserDataFromObject(lua, mongo);
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.Insert(-2);

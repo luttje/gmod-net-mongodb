@@ -27,7 +27,7 @@ namespace GmodMongoDb.Binding
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="stackPos">The Lua object's position on the stack</param>
-        public LuaReference(ILua lua, int stackPos = -1)
+        public LuaReference(ILua lua, int stackPos = -1, bool forceKeepOnStack = false)
         {
             this.lua = lua;
 
@@ -35,7 +35,9 @@ namespace GmodMongoDb.Binding
             {
                 // Move the reference to the top of the stack
                 lua.Push(stackPos);
-                lua.Remove(stackPos);
+
+                if(!forceKeepOnStack)
+                    lua.Remove(stackPos);
             }
 
             if (!IsValid(stackPos))

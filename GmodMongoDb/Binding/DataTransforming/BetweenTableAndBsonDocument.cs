@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GmodMongoDb.Binding.DataTransforming
 {
-    public class BetweenTableAndBsonDocument : BaseLuaValueTransformer<MongoBsonDocument>
+    public sealed class BetweenTableAndBsonDocument : LuaValueTransformer<MongoBsonDocument>
     {
         /// <summary>
         /// Create a <see cref="MongoBsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
@@ -20,17 +20,22 @@ namespace GmodMongoDb.Binding.DataTransforming
         {
             MongoBsonDocument document = new(lua, rawDocument);
 
-            BindingHelper.GenerateUserDataFromObject(lua, document);
+            TypeConverter.GenerateUserDataFromObject(lua, document);
         }
 
-        public override int Convert(ILua lua, MongoBsonDocument results)
+        public override int Convert(ILua lua, MongoBsonDocument document)
         {
-            return 0;
+            CreateLuaBsonDocument(lua, document.BsonDocument);
+            return 1;
         }
 
-        public override MongoBsonDocument Parse(ILua lua)
+        public override bool TryParse(ILua lua, out MongoBsonDocument document, int stackPos = -1, bool forceKeepOnStack = false)
         {
-            throw new NotImplementedException();
+            var table = new LuaTableReference(lua, -1, forceKeepOnStack);
+
+            document = MongoBsonDocument.FromLuaTable(lua, table);
+
+            return true;
         }
     }
 }

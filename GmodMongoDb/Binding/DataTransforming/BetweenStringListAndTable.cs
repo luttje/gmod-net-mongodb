@@ -10,7 +10,7 @@ namespace GmodMongoDb.Binding.DataTransforming
     /// <summary>
     /// Converts between a string list and a Lua table containing those strings.
     /// </summary>
-    public class BetweenStringListAndTable : BaseLuaValueTransformer<List<string>>
+    public sealed class BetweenStringListAndTable : LuaValueTransformer<List<string>>
     {
         ///<inheritdoc/>
         public override int Convert(ILua lua, List<string> results)
@@ -29,7 +29,7 @@ namespace GmodMongoDb.Binding.DataTransforming
         }
 
         ///<inheritdoc/>
-        public override List<string> Parse(ILua lua)
+        public override bool TryParse(ILua lua, out List<string> value, int stackPos = -1, bool forceKeepOnStack = false)
         {
             throw new NotImplementedException();
         }
