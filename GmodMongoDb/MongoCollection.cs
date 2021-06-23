@@ -76,54 +76,29 @@ namespace GmodMongoDb
         [LuaMethod]
         [LuaMethod("FindSync")]
         public List<MongoDB.Bson.BsonDocument> Find(MongoBsonDocument filter)
-        {
-            var results = collection.Find(filter.BsonDocument);
-
-            return results.ToList();
-        }
+            => collection.Find(filter.BsonDocument).ToList();
 
         // TODO: All below are untested
         [LuaMethod]
         public async void FindAsync(MongoBsonDocument filter, LuaFunctionReference callback)
-        {
-            var results = await collection.FindAsync(filter.BsonDocument);
-            var resultsList = await results.ToListAsync();
-
-            callback.CallFromAsync(resultsList);
-        }
+            => callback.CallFromAsync(await (await collection.FindAsync(filter.BsonDocument)).ToListAsync());
 
         [LuaMethod]
         public MongoBsonDocument FindOneAndDelete(MongoBsonDocument filter)
-        {
-            var result = collection.FindOneAndDelete(filter.BsonDocument);
-
-            return new MongoBsonDocument(lua, result);
-        }
+            => new(lua, collection.FindOneAndDelete(filter.BsonDocument));
 
         [LuaMethod]
         public async void FindOneAndDeleteAsync(MongoBsonDocument filter, LuaFunctionReference callback)
-        {
-            var result = await collection.FindOneAndDeleteAsync(filter.BsonDocument);
-
-            callback.CallFromAsync(result);
-        }
+            => callback.CallFromAsync(await collection.FindOneAndDeleteAsync(filter.BsonDocument));
 
 
         [LuaMethod]
         public MongoBsonDocument FindOneAndReplace(MongoBsonDocument filter, BsonDocument replacement)
-        {
-            var result = collection.FindOneAndReplace(filter.BsonDocument, replacement);
-
-            return new MongoBsonDocument(lua, result);
-        }
+            => new(lua, collection.FindOneAndReplace(filter.BsonDocument, replacement));
 
         [LuaMethod]
         public async void FindOneAndReplaceAsync(MongoBsonDocument filter, BsonDocument replacement, LuaFunctionReference callback)
-        {
-            var result = await collection.FindOneAndReplaceAsync(filter.BsonDocument, replacement);
-
-            callback.CallFromAsync(result);
-        }
+            => callback.CallFromAsync(await collection.FindOneAndReplaceAsync(filter.BsonDocument, replacement));
 
         // TODO:
         //[LuaMethod]

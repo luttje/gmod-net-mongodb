@@ -18,7 +18,7 @@ namespace GmodMongoDb
     [LuaMetaTable("MongoClient")]
     public class MongoClient : LuaMetaObjectBinding
     {
-        private MongoDB.Driver.MongoClient client;
+        private readonly MongoDB.Driver.MongoClient client;
 
         /// <inheritdoc/>
         public MongoClient(ILua lua, MongoDB.Driver.MongoClient client)
@@ -33,14 +33,12 @@ namespace GmodMongoDb
 
         [LuaMethod]
         public void DropDatabase(string name)
-        {
-            this.client.DropDatabase(name);
-        }
+            => client.DropDatabase(name);
 
         [LuaMethod]
         public async void DropDatabaseAsync(string name, LuaFunctionReference callback = null)
         {
-            await this.client.DropDatabaseAsync(name);
+            await client.DropDatabaseAsync(name);
 
             if(callback != null)
                 callback.CallFromAsync();
@@ -48,41 +46,26 @@ namespace GmodMongoDb
 
         [LuaMethod]
         public List<string> ListDatabaseNames()
-        {
-            var databases = this.client.ListDatabaseNames();
-
-            return databases.ToList();
-        }
+            => client.ListDatabaseNames().ToList();
 
         [LuaMethod]
         public async void ListDatabaseNamesAsync(LuaFunctionReference callback)
-        {
-            var databases = await this.client.ListDatabaseNamesAsync();
-            var databaseNames = await databases.ToListAsync();
-
-            callback.CallFromAsync(databaseNames);
-        }
+            => callback.CallFromAsync(await (await client.ListDatabaseNamesAsync()).ToListAsync());
 
         [LuaMethod]
         public List<BsonDocument> ListDatabases()
-        {
-            var databases = this.client.ListDatabases();
-
-            return databases.ToList();
-        }
+            => client.ListDatabases().ToList();
 
         [LuaMethod]
         public async void ListDatabasesAsync(LuaFunctionReference callback)
-        {
-            var databases = await this.client.ListDatabasesAsync();
-            var databasesList = await databases.ToListAsync();
-
-            callback.CallFromAsync(databasesList);
-        }
+            => callback.CallFromAsync(await (await client.ListDatabasesAsync()).ToListAsync());
 
         /// <summary>
-        /// Queries the connection for the database object identified by the given name
+        /// Queries the connection for the database object identified by the given name. If it does not exist it will create it.
         /// </summary>
+        /// <remarks>
+        /// <a href="mongodb.github.io/mongo-csharp-driver/2.2/reference/driver/connecting/#mongo-database">View the relevant .NET MongoDB Driver documentation</a>
+        /// </remarks>
         /// <example>
         /// In Lua you can get the database by asking a <see cref="MongoClient"/> for it:
         /// <code language="Lua"><![CDATA[
@@ -93,10 +76,6 @@ namespace GmodMongoDb
         /// <returns>The database object</returns>
         [LuaMethod]
         public MongoDatabase GetDatabase(string name)
-        {
-            var database = this.client.GetDatabase(name);
-
-            return new MongoDatabase(this.lua, database);
-        }
+            => new(lua, client.GetDatabase(name));
     }
 }

@@ -30,8 +30,10 @@ namespace GmodMongoDb
 
         /// <summary>
         /// Initiates a new MongoClient. Only one MongoClient should exist and it should be reused.
-        /// Learn more at <a href="http://mongodb.github.io/mongo-csharp-driver/2.12/reference/driver/connecting/#mongo-client">the .NET Driver MongoClient documentation</a>
         /// </summary>
+        /// <remarks>
+        /// <a href="mongodb.github.io/mongo-csharp-driver/2.2/reference/driver/connecting/#mongo-client">View the relevant .NET MongoDB Driver documentation</a>
+        /// </remarks>
         /// <example>
         /// Example how to call this method from Lua in order to connect to a database.
         /// <code language="Lua">

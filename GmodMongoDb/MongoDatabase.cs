@@ -13,7 +13,7 @@ namespace GmodMongoDb
     [LuaMetaTable("MongoDatabase")]
     public class MongoDatabase : LuaMetaObjectBinding
     {
-        private MongoDB.Driver.IMongoDatabase database;
+        private readonly MongoDB.Driver.IMongoDatabase database;
 
         /// <inheritdoc/>
         public MongoDatabase(ILua lua, MongoDB.Driver.IMongoDatabase database)
@@ -64,10 +64,6 @@ namespace GmodMongoDb
         /// <returns>The retrieved collection</returns>
         [LuaMethod]
         public MongoCollection GetCollection(string name)
-        {
-            var collection = this.database.GetCollection<MongoDB.Bson.BsonDocument>(name);
-
-            return new MongoCollection(this.lua, collection);
-        }
+            => new(lua, database.GetCollection<MongoDB.Bson.BsonDocument>(name));
     }
 }

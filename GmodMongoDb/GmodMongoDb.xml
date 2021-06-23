@@ -587,8 +587,10 @@
         <member name="M:GmodMongoDb.Mongo.NewClient(System.String)">
             <summary>
             Initiates a new MongoClient. Only one MongoClient should exist and it should be reused.
-            Learn more at <a href="http://mongodb.github.io/mongo-csharp-driver/2.12/reference/driver/connecting/#mongo-client">the .NET Driver MongoClient documentation</a>
             </summary>
+            <remarks>
+            <a href="mongodb.github.io/mongo-csharp-driver/2.2/reference/driver/connecting/#mongo-client">View the relevant .NET MongoDB Driver documentation</a>
+            </remarks>
             <example>
             Example how to call this method from Lua in order to connect to a database.
             <code language="Lua">
@@ -663,7 +665,7 @@
             <summary>
             Converts the BSON Document to a json string
             </summary>
-            <returns></returns>
+            <returns>The JSON representation of this BSON Document</returns>
         </member>
         <member name="T:GmodMongoDb.MongoClient">
             <summary>
@@ -678,8 +680,11 @@
         </member>
         <member name="M:GmodMongoDb.MongoClient.GetDatabase(System.String)">
             <summary>
-            Queries the connection for the database object identified by the given name
+            Queries the connection for the database object identified by the given name. If it does not exist it will create it.
             </summary>
+            <remarks>
+            <a href="mongodb.github.io/mongo-csharp-driver/2.2/reference/driver/connecting/#mongo-database">View the relevant .NET MongoDB Driver documentation</a>
+            </remarks>
             <example>
             In Lua you can get the database by asking a <see cref="T:GmodMongoDb.MongoClient"/> for it:
             <code language="Lua"><![CDATA[

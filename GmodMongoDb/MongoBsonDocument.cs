@@ -82,9 +82,7 @@ namespace GmodMongoDb
         /// <returns>The JSON representation of this BSON Document</returns>
         [LuaMethod]
         public string ToJson()
-        {
-            return this.BsonDocument.ToJson();
-        }
+            => BsonDocument.ToJson();
 
         [LuaMethod("__index")]
         public object Index(string key)
@@ -183,12 +181,10 @@ namespace GmodMongoDb
         /// <summary>
         /// Converts the BSON Document to a json string
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The JSON representation of this BSON Document</returns>
         [LuaMethod("__tostring")]
         public override string ToString()
-        {
-            return ToJson();
-        }
+            => ToJson();
 
         /*
          * Comparison operators
@@ -196,20 +192,14 @@ namespace GmodMongoDb
         // TODO: All below are untested
         [LuaMethod("__lt")]
         public bool LessThan(MongoBsonDocument other)
-        {
-            return this.BsonDocument < other.BsonDocument;
-        }
+            => BsonDocument < other.BsonDocument;
 
         [LuaMethod("__le")]
         public bool LessOrEqual(MongoBsonDocument other)
-        {
-            return this.BsonDocument <= other.BsonDocument;
-        }
+            => BsonDocument <= other.BsonDocument;
 
         [LuaMethod("__eq")]
         public bool Equals(MongoBsonDocument other)
-        {
-            return this.BsonDocument == other.BsonDocument;
-        }
+            => BsonDocument == other.BsonDocument;
     }
 }
