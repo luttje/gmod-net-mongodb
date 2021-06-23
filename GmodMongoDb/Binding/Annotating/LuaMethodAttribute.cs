@@ -39,9 +39,9 @@ namespace GmodMongoDb.Binding.Annotating
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="method">The method to push to the Lua stack</param>
-        /// <param name="metaTableTypeId">The type id of the object instance's metatable</param>
+        /// <param name="metaTableTypeId">The type id of the object instance's metatable or null if static</param>
         /// <param name="forceWithoutFinder">Forces the method to be pushed, never pushing the finder</param>
-        public void PushFunction(ILua lua, MethodInfo method, int metaTableTypeId, bool forceWithoutFinder = false)
+        public void PushFunction(ILua lua, MethodInfo method, int? metaTableTypeId = null, bool forceWithoutFinder = false)
         {
             // Check if the method is overloaded and mark it as such
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -52,19 +52,22 @@ namespace GmodMongoDb.Binding.Annotating
             var handle = lua.PushManagedFunction((lua) => {
                 LuaMetaObjectBinding? instance = null;
 
-                if (!method.IsStatic)
+                if (!method.IsStatic && metaTableTypeId != null)
                 {
                     // Copy the object so we can pull it into a .NET object below with `BindingHelper.PullManagedObject`
                     lua.Push(1);
                     int callerCopy = lua.ReferenceCreate(); // Will be freed before returning to Lua
 
-                    instance = TypeConverter.PullManagedObject(lua, metaTableTypeId, 1) as LuaMetaObjectBinding;
+                    instance = TypeTools.PullManagedObject(lua, (int)metaTableTypeId, 1) as LuaMetaObjectBinding;
 
                     if (instance is not LuaMetaObjectBinding)
                         throw new NullReferenceException("Invalid instance!");
 
                     instance.Reference = callerCopy;
                 }
+
+                if (method.IsStatic)
+                    lua.Remove(1); // Remove the table reference, we don't want it now.
 
                 try
                 {
@@ -93,12 +96,19 @@ namespace GmodMongoDb.Binding.Annotating
         /// <returns></returns>
         private static int ExecuteMethod(LuaMetaObjectBinding? instance, ILua lua, MethodInfo method)
         {
+            int offset = 0;
             var parameters = method.GetParameters();
             var newParameters = new object[parameters.Length];
 
-            for (int i = 0; i < parameters.Length; i++)
+            if (method.IsStatic)
             {
-                newParameters[i] = TypeConverter.PullType(lua, parameters[i].ParameterType, 1);
+                newParameters[0] = lua;
+                offset = 1;
+            }
+
+            for (int i = offset; i < parameters.Length; i++)
+            {
+                newParameters[i] = TypeTools.PullType(lua, parameters[i].ParameterType, 1);
 
                 // Get ready to throw away unused references on close (so methods don't have to do this themselves.
                 if (newParameters[i] is LuaReference reference)
@@ -115,10 +125,10 @@ namespace GmodMongoDb.Binding.Annotating
 
             // Convert value returned by method to a Lua recognized type (or metatable if possible)
             if (returnedType == null || returned is not LuaMetaObjectBinding binding)
-                return TypeConverter.PushType(lua, returnedType, returned);
+                return TypeTools.PushType(lua, returnedType, returned);
             else
             {
-                TypeConverter.GenerateUserDataFromObject(lua, binding);
+                TypeTools.GenerateUserDataFromObject(lua, binding);
                 return 1;
             }
         }
@@ -138,7 +148,7 @@ namespace GmodMongoDb.Binding.Annotating
 
             for (int i = 0; i < stack; i++)
             {
-                signature[i] = TypeConverter.LuaTypeToDotNetType(lua.GetType(i + 1));
+                signature[i] = TypeTools.LuaTypeToDotNetType(lua.GetType(i + 1));
 
                 if (signature[i] == null)
                     throw new NotImplementedException("Overloaded methods cant be found if one of the passed arguments is null. Type is needed");

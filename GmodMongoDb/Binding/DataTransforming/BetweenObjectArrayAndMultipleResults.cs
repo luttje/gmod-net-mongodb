@@ -27,7 +27,7 @@ namespace GmodMongoDb.Binding.DataTransforming
             for (int i = 0; i < results.Length; i++)
             {
                 var item = results[i];
-                stack += TypeConverter.PushType(lua, item?.GetType(), item);
+                stack += TypeTools.PushType(lua, item?.GetType(), item);
             }
 
             return stack;

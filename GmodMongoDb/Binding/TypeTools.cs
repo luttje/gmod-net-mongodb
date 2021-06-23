@@ -15,10 +15,11 @@ namespace GmodMongoDb.Binding
     /// <summary>
     /// Helps converting between .NET objects/types and Lua types
     /// </summary>
-    public static class TypeConverter
+    public static class TypeTools
     {
         private static readonly Dictionary<int, Type> MetaTableTypeIds = new();
         private static readonly Dictionary<Type, Type> TransformerTypes = new();
+        private static string[] metaTableTypeNames = null;
 
         /// <summary>
         /// Iterates all Transformers and registers their Type for later use. In order to create a transformer you should inherit LuaValueTransformer
@@ -48,35 +49,91 @@ namespace GmodMongoDb.Binding
             var discoveredTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(metaTableBaseType));
+            metaTableTypeNames = new string[discoveredTypes.Count()];
+            var i = 0;
 
-            foreach (var metaTableTypes in discoveredTypes)
+            foreach (var metaTableType in discoveredTypes)
             {
-                var metaTableName = GetMetaTableTypeName(metaTableTypes);
+                var metaTableName = GetMetaTableTypeName(metaTableType);
                 var typeId = lua.CreateMetaTable(metaTableName);
 
                 if (!MetaTableTypeIds.ContainsKey(typeId))
-                    MetaTableTypeIds.Add(typeId, metaTableTypes);
+                    MetaTableTypeIds.Add(typeId, metaTableType);
 
                 lua.Push(-1);
                 lua.SetField(-2, "__index");
 
-                MethodInfo[] methods = metaTableTypes.GetMethods();
+                // Have a place for this type's static methods
+                lua.CreateTable();
+                lua.Push(-1);
+                lua.Insert(1); // Move mt._static to the bottom of the stack so we can fill it later
+                // Add the static method table currently at the top of the stack to the global table
+                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                lua.Insert(-2);
+                lua.SetField(-2, metaTableName);
+                metaTableTypeNames[i] = metaTableName;
+                lua.Pop(1); // pop the global table
+
+                MethodInfo[] methods = metaTableType.GetMethods();
 
                 foreach (var method in methods)
                 {
-                    var attributes = method.GetCustomAttributes<LuaMethodAttribute>();
+                    var attributes = method.GetCustomAttributes<LuaMethodAttribute>()
+                        .Union(method.GetCustomAttributes<LuaStaticAttribute>());
 
                     foreach (var attribute in attributes)
                     {
+                        var stackPos = -2; // Position of the metatable
                         attribute.PushFunction(lua, method, typeId);
-                        lua.SetField(-2, attribute.Name ?? method.Name);
-                    }
 
-                    // TODO: Add static methods to a different table (e.g: mt.static at the bottom of the stack)
+                        if (attribute is LuaStaticAttribute staticAttribute)
+                        {
+                            stackPos = 1; // Position of the static table
+
+                            if (staticAttribute.IsInitializer)
+                            {
+                                // TODO: Test what happens with overloaded initializers
+                                // Create a metatable for the static table and add the __call metamethod to it
+                                lua.CreateTable();
+                                staticAttribute.PushFunction(lua, method);
+                                lua.SetField(-2, "__call");
+                                lua.SetMetaTable(stackPos); // Pops the metatable for the static table
+
+                                // TODO: Document StaticTableName() in README
+                            }
+                        }
+
+                        var methodName = attribute.Name ?? method.Name;
+                        lua.SetField(stackPos, methodName);
+                    }
                 }
 
                 lua.Pop(1); // Pop the metatable
+                lua.Pop(1); // Pop the static functions table
             }
+        }
+
+        /// <summary>
+        /// Cleans up the static tables made with <see cref="CreateDiscoveredMetaTableDefinitions"/>
+        /// </summary>
+        /// <param name="lua"></param>
+        internal static void CleanUpStaticFunctionTables(ILua lua)
+        {
+            if (metaTableTypeNames == null)
+                return;
+
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+
+            foreach (var metaTableName in metaTableTypeNames)
+            {
+                if (metaTableName == null)
+                    continue;
+
+                lua.PushNil();
+                lua.SetField(-2, metaTableName);
+            }
+
+            lua.Pop(1); // pop the global table
         }
 
         private static string GetMetaTableTypeName(Type type)

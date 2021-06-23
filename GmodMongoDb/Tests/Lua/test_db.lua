@@ -4,13 +4,13 @@ print("GmodMongoDb", "load()")
 
 dotnet.load("GmodMongoDb")
 
-test_client = mongo.NewClient("mongodb://bootlegger:395kjkh20jhq5wH65qwa5AST@127.0.0.1:27017/revolt?retryWrites=true&w=majority")
+test_client = MongoClient("mongodb://bootlegger:395kjkh20jhq5wH65qwa5AST@127.0.0.1:27017/revolt?retryWrites=true&w=majority")
 local db = test_client:GetDatabase("revolt")
 local collection = db:GetCollection("bootlegrp_players")
 
 local filterTable = { _id = "singleplayer" }
-local filterJson = util.TableToJSON(filterTable)
-local filter = mongo.NewBsonDocument(filterJson)
+--local filterJson = util.TableToJSON(filterTable)
+local filter = MongoBsonDocument(filterTable)
 print(filter, type(filter))
 local results = collection:Find(filter)
 PrintTable(results)
@@ -21,10 +21,10 @@ PrintTable(results)
 
 -- print(results[1] == refindResults[1])
 
--- local findWithBsonDocument = collection:Find(mongo.NewBsonDocument({money = 500}))
+-- local findWithBsonDocument = collection:Find(MongoBsonDocument({money = 500}))
 -- PrintTable(findWithBsonDocument)
 
--- local document = mongo.NewBsonDocument(util.TableToJSON(filter))
+-- local document = MongoBsonDocument(util.TableToJSON(filter))
 -- local findWithJsonBsonDocument = collection:Find(document)
 -- PrintTable(findWithJsonBsonDocument)
 

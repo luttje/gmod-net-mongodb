@@ -13,33 +13,33 @@ namespace GmodMongoDb.DataTransforming
     /// <summary>
     /// Transformers from a native BsonDocument to a Lua table or vice versa.
     /// </summary>
-    public sealed class BetweenBsonDocumentAndTable : LuaValueTransformer<MongoBsonDocument>
+    public sealed class BetweenBsonDocumentAndTable : LuaValueTransformer<BsonDocument>
     {
         /// <summary>
-        /// Create a <see cref="MongoBsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
+        /// Create a <see cref="BsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="rawDocument">The true BsonDocument to encapsulate</param>
-        private static void CreateLuaBsonDocument(ILua lua, BsonDocument rawDocument)
+        private static void CreateLuaBsonDocument(ILua lua, MongoDB.Bson.BsonDocument rawDocument)
         {
-            MongoBsonDocument document = new(lua, rawDocument);
+            BsonDocument document = new(lua, rawDocument);
 
-            TypeConverter.GenerateUserDataFromObject(lua, document);
+            TypeTools.GenerateUserDataFromObject(lua, document);
         }
 
         /// <inheritdoc/>
-        public override int Convert(ILua lua, MongoBsonDocument document)
+        public override int Convert(ILua lua, BsonDocument document)
         {
-            CreateLuaBsonDocument(lua, document.BsonDocument);
+            CreateLuaBsonDocument(lua, document.RawBsonDocument);
             return 1;
         }
 
         /// <inheritdoc/>
-        public override bool TryParse(ILua lua, out MongoBsonDocument document, int stackPos = -1, bool forceKeepOnStack = false)
+        public override bool TryParse(ILua lua, out BsonDocument document, int stackPos = -1, bool forceKeepOnStack = false)
         {
             var table = new LuaTableReference(lua, stackPos, forceKeepOnStack);
 
-            document = MongoBsonDocument.FromLuaTable(lua, table);
+            document = BsonDocument.FromLuaTable(lua, table);
 
             return true;
         }

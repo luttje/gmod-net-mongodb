@@ -43,7 +43,7 @@ namespace GmodMongoDb
             //this.database.RenameCollectionAsync
             //this.database.RunCommand
             //this.database.RunCommandAsync
-            //this.database.Settings <-- property, low priority, but once made NewClient should accept this
+            //this.database.Settings <-- property, low priority, but once made MongoClient.Constructor should accept this
             //this.database.Watch
             //this.database.WatchAsync
             //this.database.WithReadConcern <-- low priority

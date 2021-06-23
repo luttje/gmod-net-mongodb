@@ -6,6 +6,8 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.Net.Sockets;
 
 namespace GmodMongoDb
 {
@@ -13,10 +15,10 @@ namespace GmodMongoDb
     /// Exposes a MongoDB connection client to Lua.
     /// </summary>
     /// <remarks>
-    /// In Lua you can get a client by using <see cref="Mongo.NewClient(string)"/> 
+    /// In Lua you can get a client by using <see cref="Constructor"/> 
     /// </remarks>
     [LuaMetaTable("MongoClient")]
-    public class MongoClient : LuaMetaObjectBinding
+    public class MongoClient : LuaMetaObjectBinding, IDisposable
     {
         private readonly MongoDB.Driver.MongoClient client;
 
@@ -26,9 +28,61 @@ namespace GmodMongoDb
         {
             this.client = client;
 
+            ReferenceManager.Add(this);
+
             // TODO:
             //this.client.Watch;
             //this.client.WatchAsync;
+        }
+
+        /// <summary>
+        /// Initiates a new MongoClient. Only one MongoClient should exist and it can be reused for multiple databases.
+        /// </summary>
+        /// <remarks>
+        /// <a href="mongodb.github.io/mongo-csharp-driver/2.2/reference/driver/connecting/#mongo-client">View the relevant .NET MongoDB Driver documentation</a>
+        /// </remarks>
+        /// <example>
+        /// Example how to call this method from Lua in order to connect to a database.
+        /// <code language="Lua">
+        /// client = MongoClient("mongodb://username_here:password_here@127.0.0.1:27017/database_here?retryWrites=true&amp;w=majority")
+        /// </code>
+        /// </example>
+        /// <param name="lua"></param>
+        /// <param name="connectionString">The connection string with connection information</param>
+        /// <returns>The MongoClient which will interface with database</returns>
+        [LuaStatic(IsInitializer = true)]
+        public static MongoClient Constructor(ILua lua, string connectionString)
+        {
+            lua.Print($"Connecting to database. MongoClient created.");
+
+            var url = new MongoUrl(connectionString);
+            var settings = MongoClientSettings.FromUrl(url);
+            settings.HeartbeatInterval = TimeSpan.FromSeconds(1);
+            settings.ClusterConfigurator = builder =>
+            {
+                // A lingering socket causes the module to become not-unloadable.
+                static void SocketConfigurator(Socket s)
+                {
+                    s.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+                };
+
+                builder.ConfigureTcp(tcp => tcp.With(socketConfigurator: (Action<Socket>)SocketConfigurator));
+            };
+
+            return new MongoClient(lua, new MongoDB.Driver.MongoClient(settings));
+        }
+
+        /// <summary>
+        /// Disposes the MongoDB client connection
+        /// </summary>
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+
+            if (client == null)
+                return;
+
+            ClusterRegistry.Instance.UnregisterAndDisposeCluster(client.Cluster);
         }
 
         [LuaMethod]
@@ -53,7 +107,7 @@ namespace GmodMongoDb
             => callback.CallFromAsync(await (await client.ListDatabaseNamesAsync()).ToListAsync());
 
         [LuaMethod]
-        public List<BsonDocument> ListDatabases()
+        public List<MongoDB.Bson.BsonDocument> ListDatabases()
             => client.ListDatabases().ToList();
 
         [LuaMethod]

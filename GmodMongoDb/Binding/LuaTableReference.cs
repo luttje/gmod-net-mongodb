@@ -46,8 +46,8 @@ namespace GmodMongoDb.Binding
             this.Push();
             for (lua.PushNil(); lua.Next(-2) != 0; lua.Pop(1))
             {
-                object key = TypeConverter.PullType(lua, -2, true);
-                object value = TypeConverter.PullType(lua, -1, true);
+                object key = TypeTools.PullType(lua, -2, true);
+                object value = TypeTools.PullType(lua, -1, true);
 
                 action(key, value);
             }

@@ -17,27 +17,14 @@ namespace GmodMongoDb
         public void Load(ILua lua, bool is_serverside, ModuleAssemblyLoadContext assembly_context)
         {
             LuaTaskScheduler.RegisterLuaCallback(lua);
-            TypeConverter.DiscoverDataTransformers();
-            TypeConverter.CreateDiscoveredMetaTableDefinitions(lua);
-
-            Mongo mongo = new(lua);
-
-            TypeConverter.GenerateUserDataFromObject(lua, mongo);
-
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.Insert(-2);
-            lua.SetField(-2, "mongo");
-            lua.Pop(1); // pop the global table
+            TypeTools.DiscoverDataTransformers();
+            TypeTools.CreateDiscoveredMetaTableDefinitions(lua);
         }
 
         /// <inheritdoc/>
         public void Unload(ILua lua)
         {
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.PushNil();
-            lua.SetField(-2, "mongo");
-            lua.Pop(1); // pop the global table
-
+            TypeTools.CleanUpStaticFunctionTables(lua);
             LuaTaskScheduler.UnregisterLuaCallback(lua);
             ReferenceManager.KillAll();
         }

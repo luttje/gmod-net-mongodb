@@ -11,24 +11,24 @@ namespace GmodMongoDb
     /// Exposes a MongoDB BSON Document to Lua.
     /// </summary>
     /// <remarks>
-    /// In Lua you can get a BSON document by querying a collection using <see cref="MongoCollection.Find(MongoBsonDocument)"/>.
-    /// You can also generate your own BSON document from a table by using <see cref="Mongo.NewBsonDocument(MongoBsonDocument)"/>
+    /// In Lua you can get a BSON document by querying a collection using <see cref="MongoCollection.Find(BsonDocument)"/>.
+    /// You can also generate your own BSON document from a table by using <see cref="BsonDocument.Constructor(ILua, BsonDocument)"/>
     /// </remarks>
     [LuaMetaTable("MongoBsonDocument")]
-    public class MongoBsonDocument : LuaMetaObjectBinding
+    public class BsonDocument : LuaMetaObjectBinding
     {
         /// <summary>
         /// The native MongoDB BSON Document object
         /// </summary>
-        public BsonDocument BsonDocument { get; set; }
+        public MongoDB.Bson.BsonDocument RawBsonDocument { get; set; }
 
         private LuaFunctionReference cachedReference;
 
         /// <inheritdoc/>
-        public MongoBsonDocument(ILua lua, BsonDocument document)
+        public BsonDocument(ILua lua, MongoDB.Bson.BsonDocument document)
             : base(lua)
         {
-            this.BsonDocument = document;
+            this.RawBsonDocument = document;
             cachedReference = null;
 
             // TODO:
@@ -62,18 +62,48 @@ namespace GmodMongoDb
             //this.BsonDocument.Values <-- property
         }
 
-        internal static MongoBsonDocument FromLuaTable(ILua lua, LuaTableReference table)
+        /// <summary>
+        /// Creates a new BSON Document from the provided Lua table.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="table">The table to use to build a BSON Document</param>
+        /// <returns></returns>
+        /// <remarks><see cref="DataTransforming.BetweenBsonDocumentAndTable.TryParse(ILua, out BsonDocument, int, bool)"/> will automatically handle this conversion.</remarks>
+        [LuaStatic(IsInitializer = true)]
+        public static BsonDocument Constructor(ILua lua, BsonDocument table)
         {
-            var rawDocument = new BsonDocument();
-
-            table.ForEach((key, value) => rawDocument.Add(key.ToString(), BsonTypeMapper.MapToBsonValue(value)));
-
-            return new MongoBsonDocument(lua, rawDocument);
+            return table;
         }
 
-        internal static MongoBsonDocument FromJson(ILua lua, string json)
+        [LuaStatic]
+        public static BsonDocument FromLuaTable(ILua lua, LuaTableReference table)
         {
-            return new MongoBsonDocument(lua, BsonDocument.Parse(json));
+            var rawDocument = new MongoDB.Bson.BsonDocument();
+
+            table.ForEach((key, value) => {
+                try 
+                { 
+                    rawDocument.Add(key.ToString(), BsonTypeMapper.MapToBsonValue(value));
+                }
+                catch (ArgumentException) 
+                {
+                    lua.Print($"Warning: skipped key `{key}` since `{value}` cannot be converted to a BSON value.");
+                }
+            });
+
+            return new BsonDocument(lua, rawDocument);
+        }
+
+        /// <summary>
+        /// Creates a new BSON Document from the provided json.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        [LuaStatic]
+        public static BsonDocument FromJson(ILua lua, string json)
+        {
+            return new BsonDocument(lua, MongoDB.Bson.BsonDocument.Parse(json));
         }
 
         /// <summary>
@@ -82,14 +112,14 @@ namespace GmodMongoDb
         /// <returns>The JSON representation of this BSON Document</returns>
         [LuaMethod]
         public string ToJson()
-            => BsonDocument.ToJson();
+            => RawBsonDocument.ToJson();
 
         [LuaMethod("__index")]
         public object Index(string key)
         {
             object result = null;
 
-            if (this.BsonDocument.TryGetValue(key, out BsonValue bsonValue))
+            if (this.RawBsonDocument.TryGetValue(key, out BsonValue bsonValue))
                 result = BsonTypeMapper.MapToDotNetValue(bsonValue);
 
             if (result != null)
@@ -101,7 +131,7 @@ namespace GmodMongoDb
             lua.PushMetaTable((int) this.MetaTableTypeId);
             lua.GetField(-1, key);
 
-            result = TypeConverter.PullType(lua, -1);
+            result = TypeTools.PullType(lua, -1);
             lua.Pop(1); // pop the metatable
 
             return result;
@@ -119,7 +149,7 @@ namespace GmodMongoDb
 
             string nextKey = null;
 
-            foreach (string k in this.BsonDocument.Names)
+            foreach (string k in this.RawBsonDocument.Names)
             {
                 // Stop if we've reached the next key
                 if (k == key)
@@ -134,12 +164,12 @@ namespace GmodMongoDb
 
             if (nextKey != null)
             {
-                object nextValue = BsonTypeMapper.MapToDotNetValue(this.BsonDocument[nextKey]);
+                object nextValue = BsonTypeMapper.MapToDotNetValue(this.RawBsonDocument[nextKey]);
 
                 lua.PushString(nextKey);
                 stack++;
 
-                stack += TypeConverter.PushType(lua, nextValue?.GetType(), nextValue);
+                stack += TypeTools.PushType(lua, nextValue?.GetType(), nextValue);
             }
 
             return stack;
@@ -191,15 +221,15 @@ namespace GmodMongoDb
          */
         // TODO: All below are untested
         [LuaMethod("__lt")]
-        public bool LessThan(MongoBsonDocument other)
-            => BsonDocument < other.BsonDocument;
+        public bool LessThan(BsonDocument other)
+            => RawBsonDocument < other.RawBsonDocument;
 
         [LuaMethod("__le")]
-        public bool LessOrEqual(MongoBsonDocument other)
-            => BsonDocument <= other.BsonDocument;
+        public bool LessOrEqual(BsonDocument other)
+            => RawBsonDocument <= other.RawBsonDocument;
 
         [LuaMethod("__eq")]
-        public bool Equals(MongoBsonDocument other)
-            => BsonDocument == other.BsonDocument;
+        public bool Equals(BsonDocument other)
+            => RawBsonDocument == other.RawBsonDocument;
     }
 }

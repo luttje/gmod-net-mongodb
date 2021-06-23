@@ -52,7 +52,7 @@ namespace GmodMongoDb.Binding
                 for (int i = 0; i < arguments.Length; i++)
                 {
                     var argument = arguments[i];
-                    stack += TypeConverter.PushType(lua, argument.GetType(), argument);
+                    stack += TypeTools.PushType(lua, argument.GetType(), argument);
                 }
             }
 
@@ -76,7 +76,7 @@ namespace GmodMongoDb.Binding
                 for (int i = 0; i < arguments.Length; i++)
                 {
                     var argument = arguments[i];
-                    stack += TypeConverter.PushType(lua, argument.GetType(), argument);
+                    stack += TypeTools.PushType(lua, argument.GetType(), argument);
                 }
             }
 
@@ -104,13 +104,13 @@ namespace GmodMongoDb.Binding
                 for (int i = 0; i < arguments.Length; i++)
                 {
                     var argument = arguments[i];
-                    stack += TypeConverter.PushType(lua, argument.GetType(), argument);
+                    stack += TypeTools.PushType(lua, argument.GetType(), argument);
                 }
             }
 
             lua.MCall(stack, 1);
 
-            return TypeConverter.PullType<T>(lua, -1);
+            return TypeTools.PullType<T>(lua, -1);
         }
 
         /// <summary>

@@ -13,27 +13,27 @@ namespace GmodMongoDb.DataTransforming
     /// <summary>
     /// Transformers from a native BsonDocument to a Lua table or vice versa.
     /// </summary>
-    public sealed class BetweenBsonDocumentListAndTable : LuaValueTransformer<List<BsonDocument>>
+    public sealed class BetweenBsonDocumentListAndTable : LuaValueTransformer<List<MongoDB.Bson.BsonDocument>>
     {
         /// <summary>
-        /// Create a <see cref="MongoBsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
+        /// Create a <see cref="BsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="rawDocument">The true BsonDocument to encapsulate</param>
-        private static void CreateLuaBsonDocument(ILua lua, BsonDocument rawDocument)
+        private static void CreateLuaBsonDocument(ILua lua, MongoDB.Bson.BsonDocument rawDocument)
         {
-            MongoBsonDocument document = new(lua, rawDocument);
+            BsonDocument document = new(lua, rawDocument);
 
-            TypeConverter.GenerateUserDataFromObject(lua, document);
+            TypeTools.GenerateUserDataFromObject(lua, document);
         }
 
         /// <inheritdoc/>
-        public override int Convert(ILua lua, List<BsonDocument> results)
+        public override int Convert(ILua lua, List<MongoDB.Bson.BsonDocument> results)
         {
             lua.CreateTable();
             int i = 1;
 
-            foreach (BsonDocument document in results)
+            foreach (MongoDB.Bson.BsonDocument document in results)
             {
                 CreateLuaBsonDocument(lua, document);
 
@@ -46,7 +46,7 @@ namespace GmodMongoDb.DataTransforming
         }
 
         /// <inheritdoc/>
-        public override bool TryParse(ILua lua, out List<BsonDocument> value, int stackPos = -1, bool forceKeepOnStack = false)
+        public override bool TryParse(ILua lua, out List<MongoDB.Bson.BsonDocument> value, int stackPos = -1, bool forceKeepOnStack = false)
         {
             throw new NotImplementedException();
         }
