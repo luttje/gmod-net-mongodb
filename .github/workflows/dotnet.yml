@@ -8,13 +8,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - 
       name: Warmup Workflow
       uses: actions/checkout@v2
-    
+    -
+      name: Chocolatey install docfx
+      uses: crazy-max/ghaction-chocolatey@v1
+      with:
+        args: install docfx -y
     - 
       name: Setup .NET
       uses: actions/setup-dotnet@v1
@@ -37,9 +41,7 @@ jobs:
         dest: GmodMongoDb.zip
     - 
       name: Build Documentation
-      uses: nikeee/docfx-action@b9c2cf92e3b4aa06878a1410833a8828b4bdcd26
-      with:
-        args: DocFx/docfx.json
+      run: docfx DocFx/docfx.json
     - 
       name: Publish to github pages()
       uses: crazy-max/ghaction-github-pages@db4476a01402e1a7ce05f41832040eef16d14925
