@@ -1,5 +1,5 @@
 ﻿using GmodMongoDb.Binding;
-using GmodMongoDb.Binding.Annotating;
+using GmodMongoDb.Binding.DataTransforming;
 using GmodNET.API;
 using MongoDB.Bson;
 using System;
@@ -8,12 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GmodMongoDb.Binding.DataTransforming
+namespace GmodMongoDb.DataTransforming
 {
     /// <summary>
     /// Transformers from a native BsonDocument to a Lua table or vice versa.
     /// </summary>
-    public sealed class BetweenBsonDocumentListAndTable : LuaValueTransformer<List<BsonDocument>>
+    public sealed class BetweenBsonDocumentAndTable : LuaValueTransformer<MongoBsonDocument>
     {
         /// <summary>
         /// Create a <see cref="MongoBsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
@@ -28,27 +28,20 @@ namespace GmodMongoDb.Binding.DataTransforming
         }
 
         /// <inheritdoc/>
-        public override int Convert(ILua lua, List<BsonDocument> results)
+        public override int Convert(ILua lua, MongoBsonDocument document)
         {
-            lua.CreateTable();
-            int i = 1;
-
-            foreach (BsonDocument document in results)
-            {
-                CreateLuaBsonDocument(lua, document);
-
-                lua.PushNumber(i++);
-                lua.Insert(-2);
-                lua.RawSet(-3);
-            }
-
+            CreateLuaBsonDocument(lua, document.BsonDocument);
             return 1;
         }
 
         /// <inheritdoc/>
-        public override bool TryParse(ILua lua, out List<BsonDocument> value, int stackPos = -1, bool forceKeepOnStack = false)
+        public override bool TryParse(ILua lua, out MongoBsonDocument document, int stackPos = -1, bool forceKeepOnStack = false)
         {
-            throw new NotImplementedException();
+            var table = new LuaTableReference(lua, stackPos, forceKeepOnStack);
+
+            document = MongoBsonDocument.FromLuaTable(lua, table);
+
+            return true;
         }
     }
 }

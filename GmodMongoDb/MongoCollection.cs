@@ -18,7 +18,7 @@ namespace GmodMongoDb
     [LuaMetaTable("MongoCollection")]
     public class MongoCollection : LuaMetaObjectBinding
     {
-        private MongoDB.Driver.IMongoCollection<MongoDB.Bson.BsonDocument> collection;
+        private readonly IMongoCollection<BsonDocument> collection;
 
         /// <inheritdoc/>
         public MongoCollection(ILua lua, MongoDB.Driver.IMongoCollection<MongoDB.Bson.BsonDocument> collection)

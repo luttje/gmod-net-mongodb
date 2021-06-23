@@ -91,42 +91,6 @@
             ]]></code>
             </example>
         </member>
-        <member name="T:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable">
-            <summary>
-            Transformers from a native BsonDocument to a Lua table or vice versa.
-            </summary>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable.CreateLuaBsonDocument(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
-            <summary>
-            Create a <see cref="T:GmodMongoDb.MongoBsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
-            </summary>
-            <param name="lua"></param>
-            <param name="rawDocument">The true BsonDocument to encapsulate</param>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable.Convert(GmodNET.API.ILua,GmodMongoDb.MongoBsonDocument)">
-            <inheritdoc/>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua,GmodMongoDb.MongoBsonDocument@,System.Int32,System.Boolean)">
-            <inheritdoc/>
-        </member>
-        <member name="T:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentListAndTable">
-            <summary>
-            Transformers from a native BsonDocument to a Lua table or vice versa.
-            </summary>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentListAndTable.CreateLuaBsonDocument(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
-            <summary>
-            Create a <see cref="T:GmodMongoDb.MongoBsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
-            </summary>
-            <param name="lua"></param>
-            <param name="rawDocument">The true BsonDocument to encapsulate</param>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentListAndTable.Convert(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument})">
-            <inheritdoc/>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentListAndTable.TryParse(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument}@,System.Int32,System.Boolean)">
-            <inheritdoc/>
-        </member>
         <member name="T:GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults">
             <summary>
             Transformers from an object array to multiple Lua return types or vice versa.
@@ -576,6 +540,42 @@
             Iterates all Transformers and registers their Type for later use. In order to create a transformer you should inherit LuaValueTransformer
             </summary>
         </member>
+        <member name="T:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable">
+            <summary>
+            Transformers from a native BsonDocument to a Lua table or vice versa.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.CreateLuaBsonDocument(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
+            <summary>
+            Create a <see cref="T:GmodMongoDb.MongoBsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
+            </summary>
+            <param name="lua"></param>
+            <param name="rawDocument">The true BsonDocument to encapsulate</param>
+        </member>
+        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.Convert(GmodNET.API.ILua,GmodMongoDb.MongoBsonDocument)">
+            <inheritdoc/>
+        </member>
+        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua,GmodMongoDb.MongoBsonDocument@,System.Int32,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="T:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable">
+            <summary>
+            Transformers from a native BsonDocument to a Lua table or vice versa.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.CreateLuaBsonDocument(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
+            <summary>
+            Create a <see cref="T:GmodMongoDb.MongoBsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
+            </summary>
+            <param name="lua"></param>
+            <param name="rawDocument">The true BsonDocument to encapsulate</param>
+        </member>
+        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.Convert(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument})">
+            <inheritdoc/>
+        </member>
+        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.TryParse(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument}@,System.Int32,System.Boolean)">
+            <inheritdoc/>
+        </member>
         <member name="T:GmodMongoDb.Mongo">
             <summary>
             The main Mongo library form which you can instantiate MongoDB objects like the connection client (<see cref="M:GmodMongoDb.Mongo.NewClient(System.String)"/>).
@@ -604,7 +604,7 @@
             </summary>
             <param name="table">The table to use to build a BSON Document</param>
             <returns></returns>
-            <remarks><see cref="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua,GmodMongoDb.MongoBsonDocument@,System.Int32,System.Boolean)"/> will automatically handle this conversion.</remarks>
+            <remarks><see cref="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua,GmodMongoDb.MongoBsonDocument@,System.Int32,System.Boolean)"/> will automatically handle this conversion.</remarks>
         </member>
         <member name="M:GmodMongoDb.Mongo.NewBsonDocument(System.String)">
             <summary>

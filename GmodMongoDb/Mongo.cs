@@ -51,7 +51,7 @@ namespace GmodMongoDb
         /// </summary>
         /// <param name="table">The table to use to build a BSON Document</param>
         /// <returns></returns>
-        /// <remarks><see cref="GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable.TryParse(ILua, out MongoBsonDocument, int, bool)"/> will automatically handle this conversion.</remarks>
+        /// <remarks><see cref="DataTransforming.BetweenBsonDocumentAndTable.TryParse(ILua, out MongoBsonDocument, int, bool)"/> will automatically handle this conversion.</remarks>
         [LuaMethod]
         public static MongoBsonDocument NewBsonDocument(MongoBsonDocument table)
         {
