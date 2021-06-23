@@ -11,13 +11,17 @@ namespace GmodMongoDb
     /// Exposes a MongoDB BSON Document to Lua.
     /// </summary>
     /// <remarks>
-    /// In Lua you can get a BSON document by querying a collection using <see cref="MongoCollection.Find(string)"/>.
+    /// In Lua you can get a BSON document by querying a collection using <see cref="MongoCollection.Find(MongoBsonDocument)"/>.
     /// You can also generate your own BSON document from a table by using <see cref="Mongo.NewBsonDocument(MongoBsonDocument)"/>
     /// </remarks>
     [LuaMetaTable("MongoBsonDocument")]
     public class MongoBsonDocument : LuaMetaObjectBinding
     {
+        /// <summary>
+        /// The native MongoDB BSON Document object
+        /// </summary>
         public BsonDocument BsonDocument { get; set; }
+
         private LuaFunctionReference cachedReference;
 
         /// <inheritdoc/>
@@ -70,6 +74,16 @@ namespace GmodMongoDb
         internal static MongoBsonDocument FromJson(ILua lua, string json)
         {
             return new MongoBsonDocument(lua, BsonDocument.Parse(json));
+        }
+
+        /// <summary>
+        /// Converts the BSON Document to a JSON string
+        /// </summary>
+        /// <returns>The JSON representation of this BSON Document</returns>
+        [LuaMethod]
+        public string ToJson()
+        {
+            return this.BsonDocument.ToJson();
         }
 
         [LuaMethod("__index")]
@@ -133,8 +147,24 @@ namespace GmodMongoDb
             return stack;
         }
 
+        /// <summary>
+        /// Call this function instead of using <c language="Lua">pairs</c>.
+        /// </summary>
+        /// <remarks>
+        /// The __pairs metamethod is implemented, but won't work in Garry's Mod. If Garry's Mod updates to a version >= Lua 5.2 it will.
+        /// Read more about pairs in <a href="https://www.lua.org/manual/5.3/manual.html#pdf-next">the Lua manual</a>
+        /// </remarks>
+        /// <example>
+        /// You can loop over the values in a BSON Document like so:
+        /// <code language="Lua">
+        /// for key, value in bsonDocument:Pairs() do
+        ///     print(key, value)
+        /// end
+        /// </code>
+        /// </example>
+        /// <returns>Multiple values: the next function that iterates the object, the object/table itself and nil</returns>
         [LuaMethod("__pairs")] // Won't work until Garry's Mod updates from Lua 5.1 => 5.2
-        [LuaMethod("Pairs")] // for key, value in mongoBsonDocument:Pairs() do
+        [LuaMethod("Pairs")]
         public object[] Pairs()
         {
             if(this.cachedReference == null)
@@ -150,10 +180,14 @@ namespace GmodMongoDb
             }; // next, t, nil
         }
 
+        /// <summary>
+        /// Converts the BSON Document to a json string
+        /// </summary>
+        /// <returns></returns>
         [LuaMethod("__tostring")]
         public override string ToString()
         {
-            return this.BsonDocument.ToJson();
+            return ToJson();
         }
 
         /*

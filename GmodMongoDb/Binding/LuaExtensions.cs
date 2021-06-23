@@ -5,18 +5,26 @@ using System.Text;
 
 namespace GmodMongoDb.Binding
 {
+    /// <summary>
+    /// Helpful functions to debug or message in Lua
+    /// </summary>
     public static class LuaExtensions
     {
         /// <summary>
-        /// Prints a message the next Lua tick
+        /// Prints a message in Lua the next Lua tick
         /// </summary>
         /// <param name="lua"></param>
-        /// <param name="message"></param>
+        /// <param name="message">The message to show</param>
         public static void PrintFromAsync(this ILua lua, string message)
         {
             LuaTaskScheduler.AddTask(() => lua.Print(message));
         }
 
+        /// <summary>
+        /// Prints a message in Lua
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="message">The message to show</param>
         public static void Print(this ILua lua, string message)
         {
             lua.PushSpecial(GmodNET.API.SPECIAL_TABLES.SPECIAL_GLOB);
@@ -26,6 +34,11 @@ namespace GmodMongoDb.Binding
             lua.Pop(1);
         }
 
+        /// <summary>
+        /// Builds a string representation of the stack by traversing all values on the Lua stack.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <returns>A string containing the types on the stack</returns>
         public static string GetStack(this ILua lua)
         {
             int top = lua.Top();

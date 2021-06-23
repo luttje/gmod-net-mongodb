@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace GmodMongoDb.Binding
 {
+    /// <summary>
+    /// Tracks a reference to a specific table in Lua
+    /// </summary>
     public class LuaTableReference : LuaReference
     {
         /// <summary>

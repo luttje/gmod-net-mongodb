@@ -4,9 +4,46 @@
         <name>GmodMongoDb</name>
     </assembly>
     <members>
+        <member name="T:GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute">
+            <summary>
+            Apply this attribute to classes to change the metatable type name they'll receive in Lua
+            </summary>
+        </member>
+        <member name="P:GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.Name">
+            <summary>
+            The desired metatable type name in Lua
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.#ctor(System.String)">
+            <summary>
+            When applying the attribute to a class you can specify a metatable type name
+            </summary>
+            <param name="name">The metatable type name</param>
+        </member>
+        <member name="T:GmodMongoDb.Binding.Annotating.LuaMethodAttribute">
+            <summary>
+            Apply this attribute to methods that should be exposed to Lua.
+            </summary>
+        </member>
+        <member name="P:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.Name">
+            <summary>
+            The name this method will receive in Lua.
+            </summary>
+        </member>
+        <member name="P:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.IsOverloaded">
+            <summary>
+            Indicates if multiple methods exist with the same name as the one this attribute is applied to.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.#ctor(System.String)">
+            <summary>
+            When applying this attribute to methods that should expose to Lua you can specify a name in this constructor.
+            </summary>
+            <param name="name">The name the method should receive in Lua</param>
+        </member>
         <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.PushFunction(GmodNET.API.ILua,System.Reflection.MethodInfo,System.Int32,System.Boolean)">
             <summary>
-            Pushes a provided method to the Lua stack. If a method is overloaded a finder will be returned that will scan the stack to find the appropriate method to call.
+            Pushes a function to the Lua stack. Lua can call the provided method and this function will automatically convert the arguments. If a method is overloaded a finder will be activated to inspect the stack and find the appropriate method to call.
             </summary>
             <param name="lua"></param>
             <param name="method">The method to push to the Lua stack</param>
@@ -191,12 +228,31 @@
             Contains transformers that help convert between .NET and Lua types.
             </summary>
         </member>
+        <member name="T:GmodMongoDb.Binding.LuaExtensions">
+            <summary>
+            Helpful functions to debug or message in Lua
+            </summary>
+        </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.PrintFromAsync(GmodNET.API.ILua,System.String)">
             <summary>
-            Prints a message the next Lua tick
+            Prints a message in Lua the next Lua tick
             </summary>
             <param name="lua"></param>
-            <param name="message"></param>
+            <param name="message">The message to show</param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.Print(GmodNET.API.ILua,System.String)">
+            <summary>
+            Prints a message in Lua
+            </summary>
+            <param name="lua"></param>
+            <param name="message">The message to show</param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.GetStack(GmodNET.API.ILua)">
+            <summary>
+            Builds a string representation of the stack by traversing all values on the Lua stack.
+            </summary>
+            <param name="lua"></param>
+            <returns>A string containing the types on the stack</returns>
         </member>
         <member name="T:GmodMongoDb.Binding.LuaFunctionReference">
             <summary>
@@ -331,6 +387,11 @@
         <member name="M:GmodMongoDb.Binding.LuaReference.Dispose">
             <summary>
             Called to dispose of the object. Calls <see cref="M:GmodMongoDb.Binding.LuaReference.Free"/>
+            </summary>
+        </member>
+        <member name="T:GmodMongoDb.Binding.LuaTableReference">
+            <summary>
+            Tracks a reference to a specific table in Lua
             </summary>
         </member>
         <member name="M:GmodMongoDb.Binding.LuaTableReference.#ctor(GmodNET.API.ILua,System.Int32,System.Boolean)">
@@ -552,17 +613,57 @@
             <param name="json"></param>
             <returns></returns>
         </member>
+        <member name="M:GmodMongoDb.Mongo.Dispose">
+            <summary>
+            Disposes the MongoDB client connection
+            </summary>
+        </member>
         <member name="T:GmodMongoDb.MongoBsonDocument">
             <summary>
             Exposes a MongoDB BSON Document to Lua.
             </summary>
             <remarks>
-            In Lua you can get a BSON document by querying a collection using <see cref="!:MongoCollection.Find(string)"/>.
+            In Lua you can get a BSON document by querying a collection using <see cref="M:GmodMongoDb.MongoCollection.Find(GmodMongoDb.MongoBsonDocument)"/>.
             You can also generate your own BSON document from a table by using <see cref="M:GmodMongoDb.Mongo.NewBsonDocument(GmodMongoDb.MongoBsonDocument)"/>
             </remarks>
         </member>
+        <member name="P:GmodMongoDb.MongoBsonDocument.BsonDocument">
+            <summary>
+            The native MongoDB BSON Document object
+            </summary>
+        </member>
         <member name="M:GmodMongoDb.MongoBsonDocument.#ctor(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
             <inheritdoc/>
+        </member>
+        <member name="M:GmodMongoDb.MongoBsonDocument.ToJson">
+            <summary>
+            Converts the BSON Document to a JSON string
+            </summary>
+            <returns>The JSON representation of this BSON Document</returns>
+        </member>
+        <member name="M:GmodMongoDb.MongoBsonDocument.Pairs">
+            <summary>
+            Call this function instead of using <c language="Lua">pairs</c>.
+            </summary>
+            <remarks>
+            The __pairs metamethod is implemented, but won't work in Garry's Mod. If Garry's Mod updates to a version >= Lua 5.2 it will.
+            Read more about pairs in <a href="https://www.lua.org/manual/5.3/manual.html#pdf-next">the Lua manual</a>
+            </remarks>
+            <example>
+            You can loop over the values in a BSON Document like so:
+            <code language="Lua">
+            for key, value in bsonDocument:Pairs() do
+                print(key, value)
+            end
+            </code>
+            </example>
+            <returns>Multiple values: the next function that iterates the object, the object/table itself and nil</returns>
+        </member>
+        <member name="M:GmodMongoDb.MongoBsonDocument.ToString">
+            <summary>
+            Converts the BSON Document to a json string
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:GmodMongoDb.MongoClient">
             <summary>

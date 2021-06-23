@@ -7,12 +7,26 @@ using System.Reflection;
 
 namespace GmodMongoDb.Binding.Annotating
 {
+    /// <summary>
+    /// Apply this attribute to methods that should be exposed to Lua.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class LuaMethodAttribute : Attribute
     {
+        /// <summary>
+        /// The name this method will receive in Lua.
+        /// </summary>
         public string Name { get; set; }
-        public bool IsOverloaded { get; set; }
 
+        /// <summary>
+        /// Indicates if multiple methods exist with the same name as the one this attribute is applied to.
+        /// </summary>
+        private bool IsOverloaded { get; set; }
+
+        /// <summary>
+        /// When applying this attribute to methods that should expose to Lua you can specify a name in this constructor.
+        /// </summary>
+        /// <param name="name">The name the method should receive in Lua</param>
         public LuaMethodAttribute(string name = null)
         {
             this.Name = name;
@@ -21,7 +35,7 @@ namespace GmodMongoDb.Binding.Annotating
 
 #nullable enable
         /// <summary>
-        /// Pushes a provided method to the Lua stack. If a method is overloaded a finder will be returned that will scan the stack to find the appropriate method to call.
+        /// Pushes a function to the Lua stack. Lua can call the provided method and this function will automatically convert the arguments. If a method is overloaded a finder will be activated to inspect the stack and find the appropriate method to call.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="method">The method to push to the Lua stack</param>
@@ -29,6 +43,12 @@ namespace GmodMongoDb.Binding.Annotating
         /// <param name="forceWithoutFinder">Forces the method to be pushed, never pushing the finder</param>
         public void PushFunction(ILua lua, MethodInfo method, int metaTableTypeId, bool forceWithoutFinder = false)
         {
+            // Check if the method is overloaded and mark it as such
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            if (method.DeclaringType.GetMember(method.Name, MemberTypes.Method, BindingFlags.Default).Length > 1)
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                this.IsOverloaded = true;
+
             var handle = lua.PushManagedFunction((lua) => {
                 LuaMetaObjectBinding? instance = null;
 

@@ -90,6 +90,9 @@ namespace GmodMongoDb
             return new MongoClient(this.lua, client);
         }
 
+        /// <summary>
+        /// Disposes the MongoDB client connection
+        /// </summary>
         public void Dispose()
         {
             GC.SuppressFinalize(this);
