@@ -21,6 +21,71 @@ namespace GmodMongoDb.Binding
         private static readonly Dictionary<Type, Type> TransformerTypes = new();
 
         /// <summary>
+        /// Iterates all Transformers and registers their Type for later use. In order to create a transformer you should inherit LuaValueTransformer
+        /// </summary>
+        internal static void DiscoverDataTransformers()
+        {
+            var transformerBaseType = typeof(BaseLuaValueTransformer);
+            var discoveredTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(transformerBaseType));
+
+            foreach (var transformerType in discoveredTypes)
+            {
+                var genericArguments = transformerType.BaseType.GetGenericArguments();
+
+                TransformerTypes.Add(genericArguments[0], transformerType);
+            }
+        }
+
+        /// <summary>
+        /// Eagerly search for metatable definitions and create the metatables.
+        /// </summary>
+        /// <param name="lua"></param>
+        internal static void CreateDiscoveredMetaTableDefinitions(ILua lua)
+        {
+            var metaTableBaseType = typeof(LuaMetaObjectBinding);
+            var discoveredTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(metaTableBaseType));
+
+            foreach (var metaTableTypes in discoveredTypes)
+            {
+                var metaTableName = GetMetaTableTypeName(metaTableTypes);
+                var typeId = lua.CreateMetaTable(metaTableName);
+
+                if (!MetaTableTypeIds.ContainsKey(typeId))
+                    MetaTableTypeIds.Add(typeId, metaTableTypes);
+
+                lua.Push(-1);
+                lua.SetField(-2, "__index");
+
+                MethodInfo[] methods = metaTableTypes.GetMethods();
+
+                foreach (var method in methods)
+                {
+                    var attributes = method.GetCustomAttributes<LuaMethodAttribute>();
+
+                    foreach (var attribute in attributes)
+                    {
+                        attribute.PushFunction(lua, method, typeId);
+                        lua.SetField(-2, attribute.Name ?? method.Name);
+                    }
+
+                    // TODO: Add static methods to a different table (e.g: mt.static at the bottom of the stack)
+                }
+
+                lua.Pop(1); // Pop the metatable
+            }
+        }
+
+        private static string GetMetaTableTypeName(Type type)
+        {
+            var classAttribute = type.GetCustomAttribute<LuaMetaTableAttribute>();
+            return classAttribute?.Name ?? type.Name;
+        }
+
+        /// <summary>
         /// Generates userdata with a metatable by looking at attributes on the given object. Pushes the userdata onto the stack.
         /// </summary>
         /// <param name="lua"></param>
@@ -28,33 +93,8 @@ namespace GmodMongoDb.Binding
         /// <returns>The metatable type id that was created for this userdata</returns>
         public static int GenerateUserDataFromObject(ILua lua, LuaMetaObjectBinding instance)
         {
-            var type = instance.GetType();
-            var classAttribute = type.GetCustomAttribute<LuaMetaTableAttribute>();
-            var metaTableName = classAttribute?.Name ?? type.Name;
-
-            int instanceTypeId = PushManagedObject(lua, metaTableName, instance);
-            lua.PushMetaTable(instanceTypeId);
-
-            instance.MetaTableTypeId = instanceTypeId;
-
-            lua.Push(-1);
-            lua.SetField(-2, "__index");
-
-            MethodInfo[] methods = type.GetMethods();
-
-            foreach (var method in methods)
-            {
-                var attributes = method.GetCustomAttributes<LuaMethodAttribute>();
-
-                foreach (var attribute in attributes)
-                {
-                    attribute.PushFunction(lua, method, instanceTypeId);
-                    lua.SetField(-2, attribute.Name ?? method.Name);
-                }
-            }
-
-            lua.Pop(1); // Pop the metatable, leaving only the userdata on the stack
-
+            int instanceTypeId = PushManagedObject(lua, instance);
+            
             return instanceTypeId;
         }
 
@@ -64,21 +104,19 @@ namespace GmodMongoDb.Binding
         /// Consider using <see cref="GenerateUserDataFromObject"/> if you want to interact with the userdata from Lua.
         /// </summary>
         /// <param name="lua"></param>
-        /// <param name="typeName">The name for the type metatable</param>
         /// <param name="managed">The object to convert to userdata and push</param>
         /// <returns>Returns the metatable type id which was applied to the userdata</returns>
-        public static int PushManagedObject(ILua lua, string typeName, object managed)
+        public static int PushManagedObject(ILua lua, object managed)
         {
             var handle = GCHandle.Alloc(managed, GCHandleType.Weak);
             ReferenceManager.Add(handle);
 
+            // CreateMetaTable will automatically find an existing metatable with this type name, so no need to look in MetaTableTypeIds for it. 
+            string typeName = GetMetaTableTypeName(managed.GetType());
             var typeId = lua.CreateMetaTable(typeName);
             lua.Pop(1);
 
             lua.PushUserType((IntPtr)handle, typeId);
-
-            if(!MetaTableTypeIds.ContainsKey(typeId))
-                MetaTableTypeIds.Add(typeId, managed.GetType());
 
             return typeId;
         }
@@ -303,23 +341,5 @@ namespace GmodMongoDb.Binding
         /// <returns>The converted .NET type</returns>
         public static Type LuaTypeToDotNetType(int luaType)
             => LuaTypeToDotNetType((TYPES)luaType);
-
-        /// <summary>
-        /// Iterates all Transformers and registers their Type for later use. In order to create a transformer you should inherit LuaValueTransformer
-        /// </summary>
-        internal static void DiscoverDataTransformers()
-        {
-            var transformerBaseType = typeof(BaseLuaValueTransformer);
-            var discoveredTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(transformerBaseType));
-
-            foreach (var transformerType in discoveredTypes)
-            {
-                var genericArguments = transformerType.BaseType.GetGenericArguments();
-
-                TransformerTypes.Add(genericArguments[0], transformerType);
-            }
-        }
     }
 }

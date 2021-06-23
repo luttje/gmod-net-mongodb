@@ -446,6 +446,17 @@
             Helps converting between .NET objects/types and Lua types
             </summary>
         </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.DiscoverDataTransformers">
+            <summary>
+            Iterates all Transformers and registers their Type for later use. In order to create a transformer you should inherit LuaValueTransformer
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.CreateDiscoveredMetaTableDefinitions(GmodNET.API.ILua)">
+            <summary>
+            Eagerly search for metatable definitions and create the metatables.
+            </summary>
+            <param name="lua"></param>
+        </member>
         <member name="M:GmodMongoDb.Binding.TypeConverter.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)">
             <summary>
             Generates userdata with a metatable by looking at attributes on the given object. Pushes the userdata onto the stack.
@@ -454,14 +465,13 @@
             <param name="instance">The object to generate into userdata</param>
             <returns>The metatable type id that was created for this userdata</returns>
         </member>
-        <member name="M:GmodMongoDb.Binding.TypeConverter.PushManagedObject(GmodNET.API.ILua,System.String,System.Object)">
+        <member name="M:GmodMongoDb.Binding.TypeConverter.PushManagedObject(GmodNET.API.ILua,System.Object)">
             <summary>
             Pushes a .NET managed object onto the stack as userdata.
             
             Consider using <see cref="M:GmodMongoDb.Binding.TypeConverter.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)"/> if you want to interact with the userdata from Lua.
             </summary>
             <param name="lua"></param>
-            <param name="typeName">The name for the type metatable</param>
             <param name="managed">The object to convert to userdata and push</param>
             <returns>Returns the metatable type id which was applied to the userdata</returns>
         </member>
@@ -470,7 +480,7 @@
             Pull userdata from the stack at the given position that has the given type id. Converts it to a .NET object.
             </summary>
             <param name="lua"></param>
-            <param name="typeId">The metatable type id of the userdata as returned by <see cref="M:GmodMongoDb.Binding.TypeConverter.PushManagedObject(GmodNET.API.ILua,System.String,System.Object)"/> or <see cref="M:GmodMongoDb.Binding.TypeConverter.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)"/></param>
+            <param name="typeId">The metatable type id of the userdata as returned by <see cref="M:GmodMongoDb.Binding.TypeConverter.PushManagedObject(GmodNET.API.ILua,System.Object)"/> or <see cref="M:GmodMongoDb.Binding.TypeConverter.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)"/></param>
             <param name="stackPos">The position of the managed object</param>
             <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
             <returns>The .NET object converted from Lua</returns>
@@ -534,11 +544,6 @@
             </summary>
             <param name="luaType">The Lua type to convert (must be castable to <see cref="T:GmodNET.API.TYPES"/>)</param>
             <returns>The converted .NET type</returns>
-        </member>
-        <member name="M:GmodMongoDb.Binding.TypeConverter.DiscoverDataTransformers">
-            <summary>
-            Iterates all Transformers and registers their Type for later use. In order to create a transformer you should inherit LuaValueTransformer
-            </summary>
         </member>
         <member name="T:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable">
             <summary>

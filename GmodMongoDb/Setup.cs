@@ -18,6 +18,7 @@ namespace GmodMongoDb
         {
             LuaTaskScheduler.RegisterLuaCallback(lua);
             TypeConverter.DiscoverDataTransformers();
+            TypeConverter.CreateDiscoveredMetaTableDefinitions(lua);
 
             Mongo mongo = new(lua);
 
