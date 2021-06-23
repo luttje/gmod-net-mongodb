@@ -14,6 +14,7 @@ namespace GmodMongoDb.Binding
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="stackPos">The stack position of the function to reference</param>
+        /// <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
         public LuaTableReference(ILua lua, int stackPos = -1, bool forceKeepOnStack = false)
             : base(lua, stackPos, forceKeepOnStack)
         {

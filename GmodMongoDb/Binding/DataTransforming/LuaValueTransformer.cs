@@ -35,12 +35,13 @@ namespace GmodMongoDb.Binding.DataTransforming
         public abstract int Convert(ILua lua, TTarget input);
 
         /// <summary>
-        /// Pulls or reads an object from the Lua stack and tries to convert it to a .NET object.
+        /// Pulls or reads an object from the Lua stack at the given position and tries to convert it to a .NET object.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="value">The value pulled from the Lua stack</param>
-        /// <param name="forceKeepOnStack">Do not pop/remove the object</param>
-        /// <returns></returns>
+        /// <param name="stackPos">The position to pull/read the object from</param>
+        /// <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
+        /// <returns>Whether the value was succesfully parsed</returns>
         public abstract bool TryParse(ILua lua, out TTarget value, int stackPos = -1, bool forceKeepOnStack = false);
     }
 
@@ -50,15 +51,19 @@ namespace GmodMongoDb.Binding.DataTransforming
     public static class LuaTransformerExtensions
     {
         /// <summary>
-        /// 
+        /// Instantiates a transformer of the given type and serves it the value to convert to Lua.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="transformer">The type of the transformer class (must inherit <see cref="LuaValueTransformer{TInput}"/>)</param>
-        /// <param name="value">The value to apply the transformer to</param>
+        /// <param name="value">The value to have the transformer convert to Lua</param>
         /// <returns>The amount of Lua objects pushed to the stack by the transformer</returns>
+        /// <exception cref="ArgumentException">Thrown when the transformer type given does not inherit <see cref="LuaValueTransformer{TInput}"/></exception>
         public static int ApplyTransformerConvert(this ILua lua, Type transformer, object value)
         {
             var converter = Activator.CreateInstance(transformer);
+
+            if (converter is not BaseLuaValueTransformer)
+                throw new ArgumentException("Invalid converter provided to ApplyTransformerConvert! Did you forget to inherit LuaValueTransformer<Type>?");
 
             return (int)transformer.GetMethod("Convert").Invoke(converter, new object[]
             {
@@ -67,9 +72,23 @@ namespace GmodMongoDb.Binding.DataTransforming
             });
         }
 
+        /// <summary>
+        /// Instantiates a transformer of the given type and executes it's TryParse to parse a value at the given Lua stack position.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="transformer">The type of the transformer class (must inherit <see cref="LuaValueTransformer{TInput}"/>)</param>
+        /// <param name="value">The value pulled from the Lua stack</param>
+        /// <param name="stackPos">The position to pull/read the object from</param>
+        /// <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
+        /// <returns>Whether the value was succesfully parsed as returned by the transformer's <see cref="LuaValueTransformer{TInput}.TryParse"/> method.</returns>
+        /// <exception cref="ArgumentException">Thrown when the transformer type given does not inherit <see cref="LuaValueTransformer{TInput}"/></exception>
         public static bool ApplyTransformerParse(this ILua lua, Type transformer, out object value, int stackPos = -1, bool forceKeepOnStack = false)
         {
             var converter = Activator.CreateInstance(transformer);
+
+            if (converter is not BaseLuaValueTransformer)
+                throw new ArgumentException("Invalid converter provided to ApplyTransformerConvert! Did you forget to inherit LuaValueTransformer<Type>?");
+
             var parameters = new object[]
             {
                 lua,

@@ -1,20 +1,22 @@
-﻿using GmodNET.API;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 #nullable enable
-
 namespace GmodMongoDb.Binding
 {
+    /// <summary>
+    /// Helps keep track of handles and disposables. Call <see cref="ReferenceManager.KillAll()"/> to clean up any active handles.
+    /// </summary>
     public static class ReferenceManager
     {
         private static List<IDisposable>? disposables = null;
         private static List<GCHandle>? handles = null;
 
+        /// <summary>
+        /// Registers a handle so it can be cleaned up with <see cref="ReferenceManager.KillAll()"/> later.
+        /// </summary>
+        /// <param name="handle">The handle to register</param>
         public static void Add(GCHandle handle)
         {
             if (handles == null)
@@ -23,6 +25,10 @@ namespace GmodMongoDb.Binding
             handles.Add(handle);
         }
 
+        /// <summary>
+        /// Registers a disposable so it can be cleaned up with <see cref="ReferenceManager.KillAll()"/> later.
+        /// </summary>
+        /// <param name="disposable">The disposable object to register</param>
         public static void Add(IDisposable disposable)
         {
             if (disposables == null)
@@ -31,7 +37,10 @@ namespace GmodMongoDb.Binding
             disposables.Add(disposable);
         }
 
-        public static void KillAll(ILua _)
+        /// <summary>
+        /// Dispose and free all registered disposable objects and handles respectively.
+        /// </summary>
+        public static void KillAll()
         {
             if(handles != null)
             {
@@ -59,3 +68,4 @@ namespace GmodMongoDb.Binding
         }
     }
 }
+#nullable disable

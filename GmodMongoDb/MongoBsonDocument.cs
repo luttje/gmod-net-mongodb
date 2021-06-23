@@ -7,12 +7,20 @@ using System;
 
 namespace GmodMongoDb
 {
+    /// <summary>
+    /// Exposes a MongoDB BSON Document to Lua.
+    /// </summary>
+    /// <remarks>
+    /// In Lua you can get a BSON document by querying a collection using <see cref="MongoCollection.Find(string)"/>.
+    /// You can also generate your own BSON document from a table by using <see cref="Mongo.NewBsonDocument(MongoBsonDocument)"/>
+    /// </remarks>
     [LuaMetaTable("MongoBsonDocument")]
     public class MongoBsonDocument : LuaMetaObjectBinding
     {
         public BsonDocument BsonDocument { get; set; }
         private LuaFunctionReference cachedReference;
 
+        /// <inheritdoc/>
         public MongoBsonDocument(ILua lua, BsonDocument document)
             : base(lua)
         {
@@ -49,11 +57,12 @@ namespace GmodMongoDb
             //this.BsonDocument.TryGetValue
             //this.BsonDocument.Values <-- property
         }
-        internal static MongoBsonDocument FromLuaTable(ILua lua, LuaTableReference filterTable)
+
+        internal static MongoBsonDocument FromLuaTable(ILua lua, LuaTableReference table)
         {
             var rawDocument = new BsonDocument();
 
-            filterTable.ForEach((key, value) => rawDocument.Add(key.ToString(), BsonTypeMapper.MapToBsonValue(value)));
+            table.ForEach((key, value) => rawDocument.Add(key.ToString(), BsonTypeMapper.MapToBsonValue(value)));
 
             return new MongoBsonDocument(lua, rawDocument);
         }

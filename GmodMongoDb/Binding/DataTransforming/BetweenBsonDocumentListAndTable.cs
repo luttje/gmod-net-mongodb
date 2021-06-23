@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace GmodMongoDb.Binding.DataTransforming
 {
+    /// <summary>
+    /// Transformers from a native BsonDocument to a Lua table or vice versa.
+    /// </summary>
     public sealed class BetweenBsonDocumentListAndTable : LuaValueTransformer<List<BsonDocument>>
     {
         /// <summary>
@@ -24,6 +27,7 @@ namespace GmodMongoDb.Binding.DataTransforming
             TypeConverter.GenerateUserDataFromObject(lua, document);
         }
 
+        /// <inheritdoc/>
         public override int Convert(ILua lua, List<BsonDocument> results)
         {
             lua.CreateTable();
@@ -41,6 +45,7 @@ namespace GmodMongoDb.Binding.DataTransforming
             return 1;
         }
 
+        /// <inheritdoc/>
         public override bool TryParse(ILua lua, out List<BsonDocument> value, int stackPos = -1, bool forceKeepOnStack = false)
         {
             throw new NotImplementedException();

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GmodMongoDb.Binding.DataTransforming
 {
     /// <summary>
-    /// Converts between a string list and a Lua table containing those strings.
+    /// Transformers from a string list to a Lua table or vice versa.
     /// </summary>
     public sealed class BetweenStringListAndTable : LuaValueTransformer<List<string>>
     {

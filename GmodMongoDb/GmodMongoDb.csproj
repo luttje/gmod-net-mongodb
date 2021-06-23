@@ -5,7 +5,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>$(MSBuildProjectDirectory)\GmodMongoDb.xml</DocumentationFile>
   </PropertyGroup>

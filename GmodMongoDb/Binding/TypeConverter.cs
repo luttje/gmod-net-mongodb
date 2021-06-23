@@ -14,7 +14,10 @@ using System.Threading.Tasks;
 
 namespace GmodMongoDb.Binding
 {
-    public class TypeConverter
+    /// <summary>
+    /// Helps converting between .NET objects/types and Lua types
+    /// </summary>
+    public static class TypeConverter
     {
         private static readonly Dictionary<int, Type> MetaTableTypeIds = new();
         private static readonly Dictionary<Type, Type> TransformerTypes = new();
@@ -84,13 +87,15 @@ namespace GmodMongoDb.Binding
 
 #nullable enable
         /// <summary>
-        /// Pull userdata from the stack at the given position that has the given type id. Converts it to a .NET object
+        /// Pull userdata from the stack at the given position that has the given type id. Converts it to a .NET object.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="typeId">The metatable type id of the userdata as returned by <see cref="PushManagedObject"/> or <see cref="GenerateUserDataFromObject"/></param>
         /// <param name="stackPos">The position of the managed object</param>
-        /// <returns></returns>
-        public static object? PullManagedObject(ILua lua, int typeId, int stackPos = -1, bool forceKeepOnStack = false)
+        /// <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
+        /// <returns>The .NET object converted from Lua</returns>
+        /// <exception cref="NullReferenceException">Thrown when a null pointer is found or the userdata is no longer valid</exception>
+        public static object PullManagedObject(ILua lua, int typeId, int stackPos = -1, bool forceKeepOnStack = false)
         {
             var handle = lua.GetUserType(stackPos, typeId);
 
@@ -105,7 +110,7 @@ namespace GmodMongoDb.Binding
             if (reference == null)
                 throw new NullReferenceException("Userdata reference has gone away!");
 
-            return (object)reference;
+            return reference;
         }
 #nullable disable
         
@@ -211,7 +216,9 @@ namespace GmodMongoDb.Binding
             else if (TransformerTypes.ContainsKey(type))
             {
                 var transformerType = TransformerTypes[type];
-                pop = lua.ApplyTransformerParse(transformerType, out value, stackPos, forceKeepOnStack);
+                if (!lua.ApplyTransformerParse(transformerType, out value, stackPos, forceKeepOnStack))
+                    throw new InvalidCastException($"Could not apply transformer {transformerType} to get value from Lua stack at stackpos {stackPos}");
+                pop = false;
             }
             else
                 // TODO
@@ -294,7 +301,7 @@ namespace GmodMongoDb.Binding
         /// <summary>
         /// Convert a specified Lua type to a .NET type.
         /// </summary>
-        /// <param name="luaType">The Lua type to convert (must be castable to <see cref="TYPES"/>)</param>
+        /// <param name="luaType">The Lua type to convert (must be castable to <see cref="GmodNET.API.TYPES"/>)</param>
         /// <returns>The converted .NET type</returns>
         public static Type LuaTypeToDotNetType(int luaType)
             => LuaTypeToDotNetType((TYPES)luaType);

@@ -8,17 +8,24 @@ using System.Net.Sockets;
 namespace GmodMongoDb
 {
     /// <summary>
-    /// The main Mongo library form which you can instantiate a new client.
+    /// The main Mongo library form which you can instantiate MongoDB objects like the connection client (<see cref="Mongo.NewClient(string)"/>).
     /// </summary>
     [LuaMetaTable("Mongo")]
     public class Mongo : LuaMetaObjectBinding, IDisposable
     {
+        private static Mongo instance;
         private MongoDB.Driver.MongoClient client;
 
+        /// <inheritdoc/>
         public Mongo(ILua lua)
             : base(lua)
         {
+            if (instance != null)
+                throw new InvalidOperationException("A Mongo instance already existed! You shouldn't load this module twice.");
+
             ReferenceManager.Add(this);
+
+            instance = this;
         }
 
         /// <summary>
@@ -28,13 +35,30 @@ namespace GmodMongoDb
         /// <example>
         /// Example how to call this method from Lua in order to connect to a database.
         /// <code language="Lua">
-        /// client = mongo:NewClient("mongodb://username_here:password_here@127.0.0.1:27017/database_here?retryWrites=true&amp;w=majority")
+        /// client = mongo.NewClient("mongodb://username_here:password_here@127.0.0.1:27017/database_here?retryWrites=true&amp;w=majority")
         /// </code>
         /// </example>
         /// <param name="connectionString">The connection string with connection information</param>
         /// <returns>The MongoClient which will interface with database</returns>
         [LuaMethod]
-        public MongoClient NewClient(string connectionString)
+        public static MongoClient NewClient(string connectionString)
+        {
+            return instance.CreateNewClient(connectionString);
+        }
+
+        /// <summary>
+        /// Creates a BSON Document from the provided Lua table.
+        /// </summary>
+        /// <param name="table">The table to use to build a BSON Document</param>
+        /// <returns></returns>
+        /// <remarks><see cref="GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable.TryParse(ILua, out MongoBsonDocument, int, bool)"/> will automatically handle this conversion.</remarks>
+        [LuaMethod]
+        public static MongoBsonDocument NewBsonDocument(MongoBsonDocument table)
+        {
+            return table;
+        }
+
+        private MongoClient CreateNewClient(string connectionString)
         {
             lua.Print($"Connecting to database. MongoClient created.");
 

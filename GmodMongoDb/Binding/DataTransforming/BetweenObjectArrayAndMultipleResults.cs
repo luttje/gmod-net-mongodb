@@ -5,8 +5,18 @@ using System;
 namespace GmodMongoDb.Binding.DataTransforming
 {
     /// <summary>
-    /// Converts between an object array and multiple Lua results.
+    /// Transformers from an object array to multiple Lua return types or vice versa.
     /// </summary>
+    /// <example>
+    /// Consider this in C#: 
+    /// <code><![CDATA[
+    /// return object[]{ 1, 2, 3, 4 }
+    /// ]]></code>
+    /// Would equal this in Lua after the transformer is used: 
+    /// <code language="Lua"><![CDATA[
+    /// return 1, 2, 3, 4
+    /// ]]></code>
+    /// </example>
     public sealed class BetweenObjectArrayAndMultipleResults : LuaValueTransformer<object[]>
     {
         ///<inheritdoc/>

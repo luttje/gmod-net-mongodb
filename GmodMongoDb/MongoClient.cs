@@ -9,11 +9,18 @@ using System.Linq;
 
 namespace GmodMongoDb
 {
+    /// <summary>
+    /// Exposes a MongoDB connection client to Lua.
+    /// </summary>
+    /// <remarks>
+    /// In Lua you can get a client by using <see cref="Mongo.NewClient(string)"/> 
+    /// </remarks>
     [LuaMetaTable("MongoClient")]
     public class MongoClient : LuaMetaObjectBinding
     {
-        protected MongoDB.Driver.MongoClient client;
+        private MongoDB.Driver.MongoClient client;
 
+        /// <inheritdoc/>
         public MongoClient(ILua lua, MongoDB.Driver.MongoClient client)
             :base(lua)
         {
@@ -73,6 +80,17 @@ namespace GmodMongoDb
             callback.CallFromAsync(databasesList);
         }
 
+        /// <summary>
+        /// Queries the connection for the database object identified by the given name
+        /// </summary>
+        /// <example>
+        /// In Lua you can get the database by asking a <see cref="MongoClient"/> for it:
+        /// <code language="Lua"><![CDATA[
+        /// local database = client:GetDatabase("database_name")
+        /// ]]></code>
+        /// </example>
+        /// <param name="name">The database name</param>
+        /// <returns>The database object</returns>
         [LuaMethod]
         public MongoDatabase GetDatabase(string name)
         {

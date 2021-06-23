@@ -13,7 +13,7 @@
             <param name="metaTableTypeId">The type id of the object instance's metatable</param>
             <param name="forceWithoutFinder">Forces the method to be pushed, never pushing the finder</param>
         </member>
-        <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.RunFunction(GmodMongoDb.Binding.LuaMetaObjectBinding,GmodNET.API.ILua,System.Reflection.MethodInfo)">
+        <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.ExecuteMethod(GmodMongoDb.Binding.LuaMetaObjectBinding,GmodNET.API.ILua,System.Reflection.MethodInfo)">
             <summary>
             Simply runs the specified method on the provided instance, picking arguments from the stack.
             </summary>
@@ -22,129 +22,60 @@
             <param name="method">The method to execute</param>
             <returns></returns>
         </member>
+        <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.FindAndExecuteMethod(System.Type,GmodMongoDb.Binding.LuaMetaObjectBinding,GmodNET.API.ILua,System.String)">
+            <summary>
+            Finds a method based on the signature formed by the arguments on the Lua stack
+            </summary>
+            <param name="instanceType"></param>
+            <param name="instance"></param>
+            <param name="lua"></param>
+            <param name="methodName"></param>
+            <returns></returns>
+        </member>
         <member name="T:GmodMongoDb.Binding.Annotating.NamespaceDoc">
             <summary>
             Contains annotations to mark .NET members so they're exposed to Lua.
             </summary>
         </member>
-        <member name="M:GmodMongoDb.Binding.BindingHelper.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)">
+        <member name="T:GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer">
             <summary>
-            Generates userdata with a metatable by looking at attributes on the given object. Pushes the userdata onto the stack.
+            Nothing should derive from this class. It is only for detecting which classes are transformers, without having to provide a generic type.
+            </summary>
+            <remarks>
+            If you'd like to create your own transformer you should inherit <see cref="T:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1"/>
+            </remarks>
+            <example>
+            Showing how to get all transformers:
+            <code><![CDATA[
+            var transformerBaseType = typeof(BaseLuaValueTransformer);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(transformerBaseType));
+            ]]></code>
+            </example>
+        </member>
+        <member name="T:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable">
+            <summary>
+            Transformers from a native BsonDocument to a Lua table or vice versa.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable.CreateLuaBsonDocument(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
+            <summary>
+            Create a <see cref="T:GmodMongoDb.MongoBsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
             </summary>
             <param name="lua"></param>
-            <param name="instance">The object to generate into userdata</param>
-            <returns>The metatable type id that was created for this userdata</returns>
+            <param name="rawDocument">The true BsonDocument to encapsulate</param>
         </member>
-        <member name="M:GmodMongoDb.Binding.BindingHelper.PushManagedObject(GmodNET.API.ILua,System.String,System.Object)">
-            <summary>
-            Pushes a .NET managed object onto the stack as userdata.
-            
-            Consider using <see cref="M:GmodMongoDb.Binding.BindingHelper.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)"/> if you want to interact with the userdata from Lua.
-            </summary>
-            <param name="lua"></param>
-            <param name="typeName">The name for the type metatable</param>
-            <param name="managed">The object to convert to userdata and push</param>
-            <returns>Returns the metatable type id which was applied to the userdata</returns>
+        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable.Convert(GmodNET.API.ILua,GmodMongoDb.MongoBsonDocument)">
+            <inheritdoc/>
         </member>
-        <member name="M:GmodMongoDb.Binding.BindingHelper.PullManagedObject(GmodNET.API.ILua,System.Int32,System.Int32)">
-            <summary>
-            Pull userdata from the stack at the given position that has the given type id. Converts it to a .NET object
-            </summary>
-            <param name="lua"></param>
-            <param name="typeId">The metatable type id of the userdata as returned by <see cref="M:GmodMongoDb.Binding.BindingHelper.PushManagedObject(GmodNET.API.ILua,System.String,System.Object)"/> or <see cref="M:GmodMongoDb.Binding.BindingHelper.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)"/></param>
-            <param name="stackPos">The position of the managed object</param>
-            <returns></returns>
+        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua,GmodMongoDb.MongoBsonDocument@,System.Int32,System.Boolean)">
+            <inheritdoc/>
         </member>
-        <member name="M:GmodMongoDb.Binding.BindingHelper.PushType(GmodNET.API.ILua,System.Type,System.Object)">
+        <member name="T:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentListAndTable">
             <summary>
-            Push a value of a specific type to the Lua stack. Applies a transformer where possible.
+            Transformers from a native BsonDocument to a Lua table or vice versa.
             </summary>
-            <param name="lua"></param>
-            <param name="type">The type of the value to push</param>
-            <param name="value">The value to push</param>
-        </member>
-        <member name="M:GmodMongoDb.Binding.BindingHelper.PullType(GmodNET.API.ILua,System.Type,System.Int32,System.Boolean)">
-            <summary>
-            Pop a value from the Lua stack and convert it to the specified .NET type.
-            </summary>
-            <param name="lua"></param>
-            <param name="type">The expected type of the value on the stack</param>
-            <param name="stackPos">The position of the value</param>
-            <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
-            <returns>The .NET object</returns>
-        </member>
-        <member name="M:GmodMongoDb.Binding.BindingHelper.PullType(GmodNET.API.ILua,System.Int32,System.Boolean)">
-            <summary>
-            Pop a value from the Lua stack and try convert it to an associated .NET type.
-            </summary>
-            <param name="lua"></param>
-            <param name="stackPos">The position of the value</param>
-            <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
-            <returns>The .NET object</returns>
-        </member>
-        <member name="M:GmodMongoDb.Binding.BindingHelper.PullType``1(GmodNET.API.ILua,System.Int32,System.Boolean)">
-            <summary>
-            Pop a value from the Lua stack and convert it to the specified .NET type.
-            </summary>
-            <typeparam name="T">The expected type of the value on the stack</typeparam>
-            <param name="lua"></param>
-            <param name="stackPos">The position of the value</param>
-            <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
-            <returns>The .NET object</returns>
-        </member>
-        <member name="M:GmodMongoDb.Binding.BindingHelper.LuaTypeToDotNetType(GmodNET.API.TYPES)">
-            <summary>
-            Convert a specified Lua type to a .NET type.
-            </summary>
-            <param name="luaType">The Lua type to convert</param>
-            <returns>The converted .NET type</returns>
-        </member>
-        <member name="M:GmodMongoDb.Binding.BindingHelper.LuaTypeToDotNetType(System.Int32)">
-            <summary>
-            Convert a specified Lua type to a .NET type.
-            </summary>
-            <param name="luaType">The Lua type to convert (must be castable to <see cref="T:GmodNET.API.TYPES"/>)</param>
-            <returns>The converted .NET type</returns>
-        </member>
-        <member name="T:GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer`1">
-            <summary>
-            Transformers derive from this class. Transformers help convert between .NET and Lua types.
-            </summary>
-            <typeparam name="TInput">The type to and from which this transformer converts</typeparam>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer`1.#ctor">
-            <summary>
-            Since a transformer is instantiated with Activator.CreateInstance there should be no parameters on the constructor.
-            </summary>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer`1.Convert(GmodNET.API.ILua,`0)">
-            <summary>
-            Converts a given .NET object and pushes it on the Lua stack.
-            </summary>
-            <param name="lua"></param>
-            <param name="input">The .NET object to convert to Lua</param>
-            <returns>The amount of objects pushed to the Lua stack</returns>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer`1.Parse(GmodNET.API.ILua)">
-            <summary>
-            Pulls an object from the Lua stack and converts it to a .NET object.
-            </summary>
-            <param name="lua"></param>
-            <returns>The parsed .NET object</returns>
-        </member>
-        <member name="T:GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions">
-            <summary>
-            Adds extensions relating to data transformation.
-            </summary>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerConvert(GmodNET.API.ILua,System.Type,System.Object)">
-            <summary>
-            
-            </summary>
-            <param name="lua"></param>
-            <param name="transformer">The type of the transformer class (must inherit <see cref="T:GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer`1"/>)</param>
-            <param name="value">The value to apply the transformer to</param>
-            <returns>The amount of Lua objects pushed to the stack by the transformer</returns>
         </member>
         <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentListAndTable.CreateLuaBsonDocument(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
             <summary>
@@ -153,34 +84,107 @@
             <param name="lua"></param>
             <param name="rawDocument">The true BsonDocument to encapsulate</param>
         </member>
+        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentListAndTable.Convert(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument})">
+            <inheritdoc/>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentListAndTable.TryParse(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument}@,System.Int32,System.Boolean)">
+            <inheritdoc/>
+        </member>
         <member name="T:GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults">
             <summary>
-            Converts between an object array and multiple Lua results.
+            Transformers from an object array to multiple Lua return types or vice versa.
             </summary>
+            <example>
+            Consider this in C#: 
+            <code><![CDATA[
+            return object[]{ 1, 2, 3, 4 }
+            ]]></code>
+            Would equal this in Lua after the transformer is used: 
+            <code language="Lua"><![CDATA[
+            return 1, 2, 3, 4
+            ]]></code>
+            </example>
         </member>
         <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.Convert(GmodNET.API.ILua,System.Object[])">
             <inheritdoc/>
         </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.Parse(GmodNET.API.ILua)">
+        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.TryParse(GmodNET.API.ILua,System.Object[]@,System.Int32,System.Boolean)">
             <inheritdoc/>
         </member>
         <member name="T:GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable">
             <summary>
-            Converts between a string list and a Lua table containing those strings.
+            Transformers from a string list to a Lua table or vice versa.
             </summary>
         </member>
         <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.Convert(GmodNET.API.ILua,System.Collections.Generic.List{System.String})">
             <inheritdoc/>
         </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.Parse(GmodNET.API.ILua)">
+        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.TryParse(GmodNET.API.ILua,System.Collections.Generic.List{System.String}@,System.Int32,System.Boolean)">
             <inheritdoc/>
         </member>
-        <member name="M:GmodMongoDb.Binding.DataTransforming.BetweenTableAndBsonDocument.CreateLuaBsonDocument(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
+        <member name="T:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1">
             <summary>
-            Create a <see cref="T:GmodMongoDb.MongoBsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
+            Transformers derive from this class. Transformers help convert between .NET and Lua types.
+            </summary>
+            <example>
+            Your subclass MUST register which type it converts to and from by registering with the following attribute.
+            <code>
+            <![CDATA[
+            [ConvertsNetType(typeof(ExampleClass))]
+            ]]>
+            </code>
+            </example>
+            <typeparam name="TTarget">The type to return or accept in the methods</typeparam>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.#ctor">
+            <summary>
+            Since a transformer is instantiated with Activator.CreateInstance there should be no parameters on the constructor.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.Convert(GmodNET.API.ILua,`0)">
+            <summary>
+            Converts a given .NET object and pushes it on the Lua stack.
             </summary>
             <param name="lua"></param>
-            <param name="rawDocument">The true BsonDocument to encapsulate</param>
+            <param name="input">The .NET object to convert to Lua</param>
+            <returns>The amount of objects pushed to the Lua stack</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.TryParse(GmodNET.API.ILua,`0@,System.Int32,System.Boolean)">
+            <summary>
+            Pulls or reads an object from the Lua stack at the given position and tries to convert it to a .NET object.
+            </summary>
+            <param name="lua"></param>
+            <param name="value">The value pulled from the Lua stack</param>
+            <param name="stackPos">The position to pull/read the object from</param>
+            <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
+            <returns>Whether the value was succesfully parsed</returns>
+        </member>
+        <member name="T:GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions">
+            <summary>
+            Adds extensions relating to data transformation.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerConvert(GmodNET.API.ILua,System.Type,System.Object)">
+            <summary>
+            Instantiates a transformer of the given type and serves it the value to convert to Lua.
+            </summary>
+            <param name="lua"></param>
+            <param name="transformer">The type of the transformer class (must inherit <see cref="T:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1"/>)</param>
+            <param name="value">The value to have the transformer convert to Lua</param>
+            <returns>The amount of Lua objects pushed to the stack by the transformer</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the transformer type given does not inherit <see cref="T:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1"/></exception>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerParse(GmodNET.API.ILua,System.Type,System.Object@,System.Int32,System.Boolean)">
+            <summary>
+            Instantiates a transformer of the given type and executes it's TryParse to parse a value at the given Lua stack position.
+            </summary>
+            <param name="lua"></param>
+            <param name="transformer">The type of the transformer class (must inherit <see cref="T:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1"/>)</param>
+            <param name="value">The value pulled from the Lua stack</param>
+            <param name="stackPos">The position to pull/read the object from</param>
+            <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
+            <returns>Whether the value was succesfully parsed as returned by the transformer's <see cref="M:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.TryParse(GmodNET.API.ILua,`0@,System.Int32,System.Boolean)"/> method.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the transformer type given does not inherit <see cref="T:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1"/></exception>
         </member>
         <member name="T:GmodMongoDb.Binding.DataTransforming.NamespaceDoc">
             <summary>
@@ -199,12 +203,13 @@
             A reference to a Lua function which can be called later.
             </summary>
         </member>
-        <member name="M:GmodMongoDb.Binding.LuaFunctionReference.#ctor(GmodNET.API.ILua,System.Int32)">
+        <member name="M:GmodMongoDb.Binding.LuaFunctionReference.#ctor(GmodNET.API.ILua,System.Int32,System.Boolean)">
             <summary>
             Create a reference for the function currently on the given position of the stack (or the top by default)
             </summary>
             <param name="lua"></param>
             <param name="stackPos">The stack position of the function to reference</param>
+            <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
         </member>
         <member name="M:GmodMongoDb.Binding.LuaFunctionReference.IsValid(System.Int32)">
             <inheritdoc/>
@@ -279,7 +284,7 @@
         </member>
         <member name="M:GmodMongoDb.Binding.LuaMetaObjectBinding.#ctor(GmodNET.API.ILua)">
             <summary>
-            
+            Instantiates the .NET Object, informing it of the Lua environment it's part of.
             </summary>
             <param name="lua">The Lua environment where this object lives</param>
         </member>
@@ -298,12 +303,13 @@
             The pointer to the reference in Lua which can be pushed with `lua.ReferencePush` or freed with `lua.ReferenceFree`
             </summary>
         </member>
-        <member name="M:GmodMongoDb.Binding.LuaReference.#ctor(GmodNET.API.ILua,System.Int32)">
+        <member name="M:GmodMongoDb.Binding.LuaReference.#ctor(GmodNET.API.ILua,System.Int32,System.Boolean)">
             <summary>
             Creates a reference to the Lua object at the given stack position and removes it from the stack.
             </summary>
             <param name="lua"></param>
             <param name="stackPos">The Lua object's position on the stack</param>
+            <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
         </member>
         <member name="M:GmodMongoDb.Binding.LuaReference.IsValid(System.Int32)">
             <summary>
@@ -327,12 +333,13 @@
             Called to dispose of the object. Calls <see cref="M:GmodMongoDb.Binding.LuaReference.Free"/>
             </summary>
         </member>
-        <member name="M:GmodMongoDb.Binding.LuaTableReference.#ctor(GmodNET.API.ILua,System.Int32)">
+        <member name="M:GmodMongoDb.Binding.LuaTableReference.#ctor(GmodNET.API.ILua,System.Int32,System.Boolean)">
             <summary>
             Create a reference for the table currently on the given position of the stack (or the top by default)
             </summary>
             <param name="lua"></param>
             <param name="stackPos">The stack position of the function to reference</param>
+            <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
         </member>
         <member name="M:GmodMongoDb.Binding.LuaTableReference.IsValid(System.Int32)">
             <inheritdoc/>
@@ -387,10 +394,134 @@
             Contains tools to bind .NET objects with Lua comfortably
             </summary>
         </member>
+        <member name="T:GmodMongoDb.Binding.ReferenceManager">
+            <summary>
+            Helps keep track of handles and disposables. Call <see cref="M:GmodMongoDb.Binding.ReferenceManager.KillAll"/> to clean up any active handles.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.ReferenceManager.Add(System.Runtime.InteropServices.GCHandle)">
+            <summary>
+            Registers a handle so it can be cleaned up with <see cref="M:GmodMongoDb.Binding.ReferenceManager.KillAll"/> later.
+            </summary>
+            <param name="handle">The handle to register</param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.ReferenceManager.Add(System.IDisposable)">
+            <summary>
+            Registers a disposable so it can be cleaned up with <see cref="M:GmodMongoDb.Binding.ReferenceManager.KillAll"/> later.
+            </summary>
+            <param name="disposable">The disposable object to register</param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.ReferenceManager.KillAll">
+            <summary>
+            Dispose and free all registered disposable objects and handles respectively.
+            </summary>
+        </member>
+        <member name="T:GmodMongoDb.Binding.TypeConverter">
+            <summary>
+            Helps converting between .NET objects/types and Lua types
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)">
+            <summary>
+            Generates userdata with a metatable by looking at attributes on the given object. Pushes the userdata onto the stack.
+            </summary>
+            <param name="lua"></param>
+            <param name="instance">The object to generate into userdata</param>
+            <returns>The metatable type id that was created for this userdata</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.PushManagedObject(GmodNET.API.ILua,System.String,System.Object)">
+            <summary>
+            Pushes a .NET managed object onto the stack as userdata.
+            
+            Consider using <see cref="M:GmodMongoDb.Binding.TypeConverter.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)"/> if you want to interact with the userdata from Lua.
+            </summary>
+            <param name="lua"></param>
+            <param name="typeName">The name for the type metatable</param>
+            <param name="managed">The object to convert to userdata and push</param>
+            <returns>Returns the metatable type id which was applied to the userdata</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.PullManagedObject(GmodNET.API.ILua,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Pull userdata from the stack at the given position that has the given type id. Converts it to a .NET object.
+            </summary>
+            <param name="lua"></param>
+            <param name="typeId">The metatable type id of the userdata as returned by <see cref="M:GmodMongoDb.Binding.TypeConverter.PushManagedObject(GmodNET.API.ILua,System.String,System.Object)"/> or <see cref="M:GmodMongoDb.Binding.TypeConverter.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)"/></param>
+            <param name="stackPos">The position of the managed object</param>
+            <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
+            <returns>The .NET object converted from Lua</returns>
+            <exception cref="T:System.NullReferenceException">Thrown when a null pointer is found or the userdata is no longer valid</exception>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.PushType(GmodNET.API.ILua,System.Type,System.Object)">
+            <summary>
+            Push a value of a specific type to the Lua stack. Applies a transformer where possible.
+            </summary>
+            <param name="lua"></param>
+            <param name="type">The type of the value to push</param>
+            <param name="value">The value to push</param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.PullType(GmodNET.API.ILua,System.Type,System.Int32,System.Boolean)">
+            <summary>
+            Pop a value from the Lua stack and convert it to the specified .NET type.
+            </summary>
+            <param name="lua"></param>
+            <param name="type">The expected type of the value on the stack</param>
+            <param name="stackPos">The position of the value</param>
+            <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
+            <returns>The .NET object</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.PullType(GmodNET.API.ILua,System.Int32,System.Boolean)">
+            <summary>
+            Pop a value from the Lua stack and try convert it to an associated .NET type.
+            </summary>
+            <param name="lua"></param>
+            <param name="stackPos">The position of the value</param>
+            <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
+            <returns>The .NET object</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.PullType``1(GmodNET.API.ILua,System.Int32,System.Boolean)">
+            <summary>
+            Pop a value from the Lua stack and convert it to the specified .NET type.
+            </summary>
+            <typeparam name="T">The expected type of the value on the stack</typeparam>
+            <param name="lua"></param>
+            <param name="stackPos">The position of the value</param>
+            <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
+            <returns>The .NET object</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.TryGetMetaTableType(System.Int32,System.Type@)">
+            <summary>
+            Try to convert a Lua type to a metatable.
+            </summary>
+            <param name="luaType">The type id that's suspected to be a metatable type</param>
+            <param name="result">The converted .NET type on success. Null otherwise.</param>
+            <returns>If the type is succesfully converted to a metatable type.</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.LuaTypeToDotNetType(GmodNET.API.TYPES)">
+            <summary>
+            Convert a specified Lua type to a .NET type.
+            </summary>
+            <param name="luaType">The Lua type to convert</param>
+            <returns>The converted .NET type</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.LuaTypeToDotNetType(System.Int32)">
+            <summary>
+            Convert a specified Lua type to a .NET type.
+            </summary>
+            <param name="luaType">The Lua type to convert (must be castable to <see cref="T:GmodNET.API.TYPES"/>)</param>
+            <returns>The converted .NET type</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeConverter.DiscoverDataTransformers">
+            <summary>
+            Iterates all Transformers and registers their Type for later use. In order to create a transformer you should inherit LuaValueTransformer
+            </summary>
+        </member>
         <member name="T:GmodMongoDb.Mongo">
             <summary>
-            The main Mongo library form which you can instantiate a new client.
+            The main Mongo library form which you can instantiate MongoDB objects like the connection client (<see cref="M:GmodMongoDb.Mongo.NewClient(System.String)"/>).
             </summary>
+        </member>
+        <member name="M:GmodMongoDb.Mongo.#ctor(GmodNET.API.ILua)">
+            <inheritdoc/>
         </member>
         <member name="M:GmodMongoDb.Mongo.NewClient(System.String)">
             <summary>
@@ -400,16 +531,110 @@
             <example>
             Example how to call this method from Lua in order to connect to a database.
             <code language="Lua">
-            client = mongo:NewClient("mongodb://username_here:password_here@127.0.0.1:27017/database_here?retryWrites=true&amp;w=majority")
+            client = mongo.NewClient("mongodb://username_here:password_here@127.0.0.1:27017/database_here?retryWrites=true&amp;w=majority")
             </code>
             </example>
             <param name="connectionString">The connection string with connection information</param>
             <returns>The MongoClient which will interface with database</returns>
         </member>
+        <member name="M:GmodMongoDb.Mongo.NewBsonDocument(GmodMongoDb.MongoBsonDocument)">
+            <summary>
+            Creates a BSON Document from the provided Lua table.
+            </summary>
+            <param name="table">The table to use to build a BSON Document</param>
+            <returns></returns>
+            <remarks><see cref="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua,GmodMongoDb.MongoBsonDocument@,System.Int32,System.Boolean)"/> will automatically handle this conversion.</remarks>
+        </member>
+        <member name="T:GmodMongoDb.MongoBsonDocument">
+            <summary>
+            Exposes a MongoDB BSON Document to Lua.
+            </summary>
+            <remarks>
+            In Lua you can get a BSON document by querying a collection using <see cref="M:GmodMongoDb.MongoCollection.Find(System.String)"/>.
+            You can also generate your own BSON document from a table by using <see cref="M:GmodMongoDb.Mongo.NewBsonDocument(GmodMongoDb.MongoBsonDocument)"/>
+            </remarks>
+        </member>
+        <member name="M:GmodMongoDb.MongoBsonDocument.#ctor(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
+            <inheritdoc/>
+        </member>
+        <member name="T:GmodMongoDb.MongoClient">
+            <summary>
+            Exposes a MongoDB connection client to Lua.
+            </summary>
+            <remarks>
+            In Lua you can get a client by using <see cref="M:GmodMongoDb.Mongo.NewClient(System.String)"/> 
+            </remarks>
+        </member>
+        <member name="M:GmodMongoDb.MongoClient.#ctor(GmodNET.API.ILua,MongoDB.Driver.MongoClient)">
+            <inheritdoc/>
+        </member>
+        <member name="M:GmodMongoDb.MongoClient.GetDatabase(System.String)">
+            <summary>
+            Queries the connection for the database object identified by the given name
+            </summary>
+            <example>
+            In Lua you can get the database by asking a <see cref="T:GmodMongoDb.MongoClient"/> for it:
+            <code language="Lua"><![CDATA[
+            local database = client:GetDatabase("database_name")
+            ]]></code>
+            </example>
+            <param name="name">The database name</param>
+            <returns>The database object</returns>
+        </member>
+        <member name="T:GmodMongoDb.MongoCollection">
+            <summary>
+            Exposes a MongoDB collection to Lua.
+            </summary>
+            <remarks>
+            In Lua you can get the collection by using <see cref="M:GmodMongoDb.MongoDatabase.GetCollection(System.String)"/> 
+            </remarks>
+        </member>
+        <member name="M:GmodMongoDb.MongoCollection.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoCollection{MongoDB.Bson.BsonDocument})">
+            <inheritdoc/>
+        </member>
+        <member name="T:GmodMongoDb.MongoDatabase">
+            <summary>
+            Exposes a MongoDB database to Lua.
+            </summary>
+            <remarks>
+            In Lua you can get the collection by using <see cref="M:GmodMongoDb.MongoClient.GetDatabase(System.String)"/> 
+            </remarks>
+        </member>
+        <member name="M:GmodMongoDb.MongoDatabase.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoDatabase)">
+            <inheritdoc/>
+        </member>
+        <member name="M:GmodMongoDb.MongoDatabase.GetCollection(System.String)">
+            <summary>
+            Fetches a MongoDB Collection from this database
+            </summary>
+            <example>
+            This is how you can get the collection in Lua:
+            <code language="Lua"><![CDATA[
+            local collection = database:GetCollection("collection_name")
+            ]]></code>
+            </example>
+            <param name="name">The name of the collection</param>
+            <returns>The retrieved collection</returns>
+        </member>
         <member name="T:GmodMongoDb.NamespaceDoc">
             <summary>
             Contains the userdata definitions that expose the .NET MongoDB Driver to Lua.
             </summary>
+        </member>
+        <member name="T:GmodMongoDb.Setup">
+            <inheritdoc/>
+        </member>
+        <member name="P:GmodMongoDb.Setup.ModuleName">
+            <inheritdoc/>
+        </member>
+        <member name="P:GmodMongoDb.Setup.ModuleVersion">
+            <inheritdoc/>
+        </member>
+        <member name="M:GmodMongoDb.Setup.Load(GmodNET.API.ILua,System.Boolean,GmodNET.API.ModuleAssemblyLoadContext)">
+            <inheritdoc/>
+        </member>
+        <member name="M:GmodMongoDb.Setup.Unload(GmodNET.API.ILua)">
+            <inheritdoc/>
         </member>
     </members>
 </doc>

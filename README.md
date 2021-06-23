@@ -31,7 +31,7 @@ dotnet.load("GmodMongoDb")
 
 Instantiate a client using a valid MongoDB connection string:
 ```lua
-client = mongo:NewClient("mongodb://myusername:superdupersecretpassword@127.0.0.1:27017/myappname?retryWrites=true&w=majority")
+client = mongo.NewClient("mongodb://myusername:superdupersecretpassword@127.0.0.1:27017/myappname?retryWrites=true&w=majority")
 ```
 *You should only have a single client. You can re-use that for multiple different databases.*
 
@@ -45,6 +45,13 @@ local collection = db:GetCollection("players")
 You can query the collection using a table as a filter. *The table will be converted to a BSON Document*:
 ```lua
 local filter = { _id = "STEAM_0:1:123456" }
+local results = collection:Find(filter)
+PrintTable(results)
+```
+
+You can also construct your own BSON Document explicitly:
+```lua
+local filter = mongo.NewBsonDocument({ someKey = "a value", anotherKey = "another value" })
 local results = collection:Find(filter)
 PrintTable(results)
 ```

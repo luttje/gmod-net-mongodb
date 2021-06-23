@@ -37,7 +37,7 @@ namespace GmodMongoDb.Binding
         protected ILua lua;
 
         /// <summary>
-        /// 
+        /// Instantiates the .NET Object, informing it of the Lua environment it's part of.
         /// </summary>
         /// <param name="lua">The Lua environment where this object lives</param>
         public LuaMetaObjectBinding(ILua lua)

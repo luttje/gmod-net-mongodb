@@ -4,11 +4,18 @@ using GmodNET.API;
 
 namespace GmodMongoDb
 {
+    /// <summary>
+    /// Exposes a MongoDB database to Lua.
+    /// </summary>
+    /// <remarks>
+    /// In Lua you can get the collection by using <see cref="MongoClient.GetDatabase(string)"/> 
+    /// </remarks>
     [LuaMetaTable("MongoDatabase")]
     public class MongoDatabase : LuaMetaObjectBinding
     {
-        protected MongoDB.Driver.IMongoDatabase database;
+        private MongoDB.Driver.IMongoDatabase database;
 
+        /// <inheritdoc/>
         public MongoDatabase(ILua lua, MongoDB.Driver.IMongoDatabase database)
             : base(lua)
         {
@@ -44,6 +51,17 @@ namespace GmodMongoDb
             //this.database.WithWriteConcern <-- low priority
         }
 
+        /// <summary>
+        /// Fetches a MongoDB Collection from this database
+        /// </summary>
+        /// <example>
+        /// This is how you can get the collection in Lua:
+        /// <code language="Lua"><![CDATA[
+        /// local collection = database:GetCollection("collection_name")
+        /// ]]></code>
+        /// </example>
+        /// <param name="name">The name of the collection</param>
+        /// <returns>The retrieved collection</returns>
         [LuaMethod]
         public MongoCollection GetCollection(string name)
         {

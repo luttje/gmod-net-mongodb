@@ -30,27 +30,35 @@ namespace GmodMongoDb.Binding.Annotating
         public void PushFunction(ILua lua, MethodInfo method, int metaTableTypeId, bool forceWithoutFinder = false)
         {
             var handle = lua.PushManagedFunction((lua) => {
-                // Copy the object so we can pull it into a .NET object below with `BindingHelper.PullManagedObject`
-                lua.Push(1);
-                int callerCopy = lua.ReferenceCreate(); // Will be freed before returning to Lua
+                LuaMetaObjectBinding? instance = null;
 
-                if (TypeConverter.PullManagedObject(lua, metaTableTypeId, 1) is not LuaMetaObjectBinding instance)
-                    throw new NullReferenceException("Invalid instance!");
+                if (!method.IsStatic)
+                {
+                    // Copy the object so we can pull it into a .NET object below with `BindingHelper.PullManagedObject`
+                    lua.Push(1);
+                    int callerCopy = lua.ReferenceCreate(); // Will be freed before returning to Lua
 
-                instance.Reference = callerCopy;
+                    instance = TypeConverter.PullManagedObject(lua, metaTableTypeId, 1) as LuaMetaObjectBinding;
+
+                    if (instance is not LuaMetaObjectBinding)
+                        throw new NullReferenceException("Invalid instance!");
+
+                    instance.Reference = callerCopy;
+                }
 
                 try
                 {
                     if (this.IsOverloaded && !forceWithoutFinder)
                     {
-                        return FindAndExecuteMethod(instance, lua, method.Name);
+                        return FindAndExecuteMethod(method.DeclaringType, instance, lua, method.Name);
                     }
 
                     return ExecuteMethod(instance, lua, method);
                 }
                 finally
                 {
-                    instance.Reference = null;
+                    if (instance != null)
+                        instance.Reference = null;
                 }
             });
             ReferenceManager.Add(handle);
@@ -63,7 +71,7 @@ namespace GmodMongoDb.Binding.Annotating
         /// <param name="lua"></param>
         /// <param name="method">The method to execute</param>
         /// <returns></returns>
-        protected static int ExecuteMethod(LuaMetaObjectBinding instance, ILua lua, MethodInfo method)
+        private static int ExecuteMethod(LuaMetaObjectBinding? instance, ILua lua, MethodInfo method)
         {
             var parameters = method.GetParameters();
             var newParameters = new object[parameters.Length];
@@ -95,15 +103,25 @@ namespace GmodMongoDb.Binding.Annotating
             }
         }
 
-        protected static int FindAndExecuteMethod(LuaMetaObjectBinding instance, ILua lua, string methodName)
+        /// <summary>
+        /// Finds a method based on the signature formed by the arguments on the Lua stack
+        /// </summary>
+        /// <param name="instanceType"></param>
+        /// <param name="instance"></param>
+        /// <param name="lua"></param>
+        /// <param name="methodName"></param>
+        /// <returns></returns>
+        private static int FindAndExecuteMethod(Type instanceType, LuaMetaObjectBinding? instance, ILua lua, string methodName)
         {
             var stack = lua.Top();
             var signature = new Type[stack];
-            Type instanceType = instance.GetType();
 
             for (int i = 0; i < stack; i++)
             {
                 signature[i] = TypeConverter.LuaTypeToDotNetType(lua.GetType(i + 1));
+
+                if (signature[i] == null)
+                    throw new NotImplementedException("Overloaded methods cant be found if one of the passed arguments is null. Type is needed");
             }
 
             // Try find an appropriate method by the provided parameter signature

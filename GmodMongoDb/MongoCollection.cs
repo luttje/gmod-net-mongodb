@@ -9,11 +9,18 @@ using GmodMongoDb.Binding;
 
 namespace GmodMongoDb
 {
+    /// <summary>
+    /// Exposes a MongoDB collection to Lua.
+    /// </summary>
+    /// <remarks>
+    /// In Lua you can get the collection by using <see cref="MongoDatabase.GetCollection(string)"/> 
+    /// </remarks>
     [LuaMetaTable("MongoCollection")]
     public class MongoCollection : LuaMetaObjectBinding
     {
-        protected MongoDB.Driver.IMongoCollection<MongoDB.Bson.BsonDocument> collection;
+        private MongoDB.Driver.IMongoCollection<MongoDB.Bson.BsonDocument> collection;
 
+        /// <inheritdoc/>
         public MongoCollection(ILua lua, MongoDB.Driver.IMongoCollection<MongoDB.Bson.BsonDocument> collection)
             : base(lua)
         {
