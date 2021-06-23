@@ -47,7 +47,7 @@ namespace GmodMongoDb
         }
 
         /// <summary>
-        /// Creates a BSON Document from the provided Lua table.
+        /// Creates a new BSON Document from the provided Lua table.
         /// </summary>
         /// <param name="table">The table to use to build a BSON Document</param>
         /// <returns></returns>
@@ -56,6 +56,17 @@ namespace GmodMongoDb
         public static MongoBsonDocument NewBsonDocument(MongoBsonDocument table)
         {
             return table;
+        }
+
+        /// <summary>
+        /// Creates a new BSON Document from the provided json.
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        [LuaMethod]
+        public static MongoBsonDocument NewBsonDocument(string json)
+        {
+            return MongoBsonDocument.FromJson(instance.lua, json);
         }
 
         private MongoClient CreateNewClient(string connectionString)

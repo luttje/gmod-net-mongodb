@@ -539,18 +539,25 @@
         </member>
         <member name="M:GmodMongoDb.Mongo.NewBsonDocument(GmodMongoDb.MongoBsonDocument)">
             <summary>
-            Creates a BSON Document from the provided Lua table.
+            Creates a new BSON Document from the provided Lua table.
             </summary>
             <param name="table">The table to use to build a BSON Document</param>
             <returns></returns>
             <remarks><see cref="M:GmodMongoDb.Binding.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua,GmodMongoDb.MongoBsonDocument@,System.Int32,System.Boolean)"/> will automatically handle this conversion.</remarks>
+        </member>
+        <member name="M:GmodMongoDb.Mongo.NewBsonDocument(System.String)">
+            <summary>
+            Creates a new BSON Document from the provided json.
+            </summary>
+            <param name="json"></param>
+            <returns></returns>
         </member>
         <member name="T:GmodMongoDb.MongoBsonDocument">
             <summary>
             Exposes a MongoDB BSON Document to Lua.
             </summary>
             <remarks>
-            In Lua you can get a BSON document by querying a collection using <see cref="M:GmodMongoDb.MongoCollection.Find(System.String)"/>.
+            In Lua you can get a BSON document by querying a collection using <see cref="!:MongoCollection.Find(string)"/>.
             You can also generate your own BSON document from a table by using <see cref="M:GmodMongoDb.Mongo.NewBsonDocument(GmodMongoDb.MongoBsonDocument)"/>
             </remarks>
         </member>

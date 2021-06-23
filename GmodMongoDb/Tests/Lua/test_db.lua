@@ -1,57 +1,60 @@
 -- lua_openscript test_db.lua
 
-function load()
-  print("GmodMongoDb", "load()")
+print("GmodMongoDb", "load()")
 
-  dotnet.load("GmodMongoDb")
+dotnet.load("GmodMongoDb")
 
-  test_client = mongo.NewClient("mongodb://bootlegger:395kjkh20jhq5wH65qwa5AST@127.0.0.1:27017/revolt?retryWrites=true&w=majority")
-  local db = test_client:GetDatabase("revolt")
-  local collection = db:GetCollection("bootlegrp_players")
+test_client = mongo.NewClient("mongodb://bootlegger:395kjkh20jhq5wH65qwa5AST@127.0.0.1:27017/revolt?retryWrites=true&w=majority")
+local db = test_client:GetDatabase("revolt")
+local collection = db:GetCollection("bootlegrp_players")
 
-  local filter = { _id = "singleplayer" }
-  local results = collection:Find(util.TableToJSON(filter))
-  PrintTable(results)
+local filterTable = { _id = "singleplayer" }
+local filterJson = util.TableToJSON(filterTable)
+local filter = mongo.NewBsonDocument(filterJson)
+print(filter, type(filter))
+local results = collection:Find(filter)
+PrintTable(results)
 
-  print(results[1], type(results[1]))
-  local refindResults = collection:Find(results[1])
-  PrintTable(refindResults)
+-- print(results[1], type(results[1]))
+-- local refindResults = collection:Find(results[1])
+-- PrintTable(refindResults)
 
-  print(results[1] == refindResults[1])
+-- print(results[1] == refindResults[1])
 
-  local findWithBsonDocument = collection:Find(mongo.NewBsonDocument({money = 500}))
-  PrintTable(findWithBsonDocument)
-  
-  --print(tostring(results[1]).."\n\n")
-  -- print(results[1]._id)
+-- local findWithBsonDocument = collection:Find(mongo.NewBsonDocument({money = 500}))
+-- PrintTable(findWithBsonDocument)
 
-  -- for key, value in results[1]:Pairs() do
-  --   print(key, value)
-  -- end
+-- local document = mongo.NewBsonDocument(util.TableToJSON(filter))
+-- local findWithJsonBsonDocument = collection:Find(document)
+-- PrintTable(findWithJsonBsonDocument)
 
-  -- PrintTable(test_client:ListDatabaseNames())
+--print(tostring(results[1]).."\n\n")
+-- print(results[1]._id)
 
-  -- print(CurTime())
-  -- test_client:ListDatabaseNamesAsync(function(databases)
-  --   print(CurTime())
-  --   PrintTable(databases)
-  -- end)
+-- for key, value in results[1]:Pairs() do
+--   print(key, value)
+-- end
 
-  -- test_client:DropDatabaseAsync("remove_me", function()
-  --   print("done")
-  -- end)
+-- PrintTable(test_client:ListDatabaseNames())
 
-  -- local databases = test_client:ListDatabases()
-  -- print(databases, table.Count(databases))
-  
-  
-  -- for i, database in pairs(databases) do
-  --   print(i, tostring(database), print(getmetatable(database)))
+-- print(CurTime())
+-- test_client:ListDatabaseNamesAsync(function(databases)
+--   print(CurTime())
+--   PrintTable(databases)
+-- end)
 
-  --   for key, value in database:Pairs() do
-  --     print(key, value)
-  --   end
-  -- end
-end
+-- test_client:DropDatabaseAsync("remove_me", function()
+--   print("done")
+-- end)
 
-load()
+-- local databases = test_client:ListDatabases()
+-- print(databases, table.Count(databases))
+
+
+-- for i, database in pairs(databases) do
+--   print(i, tostring(database), print(getmetatable(database)))
+
+--   for key, value in database:Pairs() do
+--     print(key, value)
+--   end
+-- end

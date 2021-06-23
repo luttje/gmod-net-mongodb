@@ -67,6 +67,11 @@ namespace GmodMongoDb
             return new MongoBsonDocument(lua, rawDocument);
         }
 
+        internal static MongoBsonDocument FromJson(ILua lua, string json)
+        {
+            return new MongoBsonDocument(lua, BsonDocument.Parse(json));
+        }
+
         [LuaMethod("__index")]
         public object Index(string key)
         {

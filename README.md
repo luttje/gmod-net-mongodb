@@ -42,24 +42,24 @@ local db = client:GetDatabase("myappname")
 local collection = db:GetCollection("players")
 ```
 
-You can query the collection using a table as a filter. *The table will be converted to a BSON Document*:
+You can query the collection using a table as a filter. *The table will automatically be converted to a BSON Document*:
 ```lua
-local filter = { _id = "STEAM_0:1:123456" }
-local results = collection:Find(filter)
+local filterTable = { _id = "STEAM_0:1:123456" }
+local results = collection:Find(filterTable)
 PrintTable(results)
 ```
 
-You can also construct your own BSON Document explicitly:
+You can also construct your own BSON Document explicitly from a table:
 ```lua
 local filter = mongo.NewBsonDocument({ someKey = "a value", anotherKey = "another value" })
 local results = collection:Find(filter)
 PrintTable(results)
 ```
 
-Optionally you could use a json string instead to build a BSON Document from it:
+Or you could use a JSON string to build a BSON Document:
 ```lua
-local filterJson = util.TableToJSON(filter)
-local results = collection:Find(filterJson)
+local filter = mongo.NewBsonDocument('{"_id": "STEAM_0:1:123456"}')
+local results = collection:Find(filter)
 PrintTable(results)
 ```
 

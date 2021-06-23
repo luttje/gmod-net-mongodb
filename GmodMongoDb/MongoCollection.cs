@@ -73,17 +73,8 @@ namespace GmodMongoDb
             //this.database.WithWriteConcern <-- low priority
         }
 
-        [LuaMethod(IsOverloaded = true)]
-        [LuaMethod("FindSync", IsOverloaded = true)]
-        public List<MongoDB.Bson.BsonDocument> Find(string filterJson)
-        {
-            var results = collection.Find(BsonDocument.Parse(filterJson));
-
-            return results.ToList();
-        }
-
-        [LuaMethod(IsOverloaded = true)]
-        [LuaMethod("FindSync", IsOverloaded = true)]
+        [LuaMethod]
+        [LuaMethod("FindSync")]
         public List<MongoDB.Bson.BsonDocument> Find(MongoBsonDocument filter)
         {
             var results = collection.Find(filter.BsonDocument);
@@ -93,43 +84,43 @@ namespace GmodMongoDb
 
         // TODO: All below are untested
         [LuaMethod]
-        public async void FindAsync(string filterJson, LuaFunctionReference callback)
+        public async void FindAsync(MongoBsonDocument filter, LuaFunctionReference callback)
         {
-            var results = await collection.FindAsync(BsonDocument.Parse(filterJson));
+            var results = await collection.FindAsync(filter.BsonDocument);
             var resultsList = await results.ToListAsync();
 
             callback.CallFromAsync(resultsList);
         }
 
         [LuaMethod]
-        public MongoBsonDocument FindOneAndDelete(string filterJson)
+        public MongoBsonDocument FindOneAndDelete(MongoBsonDocument filter)
         {
-            var result = collection.FindOneAndDelete(BsonDocument.Parse(filterJson));
+            var result = collection.FindOneAndDelete(filter.BsonDocument);
 
             return new MongoBsonDocument(lua, result);
         }
 
         [LuaMethod]
-        public async void FindOneAndDeleteAsync(string filterJson, LuaFunctionReference callback)
+        public async void FindOneAndDeleteAsync(MongoBsonDocument filter, LuaFunctionReference callback)
         {
-            var result = await collection.FindOneAndDeleteAsync(BsonDocument.Parse(filterJson));
+            var result = await collection.FindOneAndDeleteAsync(filter.BsonDocument);
 
             callback.CallFromAsync(result);
         }
 
 
         [LuaMethod]
-        public MongoBsonDocument FindOneAndReplace(string filterJson, BsonDocument replacement)
+        public MongoBsonDocument FindOneAndReplace(MongoBsonDocument filter, BsonDocument replacement)
         {
-            var result = collection.FindOneAndReplace(BsonDocument.Parse(filterJson), replacement);
+            var result = collection.FindOneAndReplace(filter.BsonDocument, replacement);
 
             return new MongoBsonDocument(lua, result);
         }
 
         [LuaMethod]
-        public async void FindOneAndReplaceAsync(string filterJson, BsonDocument replacement, LuaFunctionReference callback)
+        public async void FindOneAndReplaceAsync(MongoBsonDocument filter, BsonDocument replacement, LuaFunctionReference callback)
         {
-            var result = await collection.FindOneAndReplaceAsync(BsonDocument.Parse(filterJson), replacement);
+            var result = await collection.FindOneAndReplaceAsync(filter.BsonDocument, replacement);
 
             callback.CallFromAsync(result);
         }
