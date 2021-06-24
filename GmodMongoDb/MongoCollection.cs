@@ -19,6 +19,9 @@ namespace GmodMongoDb
     {
         private readonly IMongoCollection<MongoDB.Bson.BsonDocument> collection;
 
+        [LuaProperty]
+        public MongoDatabase Database => new(lua, collection.Database);
+
         /// <inheritdoc/>
         public MongoCollection(ILua lua, IMongoCollection<MongoDB.Bson.BsonDocument> collection)
             : base(lua)
@@ -36,7 +39,6 @@ namespace GmodMongoDb
             //this.collection.CollectionNamespace <-- property
             //this.collection.CountDocuments
             //this.collection.CountDocumentsAsync
-            //this.collection.Database <-- property
             //this.collection.DeleteMany
             //this.collection.DeleteManyAsync
             //this.collection.DeleteOne

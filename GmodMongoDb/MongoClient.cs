@@ -20,10 +20,10 @@ namespace GmodMongoDb
     [LuaMetaTable("MongoClient")]
     public class MongoClient : LuaMetaObjectBinding, IDisposable
     {
-        private readonly MongoDB.Driver.MongoClient client;
+        private readonly IMongoClient client;
 
         /// <inheritdoc/>
-        public MongoClient(ILua lua, MongoDB.Driver.MongoClient client)
+        public MongoClient(ILua lua, IMongoClient client)
             :base(lua)
         {
             this.client = client;
@@ -50,7 +50,7 @@ namespace GmodMongoDb
         /// <param name="lua"></param>
         /// <param name="connectionString">The connection string with connection information</param>
         /// <returns>The MongoClient which will interface with database</returns>
-        [LuaStatic(IsInitializer = true)]
+        [LuaMethod(IsConstructor = true)]
         public static MongoClient Constructor(ILua lua, string connectionString)
         {
             lua.Print($"Connecting to database. MongoClient created.");
@@ -131,5 +131,9 @@ namespace GmodMongoDb
         [LuaMethod]
         public MongoDatabase GetDatabase(string name)
             => new(lua, client.GetDatabase(name));
+
+        [LuaMethod("__eq")]
+        public bool Equals(MongoClient other)
+            => client == other.client;
     }
 }

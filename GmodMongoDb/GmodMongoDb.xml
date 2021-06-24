@@ -35,6 +35,18 @@
             Indicates if multiple methods exist with the same name as the one this attribute is applied to.
             </summary>
         </member>
+        <member name="P:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.IsConstructor">
+            <summary>
+            Whether the method marked with this attribute is the constructor of the given class.
+            This means the static functions table will get a __call metamethod that will call this method.
+            </summary>
+            <example>
+            That allows you to do this in Lua:
+            <code language="Lua"><![CDATA[
+            local exampleObject = Example()
+            ]]></code>
+            </example>
+        </member>
         <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.#ctor(System.String)">
             <summary>
             When applying this attribute to methods that should expose to Lua you can specify a name in this constructor.
@@ -69,28 +81,26 @@
             <param name="methodName"></param>
             <returns></returns>
         </member>
-        <member name="T:GmodMongoDb.Binding.Annotating.LuaStaticAttribute">
+        <member name="T:GmodMongoDb.Binding.Annotating.PropertyMethodNames">
             <summary>
-            Apply this attribute to methods to make them available statically in Lua (without the need for an object instance)
+            
             </summary>
         </member>
-        <member name="P:GmodMongoDb.Binding.Annotating.LuaStaticAttribute.IsInitializer">
+        <member name="T:GmodMongoDb.Binding.Annotating.LuaPropertyAttribute">
             <summary>
-            Whether the method marked with this attribute is the object initializer.
-            This means the static functions table will get a __call metamethod that will call this initializer.
+            Apply this attribute to property methods that should be exposed to Lua.
             </summary>
-            <example>
-            That allows you to do this in Lua:
-            <code language="Lua"><![CDATA[
-            local exampleObject = Example()
-            ]]></code>
-            </example>
         </member>
-        <member name="M:GmodMongoDb.Binding.Annotating.LuaStaticAttribute.#ctor(System.String)">
+        <member name="P:GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.Name">
             <summary>
-            When applying the attribute to a method you can specify the static method's name
+            The name this property will receive in Lua.
             </summary>
-            <param name="name">The static method's name</param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.#ctor(System.String)">
+            <summary>
+            When applying this attribute to methods that should expose to Lua you can specify a name in this constructor.
+            </summary>
+            <param name="name">The name the method should receive in Lua</param>
         </member>
         <member name="T:GmodMongoDb.Binding.Annotating.NamespaceDoc">
             <summary>
@@ -682,7 +692,7 @@
             In Lua you can get a client by using <see cref="M:GmodMongoDb.MongoClient.Constructor(GmodNET.API.ILua,System.String)"/> 
             </remarks>
         </member>
-        <member name="M:GmodMongoDb.MongoClient.#ctor(GmodNET.API.ILua,MongoDB.Driver.MongoClient)">
+        <member name="M:GmodMongoDb.MongoClient.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoClient)">
             <inheritdoc/>
         </member>
         <member name="M:GmodMongoDb.MongoClient.Constructor(GmodNET.API.ILua,System.String)">

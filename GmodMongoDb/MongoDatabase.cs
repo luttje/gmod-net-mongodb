@@ -15,6 +15,9 @@ namespace GmodMongoDb
     {
         private readonly MongoDB.Driver.IMongoDatabase database;
 
+        [LuaProperty]
+        public MongoClient Client => new(lua, database.Client);
+
         /// <inheritdoc/>
         public MongoDatabase(ILua lua, MongoDB.Driver.IMongoDatabase database)
             : base(lua)
@@ -65,5 +68,9 @@ namespace GmodMongoDb
         [LuaMethod]
         public MongoCollection GetCollection(string name)
             => new(lua, database.GetCollection<MongoDB.Bson.BsonDocument>(name));
+
+        [LuaMethod("__eq")]
+        public bool Equals(MongoDatabase other)
+            => database == other.database;
     }
 }

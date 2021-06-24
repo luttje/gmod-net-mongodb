@@ -8,12 +8,17 @@ test_client = MongoClient("mongodb://bootlegger:395kjkh20jhq5wH65qwa5AST@127.0.0
 local db = test_client:GetDatabase("revolt")
 local collection = db:GetCollection("bootlegrp_players")
 
+print(db) -- Note how the userdata changes when we ask the collection for it's database below
+
 local filterTable = { _id = "singleplayer" }
 --local filterJson = util.TableToJSON(filterTable)
 local filter = MongoBsonDocument(filterTable)
 print(filter, type(filter))
 local results = collection:Find(filter)
 PrintTable(results)
+
+print("client", db.Client, db.Client == test_client)
+print("db", collection.Database, collection.Database == db)
 
 -- print(results[1], type(results[1]))
 -- local refindResults = collection:Find(results[1])

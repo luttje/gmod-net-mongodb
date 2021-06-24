@@ -69,13 +69,13 @@ namespace GmodMongoDb
         /// <param name="table">The table to use to build a BSON Document</param>
         /// <returns></returns>
         /// <remarks><see cref="DataTransforming.BetweenBsonDocumentAndTable.TryParse(ILua, out BsonDocument, int, bool)"/> will automatically handle this conversion.</remarks>
-        [LuaStatic(IsInitializer = true)]
+        [LuaMethod(IsConstructor = true)]
         public static BsonDocument Constructor(ILua lua, BsonDocument table)
         {
             return table;
         }
 
-        [LuaStatic]
+        [LuaMethod]
         public static BsonDocument FromLuaTable(ILua lua, LuaTableReference table)
         {
             var rawDocument = new MongoDB.Bson.BsonDocument();
@@ -100,7 +100,7 @@ namespace GmodMongoDb
         /// <param name="lua"></param>
         /// <param name="json"></param>
         /// <returns></returns>
-        [LuaStatic]
+        [LuaMethod]
         public static BsonDocument FromJson(ILua lua, string json)
         {
             return new BsonDocument(lua, MongoDB.Bson.BsonDocument.Parse(json));
@@ -115,7 +115,7 @@ namespace GmodMongoDb
             => RawBsonDocument.ToJson();
 
         [LuaMethod("__index")]
-        public object Index(string key)
+        public override object Index(string key)
         {
             object result = null;
 
@@ -125,16 +125,7 @@ namespace GmodMongoDb
             if (result != null)
                 return result;
 
-            if (this.MetaTableTypeId == null)
-                return null;
-
-            lua.PushMetaTable((int) this.MetaTableTypeId);
-            lua.GetField(-1, key);
-
-            result = TypeTools.PullType(lua, -1);
-            lua.Pop(1); // pop the metatable
-
-            return result;
+            return base.Index(key);
         }
 
         private int NextKey(ILua lua)

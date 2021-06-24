@@ -1,5 +1,4 @@
 ﻿using GmodMongoDb.Binding.Annotating;
-using GmodMongoDb.Binding;
 using GmodMongoDb.Binding.DataTransforming;
 using GmodNET.API;
 using System;
@@ -7,8 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GmodMongoDb.Binding
 {
@@ -60,9 +57,6 @@ namespace GmodMongoDb.Binding
                 if (!MetaTableTypeIds.ContainsKey(typeId))
                     MetaTableTypeIds.Add(typeId, metaTableType);
 
-                lua.Push(-1);
-                lua.SetField(-2, "__index");
-
                 // Have a place for this type's static methods
                 lua.CreateTable();
                 lua.Push(-1);
@@ -78,33 +72,42 @@ namespace GmodMongoDb.Binding
 
                 foreach (var method in methods)
                 {
-                    var attributes = method.GetCustomAttributes<LuaMethodAttribute>()
-                        .Union(method.GetCustomAttributes<LuaStaticAttribute>());
+                    var attributes = method.GetCustomAttributes<LuaMethodAttribute>();
 
                     foreach (var attribute in attributes)
                     {
                         var stackPos = -2; // Position of the metatable
                         attribute.PushFunction(lua, method, typeId);
 
-                        if (attribute is LuaStaticAttribute staticAttribute)
+                        if (method.IsStatic)
                         {
                             stackPos = 1; // Position of the static table
 
-                            if (staticAttribute.IsInitializer)
+                            if (attribute.IsConstructor)
                             {
                                 // TODO: Test what happens with overloaded initializers
                                 // Create a metatable for the static table and add the __call metamethod to it
                                 lua.CreateTable();
-                                staticAttribute.PushFunction(lua, method);
+                                attribute.PushFunction(lua, method);
                                 lua.SetField(-2, "__call");
                                 lua.SetMetaTable(stackPos); // Pops the metatable for the static table
-
-                                // TODO: Document StaticTableName() in README
                             }
                         }
 
                         var methodName = attribute.Name ?? method.Name;
                         lua.SetField(stackPos, methodName);
+                    }
+                }
+
+                PropertyInfo[] properties = metaTableType.GetProperties();
+
+                foreach (var property in properties)
+                {
+                    var attributes = property.GetCustomAttributes<LuaPropertyAttribute>();
+
+                    foreach (var attribute in attributes)
+                    {
+                        LuaPropertyAttribute.RegisterAvailableProperty(metaTableType, attribute.Name ?? property.Name, property.GetGetMethod()?.Name, property.GetSetMethod()?.Name);
                     }
                 }
 
@@ -172,6 +175,9 @@ namespace GmodMongoDb.Binding
             string typeName = GetMetaTableTypeName(managed.GetType());
             var typeId = lua.CreateMetaTable(typeName);
             lua.Pop(1);
+
+            if(managed is LuaMetaObjectBinding objectBinding)
+                objectBinding.MetaTableTypeId = typeId;
 
             lua.PushUserType((IntPtr)handle, typeId);
 

@@ -10,7 +10,7 @@ namespace GmodMongoDb.Binding.Annotating
     /// <summary>
     /// Apply this attribute to methods that should be exposed to Lua.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class LuaMethodAttribute : Attribute
     {
         /// <summary>
@@ -22,6 +22,18 @@ namespace GmodMongoDb.Binding.Annotating
         /// Indicates if multiple methods exist with the same name as the one this attribute is applied to.
         /// </summary>
         private bool IsOverloaded { get; set; }
+
+        /// <summary>
+        /// Whether the method marked with this attribute is the constructor of the given class.
+        /// This means the static functions table will get a __call metamethod that will call this method.
+        /// </summary>
+        /// <example>
+        /// That allows you to do this in Lua:
+        /// <code language="Lua"><![CDATA[
+        /// local exampleObject = Example()
+        /// ]]></code>
+        /// </example>
+        public bool IsConstructor { get; set; }
 
         /// <summary>
         /// When applying this attribute to methods that should expose to Lua you can specify a name in this constructor.
