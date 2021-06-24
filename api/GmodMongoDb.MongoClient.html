@@ -1,0 +1,619 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MongoClient
+   | Gmod MongoDB Wrapper Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MongoClient
+   | Gmod MongoDB Wrapper Docs ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="GmodMongoDb.MongoClient">
+  
+  
+  <h1 id="GmodMongoDb_MongoClient" data-uid="GmodMongoDb.MongoClient" class="text-break">Class MongoClient
+  </h1>
+  <div class="markdown level0 summary"><p>Exposes a MongoDB connection client to Lua.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html">LuaMetaObjectBinding</a></div>
+    <div class="level2"><span class="xref">MongoClient</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_MetaTableTypeId">LuaMetaObjectBinding.MetaTableTypeId</a>
+    </div>
+    <div>
+      <a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_Reference">LuaMetaObjectBinding.Reference</a>
+    </div>
+    <div>
+      <a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_lua">LuaMetaObjectBinding.lua</a>
+    </div>
+    <div>
+      <a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_Index_System_String_">LuaMetaObjectBinding.Index(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_NewIndex_System_String_GmodMongoDb_Binding_LuaReference_">LuaMetaObjectBinding.NewIndex(String, LuaReference)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="GmodMongoDb.html">GmodMongoDb</a></h6>
+  <h6><strong>Assembly</strong>: GmodMongoDb.dll</h6>
+  <h5 id="GmodMongoDb_MongoClient_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMetaTable(&quot;MongoClient&quot;)]
+public class MongoClient : LuaMetaObjectBinding, IDisposable</code></pre>
+  </div>
+  <h5 id="GmodMongoDb_MongoClient_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>In Lua you can get a client by using <a class="xref" href="GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_Constructor_GmodNET_API_ILua_System_String_">Constructor(ILua, String)</a></p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient__ctor_GmodNET_API_ILua_MongoDB_Driver_IMongoClient_.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient.%23ctor(GmodNET.API.ILua%2CMongoDB.Driver.IMongoClient)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L26">View Source</a>
+  </span>
+  <a id="GmodMongoDb_MongoClient__ctor_" data-uid="GmodMongoDb.MongoClient.#ctor*"></a>
+  <h4 id="GmodMongoDb_MongoClient__ctor_GmodNET_API_ILua_MongoDB_Driver_IMongoClient_" data-uid="GmodMongoDb.MongoClient.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoClient)">MongoClient(ILua, IMongoClient)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MongoClient(ILua lua, IMongoClient client)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">MongoDB.Driver.IMongoClient</span></td>
+        <td><span class="parametername">client</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient_Constructor_GmodNET_API_ILua_System_String_.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient.Constructor(GmodNET.API.ILua%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L53">View Source</a>
+  </span>
+  <a id="GmodMongoDb_MongoClient_Constructor_" data-uid="GmodMongoDb.MongoClient.Constructor*"></a>
+  <h4 id="GmodMongoDb_MongoClient_Constructor_GmodNET_API_ILua_System_String_" data-uid="GmodMongoDb.MongoClient.Constructor(GmodNET.API.ILua,System.String)">Constructor(ILua, String)</h4>
+  <div class="markdown level1 summary"><p>Initiates a new MongoClient. Only one MongoClient should exist and it can be reused for multiple databases.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null, IsConstructor = true)]
+public static MongoClient Constructor(ILua lua, string connectionString)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">connectionString</span></td>
+        <td><p>The connection string with connection information</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.MongoClient.html">MongoClient</a></td>
+        <td><p>The MongoClient which will interface with database</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="GmodMongoDb_MongoClient_Constructor_GmodNET_API_ILua_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p><a href="mongodb.github.io/mongo-csharp-driver/2.2/reference/driver/connecting/#mongo-client">View the relevant .NET MongoDB Driver documentation</a></p>
+</div>
+  <h5 id="GmodMongoDb_MongoClient_Constructor_GmodNET_API_ILua_System_String__examples">Examples</h5>
+  <p>Example how to call this method from Lua in order to connect to a database.</p>
+<pre><code class="lang-Lua">client = MongoClient(&quot;mongodb://username_here:password_here@127.0.0.1:27017/database_here?retryWrites=true&amp;w=majority&quot;)</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient_Dispose.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L78">View Source</a>
+  </span>
+  <a id="GmodMongoDb_MongoClient_Dispose_" data-uid="GmodMongoDb.MongoClient.Dispose*"></a>
+  <h4 id="GmodMongoDb_MongoClient_Dispose" data-uid="GmodMongoDb.MongoClient.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Disposes the MongoDB client connection</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient_DropDatabase_System_String_.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient.DropDatabase(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L88">View Source</a>
+  </span>
+  <a id="GmodMongoDb_MongoClient_DropDatabase_" data-uid="GmodMongoDb.MongoClient.DropDatabase*"></a>
+  <h4 id="GmodMongoDb_MongoClient_DropDatabase_System_String_" data-uid="GmodMongoDb.MongoClient.DropDatabase(System.String)">DropDatabase(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null)]
+public void DropDatabase(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient_DropDatabaseAsync_System_String_GmodMongoDb_Binding_LuaFunctionReference_.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient.DropDatabaseAsync(System.String%2CGmodMongoDb.Binding.LuaFunctionReference)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L92">View Source</a>
+  </span>
+  <a id="GmodMongoDb_MongoClient_DropDatabaseAsync_" data-uid="GmodMongoDb.MongoClient.DropDatabaseAsync*"></a>
+  <h4 id="GmodMongoDb_MongoClient_DropDatabaseAsync_System_String_GmodMongoDb_Binding_LuaFunctionReference_" data-uid="GmodMongoDb.MongoClient.DropDatabaseAsync(System.String,GmodMongoDb.Binding.LuaFunctionReference)">DropDatabaseAsync(String, LuaFunctionReference)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null)]
+public async void DropDatabaseAsync(string name, LuaFunctionReference callback = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.Binding.LuaFunctionReference.html">LuaFunctionReference</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient_Equals_GmodMongoDb_MongoClient_.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient.Equals(GmodMongoDb.MongoClient)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L135">View Source</a>
+  </span>
+  <a id="GmodMongoDb_MongoClient_Equals_" data-uid="GmodMongoDb.MongoClient.Equals*"></a>
+  <h4 id="GmodMongoDb_MongoClient_Equals_GmodMongoDb_MongoClient_" data-uid="GmodMongoDb.MongoClient.Equals(GmodMongoDb.MongoClient)">Equals(MongoClient)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(&quot;__eq&quot;)]
+public bool Equals(MongoClient other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.MongoClient.html">MongoClient</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient_GetDatabase_System_String_.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient.GetDatabase(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L131">View Source</a>
+  </span>
+  <a id="GmodMongoDb_MongoClient_GetDatabase_" data-uid="GmodMongoDb.MongoClient.GetDatabase*"></a>
+  <h4 id="GmodMongoDb_MongoClient_GetDatabase_System_String_" data-uid="GmodMongoDb.MongoClient.GetDatabase(System.String)">GetDatabase(String)</h4>
+  <div class="markdown level1 summary"><p>Queries the connection for the database object identified by the given name. If it does not exist it will create it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null)]
+public MongoDatabase GetDatabase(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The database name</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.MongoDatabase.html">MongoDatabase</a></td>
+        <td><p>The database object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="GmodMongoDb_MongoClient_GetDatabase_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p><a href="mongodb.github.io/mongo-csharp-driver/2.2/reference/driver/connecting/#mongo-database">View the relevant .NET MongoDB Driver documentation</a></p>
+</div>
+  <h5 id="GmodMongoDb_MongoClient_GetDatabase_System_String__examples">Examples</h5>
+  <p>In Lua you can get the database by asking a <a class="xref" href="GmodMongoDb.MongoClient.html">MongoClient</a> for it:</p>
+<pre><code class="lang-Lua">local database = client:GetDatabase(&quot;database_name&quot;)</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient_ListDatabaseNames.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient.ListDatabaseNames%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L101">View Source</a>
+  </span>
+  <a id="GmodMongoDb_MongoClient_ListDatabaseNames_" data-uid="GmodMongoDb.MongoClient.ListDatabaseNames*"></a>
+  <h4 id="GmodMongoDb_MongoClient_ListDatabaseNames" data-uid="GmodMongoDb.MongoClient.ListDatabaseNames">ListDatabaseNames()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null)]
+public List&lt;string&gt; ListDatabaseNames()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient_ListDatabaseNamesAsync_GmodMongoDb_Binding_LuaFunctionReference_.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient.ListDatabaseNamesAsync(GmodMongoDb.Binding.LuaFunctionReference)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L105">View Source</a>
+  </span>
+  <a id="GmodMongoDb_MongoClient_ListDatabaseNamesAsync_" data-uid="GmodMongoDb.MongoClient.ListDatabaseNamesAsync*"></a>
+  <h4 id="GmodMongoDb_MongoClient_ListDatabaseNamesAsync_GmodMongoDb_Binding_LuaFunctionReference_" data-uid="GmodMongoDb.MongoClient.ListDatabaseNamesAsync(GmodMongoDb.Binding.LuaFunctionReference)">ListDatabaseNamesAsync(LuaFunctionReference)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null)]
+public async void ListDatabaseNamesAsync(LuaFunctionReference callback)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.Binding.LuaFunctionReference.html">LuaFunctionReference</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient_ListDatabases.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient.ListDatabases%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L109">View Source</a>
+  </span>
+  <a id="GmodMongoDb_MongoClient_ListDatabases_" data-uid="GmodMongoDb.MongoClient.ListDatabases*"></a>
+  <h4 id="GmodMongoDb_MongoClient_ListDatabases" data-uid="GmodMongoDb.MongoClient.ListDatabases">ListDatabases()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null)]
+public List&lt;BsonDocument&gt; ListDatabases()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<span class="xref">MongoDB.Bson.BsonDocument</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient_ListDatabasesAsync_GmodMongoDb_Binding_LuaFunctionReference_.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient.ListDatabasesAsync(GmodMongoDb.Binding.LuaFunctionReference)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L113">View Source</a>
+  </span>
+  <a id="GmodMongoDb_MongoClient_ListDatabasesAsync_" data-uid="GmodMongoDb.MongoClient.ListDatabasesAsync*"></a>
+  <h4 id="GmodMongoDb_MongoClient_ListDatabasesAsync_GmodMongoDb_Binding_LuaFunctionReference_" data-uid="GmodMongoDb.MongoClient.ListDatabasesAsync(GmodMongoDb.Binding.LuaFunctionReference)">ListDatabasesAsync(LuaFunctionReference)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null)]
+public async void ListDatabasesAsync(LuaFunctionReference callback)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.Binding.LuaFunctionReference.html">LuaFunctionReference</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_MongoClient.md&amp;value=---%0Auid%3A%20GmodMongoDb.MongoClient%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/MongoClient.cs/#L20" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

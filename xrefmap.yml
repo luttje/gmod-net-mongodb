@@ -1,0 +1,1546 @@
+### YamlMime:XRefMap
+sorted: true
+references:
+- uid: GmodMongoDb
+  name: GmodMongoDb
+  href: api/GmodMongoDb.html
+  commentId: N:GmodMongoDb
+  fullName: GmodMongoDb
+  nameWithType: GmodMongoDb
+- uid: GmodMongoDb.Binding
+  name: GmodMongoDb.Binding
+  href: api/GmodMongoDb.Binding.html
+  commentId: N:GmodMongoDb.Binding
+  fullName: GmodMongoDb.Binding
+  nameWithType: GmodMongoDb.Binding
+- uid: GmodMongoDb.Binding.Annotating
+  name: GmodMongoDb.Binding.Annotating
+  href: api/GmodMongoDb.Binding.Annotating.html
+  commentId: N:GmodMongoDb.Binding.Annotating
+  fullName: GmodMongoDb.Binding.Annotating
+  nameWithType: GmodMongoDb.Binding.Annotating
+- uid: GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute
+  name: LuaMetaTableAttribute
+  href: api/GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.html
+  commentId: T:GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute
+  fullName: GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute
+  nameWithType: LuaMetaTableAttribute
+- uid: GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.#ctor(System.String)
+  name: LuaMetaTableAttribute(String)
+  href: api/GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.html#GmodMongoDb_Binding_Annotating_LuaMetaTableAttribute__ctor_System_String_
+  commentId: M:GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.#ctor(System.String)
+  fullName: GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.LuaMetaTableAttribute(System.String)
+  nameWithType: LuaMetaTableAttribute.LuaMetaTableAttribute(String)
+- uid: GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.#ctor*
+  name: LuaMetaTableAttribute
+  href: api/GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.html#GmodMongoDb_Binding_Annotating_LuaMetaTableAttribute__ctor_
+  commentId: Overload:GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.LuaMetaTableAttribute
+  nameWithType: LuaMetaTableAttribute.LuaMetaTableAttribute
+- uid: GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.Name
+  name: Name
+  href: api/GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.html#GmodMongoDb_Binding_Annotating_LuaMetaTableAttribute_Name
+  commentId: P:GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.Name
+  fullName: GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.Name
+  nameWithType: LuaMetaTableAttribute.Name
+- uid: GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.Name*
+  name: Name
+  href: api/GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.html#GmodMongoDb_Binding_Annotating_LuaMetaTableAttribute_Name_
+  commentId: Overload:GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.Name
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.Name
+  nameWithType: LuaMetaTableAttribute.Name
+- uid: GmodMongoDb.Binding.Annotating.LuaMethodAttribute
+  name: LuaMethodAttribute
+  href: api/GmodMongoDb.Binding.Annotating.LuaMethodAttribute.html
+  commentId: T:GmodMongoDb.Binding.Annotating.LuaMethodAttribute
+  fullName: GmodMongoDb.Binding.Annotating.LuaMethodAttribute
+  nameWithType: LuaMethodAttribute
+- uid: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.#ctor(System.String)
+  name: LuaMethodAttribute(String)
+  href: api/GmodMongoDb.Binding.Annotating.LuaMethodAttribute.html#GmodMongoDb_Binding_Annotating_LuaMethodAttribute__ctor_System_String_
+  commentId: M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.#ctor(System.String)
+  fullName: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.LuaMethodAttribute(System.String)
+  nameWithType: LuaMethodAttribute.LuaMethodAttribute(String)
+- uid: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.#ctor*
+  name: LuaMethodAttribute
+  href: api/GmodMongoDb.Binding.Annotating.LuaMethodAttribute.html#GmodMongoDb_Binding_Annotating_LuaMethodAttribute__ctor_
+  commentId: Overload:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.LuaMethodAttribute
+  nameWithType: LuaMethodAttribute.LuaMethodAttribute
+- uid: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.IsConstructor
+  name: IsConstructor
+  href: api/GmodMongoDb.Binding.Annotating.LuaMethodAttribute.html#GmodMongoDb_Binding_Annotating_LuaMethodAttribute_IsConstructor
+  commentId: P:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.IsConstructor
+  fullName: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.IsConstructor
+  nameWithType: LuaMethodAttribute.IsConstructor
+- uid: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.IsConstructor*
+  name: IsConstructor
+  href: api/GmodMongoDb.Binding.Annotating.LuaMethodAttribute.html#GmodMongoDb_Binding_Annotating_LuaMethodAttribute_IsConstructor_
+  commentId: Overload:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.IsConstructor
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.IsConstructor
+  nameWithType: LuaMethodAttribute.IsConstructor
+- uid: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.Name
+  name: Name
+  href: api/GmodMongoDb.Binding.Annotating.LuaMethodAttribute.html#GmodMongoDb_Binding_Annotating_LuaMethodAttribute_Name
+  commentId: P:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.Name
+  fullName: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.Name
+  nameWithType: LuaMethodAttribute.Name
+- uid: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.Name*
+  name: Name
+  href: api/GmodMongoDb.Binding.Annotating.LuaMethodAttribute.html#GmodMongoDb_Binding_Annotating_LuaMethodAttribute_Name_
+  commentId: Overload:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.Name
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.Name
+  nameWithType: LuaMethodAttribute.Name
+- uid: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.PushFunction(GmodNET.API.ILua,System.Reflection.MethodInfo,System.Nullable{System.Int32},System.Boolean)
+  name: PushFunction(ILua, MethodInfo, Nullable<Int32>, Boolean)
+  href: api/GmodMongoDb.Binding.Annotating.LuaMethodAttribute.html#GmodMongoDb_Binding_Annotating_LuaMethodAttribute_PushFunction_GmodNET_API_ILua_System_Reflection_MethodInfo_System_Nullable_System_Int32__System_Boolean_
+  commentId: M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.PushFunction(GmodNET.API.ILua,System.Reflection.MethodInfo,System.Nullable{System.Int32},System.Boolean)
+  name.vb: PushFunction(ILua, MethodInfo, Nullable(Of Int32), Boolean)
+  fullName: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.PushFunction(GmodNET.API.ILua, System.Reflection.MethodInfo, System.Nullable<System.Int32>, System.Boolean)
+  fullName.vb: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.PushFunction(GmodNET.API.ILua, System.Reflection.MethodInfo, System.Nullable(Of System.Int32), System.Boolean)
+  nameWithType: LuaMethodAttribute.PushFunction(ILua, MethodInfo, Nullable<Int32>, Boolean)
+  nameWithType.vb: LuaMethodAttribute.PushFunction(ILua, MethodInfo, Nullable(Of Int32), Boolean)
+- uid: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.PushFunction*
+  name: PushFunction
+  href: api/GmodMongoDb.Binding.Annotating.LuaMethodAttribute.html#GmodMongoDb_Binding_Annotating_LuaMethodAttribute_PushFunction_
+  commentId: Overload:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.PushFunction
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.Annotating.LuaMethodAttribute.PushFunction
+  nameWithType: LuaMethodAttribute.PushFunction
+- uid: GmodMongoDb.Binding.Annotating.LuaPropertyAttribute
+  name: LuaPropertyAttribute
+  href: api/GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.html
+  commentId: T:GmodMongoDb.Binding.Annotating.LuaPropertyAttribute
+  fullName: GmodMongoDb.Binding.Annotating.LuaPropertyAttribute
+  nameWithType: LuaPropertyAttribute
+- uid: GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.#ctor(System.String)
+  name: LuaPropertyAttribute(String)
+  href: api/GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.html#GmodMongoDb_Binding_Annotating_LuaPropertyAttribute__ctor_System_String_
+  commentId: M:GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.#ctor(System.String)
+  fullName: GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.LuaPropertyAttribute(System.String)
+  nameWithType: LuaPropertyAttribute.LuaPropertyAttribute(String)
+- uid: GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.#ctor*
+  name: LuaPropertyAttribute
+  href: api/GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.html#GmodMongoDb_Binding_Annotating_LuaPropertyAttribute__ctor_
+  commentId: Overload:GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.LuaPropertyAttribute
+  nameWithType: LuaPropertyAttribute.LuaPropertyAttribute
+- uid: GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.Name
+  name: Name
+  href: api/GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.html#GmodMongoDb_Binding_Annotating_LuaPropertyAttribute_Name
+  commentId: P:GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.Name
+  fullName: GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.Name
+  nameWithType: LuaPropertyAttribute.Name
+- uid: GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.Name*
+  name: Name
+  href: api/GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.html#GmodMongoDb_Binding_Annotating_LuaPropertyAttribute_Name_
+  commentId: Overload:GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.Name
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.Name
+  nameWithType: LuaPropertyAttribute.Name
+- uid: GmodMongoDb.Binding.Annotating.PropertyMethodNames
+  name: PropertyMethodNames
+  href: api/GmodMongoDb.Binding.Annotating.PropertyMethodNames.html
+  commentId: T:GmodMongoDb.Binding.Annotating.PropertyMethodNames
+  fullName: GmodMongoDb.Binding.Annotating.PropertyMethodNames
+  nameWithType: PropertyMethodNames
+- uid: GmodMongoDb.Binding.Annotating.PropertyMethodNames.Getter
+  name: Getter
+  href: api/GmodMongoDb.Binding.Annotating.PropertyMethodNames.html#GmodMongoDb_Binding_Annotating_PropertyMethodNames_Getter
+  commentId: F:GmodMongoDb.Binding.Annotating.PropertyMethodNames.Getter
+  fullName: GmodMongoDb.Binding.Annotating.PropertyMethodNames.Getter
+  nameWithType: PropertyMethodNames.Getter
+- uid: GmodMongoDb.Binding.Annotating.PropertyMethodNames.Setter
+  name: Setter
+  href: api/GmodMongoDb.Binding.Annotating.PropertyMethodNames.html#GmodMongoDb_Binding_Annotating_PropertyMethodNames_Setter
+  commentId: F:GmodMongoDb.Binding.Annotating.PropertyMethodNames.Setter
+  fullName: GmodMongoDb.Binding.Annotating.PropertyMethodNames.Setter
+  nameWithType: PropertyMethodNames.Setter
+- uid: GmodMongoDb.Binding.DataTransforming
+  name: GmodMongoDb.Binding.DataTransforming
+  href: api/GmodMongoDb.Binding.DataTransforming.html
+  commentId: N:GmodMongoDb.Binding.DataTransforming
+  fullName: GmodMongoDb.Binding.DataTransforming
+  nameWithType: GmodMongoDb.Binding.DataTransforming
+- uid: GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer
+  name: BaseLuaValueTransformer
+  href: api/GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer.html
+  commentId: T:GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer
+  fullName: GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer
+  nameWithType: BaseLuaValueTransformer
+- uid: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults
+  name: BetweenObjectArrayAndMultipleResults
+  href: api/GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.html
+  commentId: T:GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults
+  fullName: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults
+  nameWithType: BetweenObjectArrayAndMultipleResults
+- uid: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.Convert(GmodNET.API.ILua,System.Object[])
+  name: Convert(ILua, Object[])
+  href: api/GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.html#GmodMongoDb_Binding_DataTransforming_BetweenObjectArrayAndMultipleResults_Convert_GmodNET_API_ILua_System_Object___
+  commentId: M:GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.Convert(GmodNET.API.ILua,System.Object[])
+  name.vb: Convert(ILua, Object())
+  fullName: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.Convert(GmodNET.API.ILua, System.Object[])
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.Convert(GmodNET.API.ILua, System.Object())
+  nameWithType: BetweenObjectArrayAndMultipleResults.Convert(ILua, Object[])
+  nameWithType.vb: BetweenObjectArrayAndMultipleResults.Convert(ILua, Object())
+- uid: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.Convert*
+  name: Convert
+  href: api/GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.html#GmodMongoDb_Binding_DataTransforming_BetweenObjectArrayAndMultipleResults_Convert_
+  commentId: Overload:GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.Convert
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.Convert
+  nameWithType: BetweenObjectArrayAndMultipleResults.Convert
+- uid: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.TryParse(GmodNET.API.ILua,System.Object[]@,System.Int32,System.Boolean)
+  name: TryParse(ILua, out Object[], Int32, Boolean)
+  href: api/GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.html#GmodMongoDb_Binding_DataTransforming_BetweenObjectArrayAndMultipleResults_TryParse_GmodNET_API_ILua_System_Object____System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.TryParse(GmodNET.API.ILua,System.Object[]@,System.Int32,System.Boolean)
+  name.vb: TryParse(ILua, ByRef Object(), Int32, Boolean)
+  fullName: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.TryParse(GmodNET.API.ILua, out System.Object[], System.Int32, System.Boolean)
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.TryParse(GmodNET.API.ILua, ByRef System.Object(), System.Int32, System.Boolean)
+  nameWithType: BetweenObjectArrayAndMultipleResults.TryParse(ILua, out Object[], Int32, Boolean)
+  nameWithType.vb: BetweenObjectArrayAndMultipleResults.TryParse(ILua, ByRef Object(), Int32, Boolean)
+- uid: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.TryParse*
+  name: TryParse
+  href: api/GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.html#GmodMongoDb_Binding_DataTransforming_BetweenObjectArrayAndMultipleResults_TryParse_
+  commentId: Overload:GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.TryParse
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.TryParse
+  nameWithType: BetweenObjectArrayAndMultipleResults.TryParse
+- uid: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable
+  name: BetweenStringListAndTable
+  href: api/GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.html
+  commentId: T:GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable
+  fullName: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable
+  nameWithType: BetweenStringListAndTable
+- uid: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.Convert(GmodNET.API.ILua,System.Collections.Generic.List{System.String})
+  name: Convert(ILua, List<String>)
+  href: api/GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.html#GmodMongoDb_Binding_DataTransforming_BetweenStringListAndTable_Convert_GmodNET_API_ILua_System_Collections_Generic_List_System_String__
+  commentId: M:GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.Convert(GmodNET.API.ILua,System.Collections.Generic.List{System.String})
+  name.vb: Convert(ILua, List(Of String))
+  fullName: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.Convert(GmodNET.API.ILua, System.Collections.Generic.List<System.String>)
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.Convert(GmodNET.API.ILua, System.Collections.Generic.List(Of System.String))
+  nameWithType: BetweenStringListAndTable.Convert(ILua, List<String>)
+  nameWithType.vb: BetweenStringListAndTable.Convert(ILua, List(Of String))
+- uid: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.Convert*
+  name: Convert
+  href: api/GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.html#GmodMongoDb_Binding_DataTransforming_BetweenStringListAndTable_Convert_
+  commentId: Overload:GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.Convert
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.Convert
+  nameWithType: BetweenStringListAndTable.Convert
+- uid: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.TryParse(GmodNET.API.ILua,System.Collections.Generic.List{System.String}@,System.Int32,System.Boolean)
+  name: TryParse(ILua, out List<String>, Int32, Boolean)
+  href: api/GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.html#GmodMongoDb_Binding_DataTransforming_BetweenStringListAndTable_TryParse_GmodNET_API_ILua_System_Collections_Generic_List_System_String___System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.TryParse(GmodNET.API.ILua,System.Collections.Generic.List{System.String}@,System.Int32,System.Boolean)
+  name.vb: TryParse(ILua, ByRef List(Of String), Int32, Boolean)
+  fullName: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.TryParse(GmodNET.API.ILua, out System.Collections.Generic.List<System.String>, System.Int32, System.Boolean)
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.TryParse(GmodNET.API.ILua, ByRef System.Collections.Generic.List(Of System.String), System.Int32, System.Boolean)
+  nameWithType: BetweenStringListAndTable.TryParse(ILua, out List<String>, Int32, Boolean)
+  nameWithType.vb: BetweenStringListAndTable.TryParse(ILua, ByRef List(Of String), Int32, Boolean)
+- uid: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.TryParse*
+  name: TryParse
+  href: api/GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.html#GmodMongoDb_Binding_DataTransforming_BetweenStringListAndTable_TryParse_
+  commentId: Overload:GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.TryParse
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.TryParse
+  nameWithType: BetweenStringListAndTable.TryParse
+- uid: GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions
+  name: LuaTransformerExtensions
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.html
+  commentId: T:GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions
+  nameWithType: LuaTransformerExtensions
+- uid: GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerConvert(GmodNET.API.ILua,System.Type,System.Object)
+  name: ApplyTransformerConvert(ILua, Type, Object)
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.html#GmodMongoDb_Binding_DataTransforming_LuaTransformerExtensions_ApplyTransformerConvert_GmodNET_API_ILua_System_Type_System_Object_
+  commentId: M:GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerConvert(GmodNET.API.ILua,System.Type,System.Object)
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerConvert(GmodNET.API.ILua, System.Type, System.Object)
+  nameWithType: LuaTransformerExtensions.ApplyTransformerConvert(ILua, Type, Object)
+- uid: GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerConvert*
+  name: ApplyTransformerConvert
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.html#GmodMongoDb_Binding_DataTransforming_LuaTransformerExtensions_ApplyTransformerConvert_
+  commentId: Overload:GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerConvert
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerConvert
+  nameWithType: LuaTransformerExtensions.ApplyTransformerConvert
+- uid: GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerParse(GmodNET.API.ILua,System.Type,System.Object@,System.Int32,System.Boolean)
+  name: ApplyTransformerParse(ILua, Type, out Object, Int32, Boolean)
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.html#GmodMongoDb_Binding_DataTransforming_LuaTransformerExtensions_ApplyTransformerParse_GmodNET_API_ILua_System_Type_System_Object__System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerParse(GmodNET.API.ILua,System.Type,System.Object@,System.Int32,System.Boolean)
+  name.vb: ApplyTransformerParse(ILua, Type, ByRef Object, Int32, Boolean)
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerParse(GmodNET.API.ILua, System.Type, out System.Object, System.Int32, System.Boolean)
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerParse(GmodNET.API.ILua, System.Type, ByRef System.Object, System.Int32, System.Boolean)
+  nameWithType: LuaTransformerExtensions.ApplyTransformerParse(ILua, Type, out Object, Int32, Boolean)
+  nameWithType.vb: LuaTransformerExtensions.ApplyTransformerParse(ILua, Type, ByRef Object, Int32, Boolean)
+- uid: GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerParse*
+  name: ApplyTransformerParse
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.html#GmodMongoDb_Binding_DataTransforming_LuaTransformerExtensions_ApplyTransformerParse_
+  commentId: Overload:GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerParse
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.ApplyTransformerParse
+  nameWithType: LuaTransformerExtensions.ApplyTransformerParse
+- uid: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1
+  name: LuaValueTransformer<TTarget>
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaValueTransformer-1.html
+  commentId: T:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1
+  name.vb: LuaValueTransformer(Of TTarget)
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer<TTarget>
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer(Of TTarget)
+  nameWithType: LuaValueTransformer<TTarget>
+  nameWithType.vb: LuaValueTransformer(Of TTarget)
+- uid: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.#ctor
+  name: LuaValueTransformer()
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaValueTransformer-1.html#GmodMongoDb_Binding_DataTransforming_LuaValueTransformer_1__ctor
+  commentId: M:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.#ctor
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer<TTarget>.LuaValueTransformer()
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer(Of TTarget).LuaValueTransformer()
+  nameWithType: LuaValueTransformer<TTarget>.LuaValueTransformer()
+  nameWithType.vb: LuaValueTransformer(Of TTarget).LuaValueTransformer()
+- uid: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.#ctor*
+  name: LuaValueTransformer
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaValueTransformer-1.html#GmodMongoDb_Binding_DataTransforming_LuaValueTransformer_1__ctor_
+  commentId: Overload:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer<TTarget>.LuaValueTransformer
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer(Of TTarget).LuaValueTransformer
+  nameWithType: LuaValueTransformer<TTarget>.LuaValueTransformer
+  nameWithType.vb: LuaValueTransformer(Of TTarget).LuaValueTransformer
+- uid: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.Convert(GmodNET.API.ILua,`0)
+  name: Convert(ILua, TTarget)
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaValueTransformer-1.html#GmodMongoDb_Binding_DataTransforming_LuaValueTransformer_1_Convert_GmodNET_API_ILua__0_
+  commentId: M:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.Convert(GmodNET.API.ILua,`0)
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer<TTarget>.Convert(GmodNET.API.ILua, TTarget)
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer(Of TTarget).Convert(GmodNET.API.ILua, TTarget)
+  nameWithType: LuaValueTransformer<TTarget>.Convert(ILua, TTarget)
+  nameWithType.vb: LuaValueTransformer(Of TTarget).Convert(ILua, TTarget)
+- uid: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.Convert*
+  name: Convert
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaValueTransformer-1.html#GmodMongoDb_Binding_DataTransforming_LuaValueTransformer_1_Convert_
+  commentId: Overload:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.Convert
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer<TTarget>.Convert
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer(Of TTarget).Convert
+  nameWithType: LuaValueTransformer<TTarget>.Convert
+  nameWithType.vb: LuaValueTransformer(Of TTarget).Convert
+- uid: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.TryParse(GmodNET.API.ILua,`0@,System.Int32,System.Boolean)
+  name: TryParse(ILua, out TTarget, Int32, Boolean)
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaValueTransformer-1.html#GmodMongoDb_Binding_DataTransforming_LuaValueTransformer_1_TryParse_GmodNET_API_ILua__0__System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.TryParse(GmodNET.API.ILua,`0@,System.Int32,System.Boolean)
+  name.vb: TryParse(ILua, ByRef TTarget, Int32, Boolean)
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer<TTarget>.TryParse(GmodNET.API.ILua, out TTarget, System.Int32, System.Boolean)
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer(Of TTarget).TryParse(GmodNET.API.ILua, ByRef TTarget, System.Int32, System.Boolean)
+  nameWithType: LuaValueTransformer<TTarget>.TryParse(ILua, out TTarget, Int32, Boolean)
+  nameWithType.vb: LuaValueTransformer(Of TTarget).TryParse(ILua, ByRef TTarget, Int32, Boolean)
+- uid: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.TryParse*
+  name: TryParse
+  href: api/GmodMongoDb.Binding.DataTransforming.LuaValueTransformer-1.html#GmodMongoDb_Binding_DataTransforming_LuaValueTransformer_1_TryParse_
+  commentId: Overload:GmodMongoDb.Binding.DataTransforming.LuaValueTransformer`1.TryParse
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer<TTarget>.TryParse
+  fullName.vb: GmodMongoDb.Binding.DataTransforming.LuaValueTransformer(Of TTarget).TryParse
+  nameWithType: LuaValueTransformer<TTarget>.TryParse
+  nameWithType.vb: LuaValueTransformer(Of TTarget).TryParse
+- uid: GmodMongoDb.Binding.LuaExtensions
+  name: LuaExtensions
+  href: api/GmodMongoDb.Binding.LuaExtensions.html
+  commentId: T:GmodMongoDb.Binding.LuaExtensions
+  fullName: GmodMongoDb.Binding.LuaExtensions
+  nameWithType: LuaExtensions
+- uid: GmodMongoDb.Binding.LuaExtensions.GetStack(GmodNET.API.ILua)
+  name: GetStack(ILua)
+  href: api/GmodMongoDb.Binding.LuaExtensions.html#GmodMongoDb_Binding_LuaExtensions_GetStack_GmodNET_API_ILua_
+  commentId: M:GmodMongoDb.Binding.LuaExtensions.GetStack(GmodNET.API.ILua)
+  fullName: GmodMongoDb.Binding.LuaExtensions.GetStack(GmodNET.API.ILua)
+  nameWithType: LuaExtensions.GetStack(ILua)
+- uid: GmodMongoDb.Binding.LuaExtensions.GetStack*
+  name: GetStack
+  href: api/GmodMongoDb.Binding.LuaExtensions.html#GmodMongoDb_Binding_LuaExtensions_GetStack_
+  commentId: Overload:GmodMongoDb.Binding.LuaExtensions.GetStack
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaExtensions.GetStack
+  nameWithType: LuaExtensions.GetStack
+- uid: GmodMongoDb.Binding.LuaExtensions.Print(GmodNET.API.ILua,System.String)
+  name: Print(ILua, String)
+  href: api/GmodMongoDb.Binding.LuaExtensions.html#GmodMongoDb_Binding_LuaExtensions_Print_GmodNET_API_ILua_System_String_
+  commentId: M:GmodMongoDb.Binding.LuaExtensions.Print(GmodNET.API.ILua,System.String)
+  fullName: GmodMongoDb.Binding.LuaExtensions.Print(GmodNET.API.ILua, System.String)
+  nameWithType: LuaExtensions.Print(ILua, String)
+- uid: GmodMongoDb.Binding.LuaExtensions.Print*
+  name: Print
+  href: api/GmodMongoDb.Binding.LuaExtensions.html#GmodMongoDb_Binding_LuaExtensions_Print_
+  commentId: Overload:GmodMongoDb.Binding.LuaExtensions.Print
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaExtensions.Print
+  nameWithType: LuaExtensions.Print
+- uid: GmodMongoDb.Binding.LuaExtensions.PrintFromAsync(GmodNET.API.ILua,System.String)
+  name: PrintFromAsync(ILua, String)
+  href: api/GmodMongoDb.Binding.LuaExtensions.html#GmodMongoDb_Binding_LuaExtensions_PrintFromAsync_GmodNET_API_ILua_System_String_
+  commentId: M:GmodMongoDb.Binding.LuaExtensions.PrintFromAsync(GmodNET.API.ILua,System.String)
+  fullName: GmodMongoDb.Binding.LuaExtensions.PrintFromAsync(GmodNET.API.ILua, System.String)
+  nameWithType: LuaExtensions.PrintFromAsync(ILua, String)
+- uid: GmodMongoDb.Binding.LuaExtensions.PrintFromAsync*
+  name: PrintFromAsync
+  href: api/GmodMongoDb.Binding.LuaExtensions.html#GmodMongoDb_Binding_LuaExtensions_PrintFromAsync_
+  commentId: Overload:GmodMongoDb.Binding.LuaExtensions.PrintFromAsync
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaExtensions.PrintFromAsync
+  nameWithType: LuaExtensions.PrintFromAsync
+- uid: GmodMongoDb.Binding.LuaFunctionReference
+  name: LuaFunctionReference
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html
+  commentId: T:GmodMongoDb.Binding.LuaFunctionReference
+  fullName: GmodMongoDb.Binding.LuaFunctionReference
+  nameWithType: LuaFunctionReference
+- uid: GmodMongoDb.Binding.LuaFunctionReference.#ctor(GmodNET.API.ILua,System.Int32,System.Boolean)
+  name: LuaFunctionReference(ILua, Int32, Boolean)
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference__ctor_GmodNET_API_ILua_System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.Binding.LuaFunctionReference.#ctor(GmodNET.API.ILua,System.Int32,System.Boolean)
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.LuaFunctionReference(GmodNET.API.ILua, System.Int32, System.Boolean)
+  nameWithType: LuaFunctionReference.LuaFunctionReference(ILua, Int32, Boolean)
+- uid: GmodMongoDb.Binding.LuaFunctionReference.#ctor*
+  name: LuaFunctionReference
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference__ctor_
+  commentId: Overload:GmodMongoDb.Binding.LuaFunctionReference.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.LuaFunctionReference
+  nameWithType: LuaFunctionReference.LuaFunctionReference
+- uid: GmodMongoDb.Binding.LuaFunctionReference.Call(System.Int32,System.Object[])
+  name: Call(Int32, Object[])
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference_Call_System_Int32_System_Object___
+  commentId: M:GmodMongoDb.Binding.LuaFunctionReference.Call(System.Int32,System.Object[])
+  name.vb: Call(Int32, Object())
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.Call(System.Int32, System.Object[])
+  fullName.vb: GmodMongoDb.Binding.LuaFunctionReference.Call(System.Int32, System.Object())
+  nameWithType: LuaFunctionReference.Call(Int32, Object[])
+  nameWithType.vb: LuaFunctionReference.Call(Int32, Object())
+- uid: GmodMongoDb.Binding.LuaFunctionReference.Call(System.Object[])
+  name: Call(Object[])
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference_Call_System_Object___
+  commentId: M:GmodMongoDb.Binding.LuaFunctionReference.Call(System.Object[])
+  name.vb: Call(Object())
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.Call(System.Object[])
+  fullName.vb: GmodMongoDb.Binding.LuaFunctionReference.Call(System.Object())
+  nameWithType: LuaFunctionReference.Call(Object[])
+  nameWithType.vb: LuaFunctionReference.Call(Object())
+- uid: GmodMongoDb.Binding.LuaFunctionReference.Call*
+  name: Call
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference_Call_
+  commentId: Overload:GmodMongoDb.Binding.LuaFunctionReference.Call
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.Call
+  nameWithType: LuaFunctionReference.Call
+- uid: GmodMongoDb.Binding.LuaFunctionReference.Call``1(System.Object[])
+  name: Call<T>(Object[])
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference_Call__1_System_Object___
+  commentId: M:GmodMongoDb.Binding.LuaFunctionReference.Call``1(System.Object[])
+  name.vb: Call(Of T)(Object())
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.Call<T>(System.Object[])
+  fullName.vb: GmodMongoDb.Binding.LuaFunctionReference.Call(Of T)(System.Object())
+  nameWithType: LuaFunctionReference.Call<T>(Object[])
+  nameWithType.vb: LuaFunctionReference.Call(Of T)(Object())
+- uid: GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync(System.Int32,System.Object[])
+  name: CallFromAsync(Int32, Object[])
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference_CallFromAsync_System_Int32_System_Object___
+  commentId: M:GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync(System.Int32,System.Object[])
+  name.vb: CallFromAsync(Int32, Object())
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync(System.Int32, System.Object[])
+  fullName.vb: GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync(System.Int32, System.Object())
+  nameWithType: LuaFunctionReference.CallFromAsync(Int32, Object[])
+  nameWithType.vb: LuaFunctionReference.CallFromAsync(Int32, Object())
+- uid: GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync(System.Object[])
+  name: CallFromAsync(Object[])
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference_CallFromAsync_System_Object___
+  commentId: M:GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync(System.Object[])
+  name.vb: CallFromAsync(Object())
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync(System.Object[])
+  fullName.vb: GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync(System.Object())
+  nameWithType: LuaFunctionReference.CallFromAsync(Object[])
+  nameWithType.vb: LuaFunctionReference.CallFromAsync(Object())
+- uid: GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync*
+  name: CallFromAsync
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference_CallFromAsync_
+  commentId: Overload:GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync
+  nameWithType: LuaFunctionReference.CallFromAsync
+- uid: GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync``1(System.Object[])
+  name: CallFromAsync<T>(Object[])
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference_CallFromAsync__1_System_Object___
+  commentId: M:GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync``1(System.Object[])
+  name.vb: CallFromAsync(Of T)(Object())
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync<T>(System.Object[])
+  fullName.vb: GmodMongoDb.Binding.LuaFunctionReference.CallFromAsync(Of T)(System.Object())
+  nameWithType: LuaFunctionReference.CallFromAsync<T>(Object[])
+  nameWithType.vb: LuaFunctionReference.CallFromAsync(Of T)(Object())
+- uid: GmodMongoDb.Binding.LuaFunctionReference.IsValid(System.Int32)
+  name: IsValid(Int32)
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference_IsValid_System_Int32_
+  commentId: M:GmodMongoDb.Binding.LuaFunctionReference.IsValid(System.Int32)
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.IsValid(System.Int32)
+  nameWithType: LuaFunctionReference.IsValid(Int32)
+- uid: GmodMongoDb.Binding.LuaFunctionReference.IsValid*
+  name: IsValid
+  href: api/GmodMongoDb.Binding.LuaFunctionReference.html#GmodMongoDb_Binding_LuaFunctionReference_IsValid_
+  commentId: Overload:GmodMongoDb.Binding.LuaFunctionReference.IsValid
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaFunctionReference.IsValid
+  nameWithType: LuaFunctionReference.IsValid
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding
+  name: LuaMetaObjectBinding
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html
+  commentId: T:GmodMongoDb.Binding.LuaMetaObjectBinding
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding
+  nameWithType: LuaMetaObjectBinding
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding.#ctor(GmodNET.API.ILua)
+  name: LuaMetaObjectBinding(ILua)
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding__ctor_GmodNET_API_ILua_
+  commentId: M:GmodMongoDb.Binding.LuaMetaObjectBinding.#ctor(GmodNET.API.ILua)
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding.LuaMetaObjectBinding(GmodNET.API.ILua)
+  nameWithType: LuaMetaObjectBinding.LuaMetaObjectBinding(ILua)
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding.#ctor*
+  name: LuaMetaObjectBinding
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding__ctor_
+  commentId: Overload:GmodMongoDb.Binding.LuaMetaObjectBinding.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding.LuaMetaObjectBinding
+  nameWithType: LuaMetaObjectBinding.LuaMetaObjectBinding
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding.Index(System.String)
+  name: Index(String)
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_Index_System_String_
+  commentId: M:GmodMongoDb.Binding.LuaMetaObjectBinding.Index(System.String)
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding.Index(System.String)
+  nameWithType: LuaMetaObjectBinding.Index(String)
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding.Index*
+  name: Index
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_Index_
+  commentId: Overload:GmodMongoDb.Binding.LuaMetaObjectBinding.Index
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding.Index
+  nameWithType: LuaMetaObjectBinding.Index
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding.lua
+  name: lua
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_lua
+  commentId: F:GmodMongoDb.Binding.LuaMetaObjectBinding.lua
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding.lua
+  nameWithType: LuaMetaObjectBinding.lua
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding.MetaTableTypeId
+  name: MetaTableTypeId
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_MetaTableTypeId
+  commentId: P:GmodMongoDb.Binding.LuaMetaObjectBinding.MetaTableTypeId
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding.MetaTableTypeId
+  nameWithType: LuaMetaObjectBinding.MetaTableTypeId
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding.MetaTableTypeId*
+  name: MetaTableTypeId
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_MetaTableTypeId_
+  commentId: Overload:GmodMongoDb.Binding.LuaMetaObjectBinding.MetaTableTypeId
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding.MetaTableTypeId
+  nameWithType: LuaMetaObjectBinding.MetaTableTypeId
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding.NewIndex(System.String,GmodMongoDb.Binding.LuaReference)
+  name: NewIndex(String, LuaReference)
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_NewIndex_System_String_GmodMongoDb_Binding_LuaReference_
+  commentId: M:GmodMongoDb.Binding.LuaMetaObjectBinding.NewIndex(System.String,GmodMongoDb.Binding.LuaReference)
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding.NewIndex(System.String, GmodMongoDb.Binding.LuaReference)
+  nameWithType: LuaMetaObjectBinding.NewIndex(String, LuaReference)
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding.NewIndex*
+  name: NewIndex
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_NewIndex_
+  commentId: Overload:GmodMongoDb.Binding.LuaMetaObjectBinding.NewIndex
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding.NewIndex
+  nameWithType: LuaMetaObjectBinding.NewIndex
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding.Reference
+  name: Reference
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_Reference
+  commentId: P:GmodMongoDb.Binding.LuaMetaObjectBinding.Reference
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding.Reference
+  nameWithType: LuaMetaObjectBinding.Reference
+- uid: GmodMongoDb.Binding.LuaMetaObjectBinding.Reference*
+  name: Reference
+  href: api/GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_Reference_
+  commentId: Overload:GmodMongoDb.Binding.LuaMetaObjectBinding.Reference
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaMetaObjectBinding.Reference
+  nameWithType: LuaMetaObjectBinding.Reference
+- uid: GmodMongoDb.Binding.LuaReference
+  name: LuaReference
+  href: api/GmodMongoDb.Binding.LuaReference.html
+  commentId: T:GmodMongoDb.Binding.LuaReference
+  fullName: GmodMongoDb.Binding.LuaReference
+  nameWithType: LuaReference
+- uid: GmodMongoDb.Binding.LuaReference.#ctor(GmodNET.API.ILua,System.Int32,System.Boolean)
+  name: LuaReference(ILua, Int32, Boolean)
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference__ctor_GmodNET_API_ILua_System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.Binding.LuaReference.#ctor(GmodNET.API.ILua,System.Int32,System.Boolean)
+  fullName: GmodMongoDb.Binding.LuaReference.LuaReference(GmodNET.API.ILua, System.Int32, System.Boolean)
+  nameWithType: LuaReference.LuaReference(ILua, Int32, Boolean)
+- uid: GmodMongoDb.Binding.LuaReference.#ctor*
+  name: LuaReference
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference__ctor_
+  commentId: Overload:GmodMongoDb.Binding.LuaReference.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaReference.LuaReference
+  nameWithType: LuaReference.LuaReference
+- uid: GmodMongoDb.Binding.LuaReference.Dispose
+  name: Dispose()
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference_Dispose
+  commentId: M:GmodMongoDb.Binding.LuaReference.Dispose
+  fullName: GmodMongoDb.Binding.LuaReference.Dispose()
+  nameWithType: LuaReference.Dispose()
+- uid: GmodMongoDb.Binding.LuaReference.Dispose*
+  name: Dispose
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference_Dispose_
+  commentId: Overload:GmodMongoDb.Binding.LuaReference.Dispose
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaReference.Dispose
+  nameWithType: LuaReference.Dispose
+- uid: GmodMongoDb.Binding.LuaReference.Free
+  name: Free()
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference_Free
+  commentId: M:GmodMongoDb.Binding.LuaReference.Free
+  fullName: GmodMongoDb.Binding.LuaReference.Free()
+  nameWithType: LuaReference.Free()
+- uid: GmodMongoDb.Binding.LuaReference.Free*
+  name: Free
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference_Free_
+  commentId: Overload:GmodMongoDb.Binding.LuaReference.Free
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaReference.Free
+  nameWithType: LuaReference.Free
+- uid: GmodMongoDb.Binding.LuaReference.IsValid(System.Int32)
+  name: IsValid(Int32)
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference_IsValid_System_Int32_
+  commentId: M:GmodMongoDb.Binding.LuaReference.IsValid(System.Int32)
+  fullName: GmodMongoDb.Binding.LuaReference.IsValid(System.Int32)
+  nameWithType: LuaReference.IsValid(Int32)
+- uid: GmodMongoDb.Binding.LuaReference.IsValid*
+  name: IsValid
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference_IsValid_
+  commentId: Overload:GmodMongoDb.Binding.LuaReference.IsValid
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaReference.IsValid
+  nameWithType: LuaReference.IsValid
+- uid: GmodMongoDb.Binding.LuaReference.lua
+  name: lua
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference_lua
+  commentId: F:GmodMongoDb.Binding.LuaReference.lua
+  fullName: GmodMongoDb.Binding.LuaReference.lua
+  nameWithType: LuaReference.lua
+- uid: GmodMongoDb.Binding.LuaReference.pointer
+  name: pointer
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference_pointer
+  commentId: F:GmodMongoDb.Binding.LuaReference.pointer
+  fullName: GmodMongoDb.Binding.LuaReference.pointer
+  nameWithType: LuaReference.pointer
+- uid: GmodMongoDb.Binding.LuaReference.Push
+  name: Push()
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference_Push
+  commentId: M:GmodMongoDb.Binding.LuaReference.Push
+  fullName: GmodMongoDb.Binding.LuaReference.Push()
+  nameWithType: LuaReference.Push()
+- uid: GmodMongoDb.Binding.LuaReference.Push*
+  name: Push
+  href: api/GmodMongoDb.Binding.LuaReference.html#GmodMongoDb_Binding_LuaReference_Push_
+  commentId: Overload:GmodMongoDb.Binding.LuaReference.Push
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaReference.Push
+  nameWithType: LuaReference.Push
+- uid: GmodMongoDb.Binding.LuaTableReference
+  name: LuaTableReference
+  href: api/GmodMongoDb.Binding.LuaTableReference.html
+  commentId: T:GmodMongoDb.Binding.LuaTableReference
+  fullName: GmodMongoDb.Binding.LuaTableReference
+  nameWithType: LuaTableReference
+- uid: GmodMongoDb.Binding.LuaTableReference.#ctor(GmodNET.API.ILua,System.Int32,System.Boolean)
+  name: LuaTableReference(ILua, Int32, Boolean)
+  href: api/GmodMongoDb.Binding.LuaTableReference.html#GmodMongoDb_Binding_LuaTableReference__ctor_GmodNET_API_ILua_System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.Binding.LuaTableReference.#ctor(GmodNET.API.ILua,System.Int32,System.Boolean)
+  fullName: GmodMongoDb.Binding.LuaTableReference.LuaTableReference(GmodNET.API.ILua, System.Int32, System.Boolean)
+  nameWithType: LuaTableReference.LuaTableReference(ILua, Int32, Boolean)
+- uid: GmodMongoDb.Binding.LuaTableReference.#ctor*
+  name: LuaTableReference
+  href: api/GmodMongoDb.Binding.LuaTableReference.html#GmodMongoDb_Binding_LuaTableReference__ctor_
+  commentId: Overload:GmodMongoDb.Binding.LuaTableReference.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaTableReference.LuaTableReference
+  nameWithType: LuaTableReference.LuaTableReference
+- uid: GmodMongoDb.Binding.LuaTableReference.ForEach(System.Action{System.Object,System.Object})
+  name: ForEach(Action<Object, Object>)
+  href: api/GmodMongoDb.Binding.LuaTableReference.html#GmodMongoDb_Binding_LuaTableReference_ForEach_System_Action_System_Object_System_Object__
+  commentId: M:GmodMongoDb.Binding.LuaTableReference.ForEach(System.Action{System.Object,System.Object})
+  name.vb: ForEach(Action(Of Object, Object))
+  fullName: GmodMongoDb.Binding.LuaTableReference.ForEach(System.Action<System.Object, System.Object>)
+  fullName.vb: GmodMongoDb.Binding.LuaTableReference.ForEach(System.Action(Of System.Object, System.Object))
+  nameWithType: LuaTableReference.ForEach(Action<Object, Object>)
+  nameWithType.vb: LuaTableReference.ForEach(Action(Of Object, Object))
+- uid: GmodMongoDb.Binding.LuaTableReference.ForEach*
+  name: ForEach
+  href: api/GmodMongoDb.Binding.LuaTableReference.html#GmodMongoDb_Binding_LuaTableReference_ForEach_
+  commentId: Overload:GmodMongoDb.Binding.LuaTableReference.ForEach
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaTableReference.ForEach
+  nameWithType: LuaTableReference.ForEach
+- uid: GmodMongoDb.Binding.LuaTableReference.IsValid(System.Int32)
+  name: IsValid(Int32)
+  href: api/GmodMongoDb.Binding.LuaTableReference.html#GmodMongoDb_Binding_LuaTableReference_IsValid_System_Int32_
+  commentId: M:GmodMongoDb.Binding.LuaTableReference.IsValid(System.Int32)
+  fullName: GmodMongoDb.Binding.LuaTableReference.IsValid(System.Int32)
+  nameWithType: LuaTableReference.IsValid(Int32)
+- uid: GmodMongoDb.Binding.LuaTableReference.IsValid*
+  name: IsValid
+  href: api/GmodMongoDb.Binding.LuaTableReference.html#GmodMongoDb_Binding_LuaTableReference_IsValid_
+  commentId: Overload:GmodMongoDb.Binding.LuaTableReference.IsValid
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaTableReference.IsValid
+  nameWithType: LuaTableReference.IsValid
+- uid: GmodMongoDb.Binding.LuaTaskScheduler
+  name: LuaTaskScheduler
+  href: api/GmodMongoDb.Binding.LuaTaskScheduler.html
+  commentId: T:GmodMongoDb.Binding.LuaTaskScheduler
+  fullName: GmodMongoDb.Binding.LuaTaskScheduler
+  nameWithType: LuaTaskScheduler
+- uid: GmodMongoDb.Binding.LuaTaskScheduler.AddTask(System.Action)
+  name: AddTask(Action)
+  href: api/GmodMongoDb.Binding.LuaTaskScheduler.html#GmodMongoDb_Binding_LuaTaskScheduler_AddTask_System_Action_
+  commentId: M:GmodMongoDb.Binding.LuaTaskScheduler.AddTask(System.Action)
+  fullName: GmodMongoDb.Binding.LuaTaskScheduler.AddTask(System.Action)
+  nameWithType: LuaTaskScheduler.AddTask(Action)
+- uid: GmodMongoDb.Binding.LuaTaskScheduler.AddTask*
+  name: AddTask
+  href: api/GmodMongoDb.Binding.LuaTaskScheduler.html#GmodMongoDb_Binding_LuaTaskScheduler_AddTask_
+  commentId: Overload:GmodMongoDb.Binding.LuaTaskScheduler.AddTask
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaTaskScheduler.AddTask
+  nameWithType: LuaTaskScheduler.AddTask
+- uid: GmodMongoDb.Binding.LuaTaskScheduler.AddTask``1(System.Func{``0})
+  name: AddTask<T>(Func<T>)
+  href: api/GmodMongoDb.Binding.LuaTaskScheduler.html#GmodMongoDb_Binding_LuaTaskScheduler_AddTask__1_System_Func___0__
+  commentId: M:GmodMongoDb.Binding.LuaTaskScheduler.AddTask``1(System.Func{``0})
+  name.vb: AddTask(Of T)(Func(Of T))
+  fullName: GmodMongoDb.Binding.LuaTaskScheduler.AddTask<T>(System.Func<T>)
+  fullName.vb: GmodMongoDb.Binding.LuaTaskScheduler.AddTask(Of T)(System.Func(Of T))
+  nameWithType: LuaTaskScheduler.AddTask<T>(Func<T>)
+  nameWithType.vb: LuaTaskScheduler.AddTask(Of T)(Func(Of T))
+- uid: GmodMongoDb.Binding.LuaTaskScheduler.ProcessQueue(GmodNET.API.ILua)
+  name: ProcessQueue(ILua)
+  href: api/GmodMongoDb.Binding.LuaTaskScheduler.html#GmodMongoDb_Binding_LuaTaskScheduler_ProcessQueue_GmodNET_API_ILua_
+  commentId: M:GmodMongoDb.Binding.LuaTaskScheduler.ProcessQueue(GmodNET.API.ILua)
+  fullName: GmodMongoDb.Binding.LuaTaskScheduler.ProcessQueue(GmodNET.API.ILua)
+  nameWithType: LuaTaskScheduler.ProcessQueue(ILua)
+- uid: GmodMongoDb.Binding.LuaTaskScheduler.ProcessQueue*
+  name: ProcessQueue
+  href: api/GmodMongoDb.Binding.LuaTaskScheduler.html#GmodMongoDb_Binding_LuaTaskScheduler_ProcessQueue_
+  commentId: Overload:GmodMongoDb.Binding.LuaTaskScheduler.ProcessQueue
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaTaskScheduler.ProcessQueue
+  nameWithType: LuaTaskScheduler.ProcessQueue
+- uid: GmodMongoDb.Binding.LuaTaskScheduler.RegisterLuaCallback(GmodNET.API.ILua)
+  name: RegisterLuaCallback(ILua)
+  href: api/GmodMongoDb.Binding.LuaTaskScheduler.html#GmodMongoDb_Binding_LuaTaskScheduler_RegisterLuaCallback_GmodNET_API_ILua_
+  commentId: M:GmodMongoDb.Binding.LuaTaskScheduler.RegisterLuaCallback(GmodNET.API.ILua)
+  fullName: GmodMongoDb.Binding.LuaTaskScheduler.RegisterLuaCallback(GmodNET.API.ILua)
+  nameWithType: LuaTaskScheduler.RegisterLuaCallback(ILua)
+- uid: GmodMongoDb.Binding.LuaTaskScheduler.RegisterLuaCallback*
+  name: RegisterLuaCallback
+  href: api/GmodMongoDb.Binding.LuaTaskScheduler.html#GmodMongoDb_Binding_LuaTaskScheduler_RegisterLuaCallback_
+  commentId: Overload:GmodMongoDb.Binding.LuaTaskScheduler.RegisterLuaCallback
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaTaskScheduler.RegisterLuaCallback
+  nameWithType: LuaTaskScheduler.RegisterLuaCallback
+- uid: GmodMongoDb.Binding.LuaTaskScheduler.UnregisterLuaCallback(GmodNET.API.ILua)
+  name: UnregisterLuaCallback(ILua)
+  href: api/GmodMongoDb.Binding.LuaTaskScheduler.html#GmodMongoDb_Binding_LuaTaskScheduler_UnregisterLuaCallback_GmodNET_API_ILua_
+  commentId: M:GmodMongoDb.Binding.LuaTaskScheduler.UnregisterLuaCallback(GmodNET.API.ILua)
+  fullName: GmodMongoDb.Binding.LuaTaskScheduler.UnregisterLuaCallback(GmodNET.API.ILua)
+  nameWithType: LuaTaskScheduler.UnregisterLuaCallback(ILua)
+- uid: GmodMongoDb.Binding.LuaTaskScheduler.UnregisterLuaCallback*
+  name: UnregisterLuaCallback
+  href: api/GmodMongoDb.Binding.LuaTaskScheduler.html#GmodMongoDb_Binding_LuaTaskScheduler_UnregisterLuaCallback_
+  commentId: Overload:GmodMongoDb.Binding.LuaTaskScheduler.UnregisterLuaCallback
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.LuaTaskScheduler.UnregisterLuaCallback
+  nameWithType: LuaTaskScheduler.UnregisterLuaCallback
+- uid: GmodMongoDb.Binding.ReferenceManager
+  name: ReferenceManager
+  href: api/GmodMongoDb.Binding.ReferenceManager.html
+  commentId: T:GmodMongoDb.Binding.ReferenceManager
+  fullName: GmodMongoDb.Binding.ReferenceManager
+  nameWithType: ReferenceManager
+- uid: GmodMongoDb.Binding.ReferenceManager.Add(System.IDisposable)
+  name: Add(IDisposable)
+  href: api/GmodMongoDb.Binding.ReferenceManager.html#GmodMongoDb_Binding_ReferenceManager_Add_System_IDisposable_
+  commentId: M:GmodMongoDb.Binding.ReferenceManager.Add(System.IDisposable)
+  fullName: GmodMongoDb.Binding.ReferenceManager.Add(System.IDisposable)
+  nameWithType: ReferenceManager.Add(IDisposable)
+- uid: GmodMongoDb.Binding.ReferenceManager.Add(System.Runtime.InteropServices.GCHandle)
+  name: Add(GCHandle)
+  href: api/GmodMongoDb.Binding.ReferenceManager.html#GmodMongoDb_Binding_ReferenceManager_Add_System_Runtime_InteropServices_GCHandle_
+  commentId: M:GmodMongoDb.Binding.ReferenceManager.Add(System.Runtime.InteropServices.GCHandle)
+  fullName: GmodMongoDb.Binding.ReferenceManager.Add(System.Runtime.InteropServices.GCHandle)
+  nameWithType: ReferenceManager.Add(GCHandle)
+- uid: GmodMongoDb.Binding.ReferenceManager.Add*
+  name: Add
+  href: api/GmodMongoDb.Binding.ReferenceManager.html#GmodMongoDb_Binding_ReferenceManager_Add_
+  commentId: Overload:GmodMongoDb.Binding.ReferenceManager.Add
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.ReferenceManager.Add
+  nameWithType: ReferenceManager.Add
+- uid: GmodMongoDb.Binding.ReferenceManager.KillAll
+  name: KillAll()
+  href: api/GmodMongoDb.Binding.ReferenceManager.html#GmodMongoDb_Binding_ReferenceManager_KillAll
+  commentId: M:GmodMongoDb.Binding.ReferenceManager.KillAll
+  fullName: GmodMongoDb.Binding.ReferenceManager.KillAll()
+  nameWithType: ReferenceManager.KillAll()
+- uid: GmodMongoDb.Binding.ReferenceManager.KillAll*
+  name: KillAll
+  href: api/GmodMongoDb.Binding.ReferenceManager.html#GmodMongoDb_Binding_ReferenceManager_KillAll_
+  commentId: Overload:GmodMongoDb.Binding.ReferenceManager.KillAll
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.ReferenceManager.KillAll
+  nameWithType: ReferenceManager.KillAll
+- uid: GmodMongoDb.Binding.TypeTools
+  name: TypeTools
+  href: api/GmodMongoDb.Binding.TypeTools.html
+  commentId: T:GmodMongoDb.Binding.TypeTools
+  fullName: GmodMongoDb.Binding.TypeTools
+  nameWithType: TypeTools
+- uid: GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)
+  name: GenerateUserDataFromObject(ILua, LuaMetaObjectBinding)
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_GenerateUserDataFromObject_GmodNET_API_ILua_GmodMongoDb_Binding_LuaMetaObjectBinding_
+  commentId: M:GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)
+  fullName: GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject(GmodNET.API.ILua, GmodMongoDb.Binding.LuaMetaObjectBinding)
+  nameWithType: TypeTools.GenerateUserDataFromObject(ILua, LuaMetaObjectBinding)
+- uid: GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject*
+  name: GenerateUserDataFromObject
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_GenerateUserDataFromObject_
+  commentId: Overload:GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject
+  nameWithType: TypeTools.GenerateUserDataFromObject
+- uid: GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType(GmodNET.API.TYPES)
+  name: LuaTypeToDotNetType(TYPES)
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_LuaTypeToDotNetType_GmodNET_API_TYPES_
+  commentId: M:GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType(GmodNET.API.TYPES)
+  fullName: GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType(GmodNET.API.TYPES)
+  nameWithType: TypeTools.LuaTypeToDotNetType(TYPES)
+- uid: GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType(System.Int32)
+  name: LuaTypeToDotNetType(Int32)
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_LuaTypeToDotNetType_System_Int32_
+  commentId: M:GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType(System.Int32)
+  fullName: GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType(System.Int32)
+  nameWithType: TypeTools.LuaTypeToDotNetType(Int32)
+- uid: GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType*
+  name: LuaTypeToDotNetType
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_LuaTypeToDotNetType_
+  commentId: Overload:GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType
+  nameWithType: TypeTools.LuaTypeToDotNetType
+- uid: GmodMongoDb.Binding.TypeTools.PullManagedObject(GmodNET.API.ILua,System.Int32,System.Int32,System.Boolean)
+  name: PullManagedObject(ILua, Int32, Int32, Boolean)
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_PullManagedObject_GmodNET_API_ILua_System_Int32_System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.Binding.TypeTools.PullManagedObject(GmodNET.API.ILua,System.Int32,System.Int32,System.Boolean)
+  fullName: GmodMongoDb.Binding.TypeTools.PullManagedObject(GmodNET.API.ILua, System.Int32, System.Int32, System.Boolean)
+  nameWithType: TypeTools.PullManagedObject(ILua, Int32, Int32, Boolean)
+- uid: GmodMongoDb.Binding.TypeTools.PullManagedObject*
+  name: PullManagedObject
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_PullManagedObject_
+  commentId: Overload:GmodMongoDb.Binding.TypeTools.PullManagedObject
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.TypeTools.PullManagedObject
+  nameWithType: TypeTools.PullManagedObject
+- uid: GmodMongoDb.Binding.TypeTools.PullType(GmodNET.API.ILua,System.Int32,System.Boolean)
+  name: PullType(ILua, Int32, Boolean)
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_PullType_GmodNET_API_ILua_System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.Binding.TypeTools.PullType(GmodNET.API.ILua,System.Int32,System.Boolean)
+  fullName: GmodMongoDb.Binding.TypeTools.PullType(GmodNET.API.ILua, System.Int32, System.Boolean)
+  nameWithType: TypeTools.PullType(ILua, Int32, Boolean)
+- uid: GmodMongoDb.Binding.TypeTools.PullType(GmodNET.API.ILua,System.Type,System.Int32,System.Boolean)
+  name: PullType(ILua, Type, Int32, Boolean)
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_PullType_GmodNET_API_ILua_System_Type_System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.Binding.TypeTools.PullType(GmodNET.API.ILua,System.Type,System.Int32,System.Boolean)
+  fullName: GmodMongoDb.Binding.TypeTools.PullType(GmodNET.API.ILua, System.Type, System.Int32, System.Boolean)
+  nameWithType: TypeTools.PullType(ILua, Type, Int32, Boolean)
+- uid: GmodMongoDb.Binding.TypeTools.PullType*
+  name: PullType
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_PullType_
+  commentId: Overload:GmodMongoDb.Binding.TypeTools.PullType
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.TypeTools.PullType
+  nameWithType: TypeTools.PullType
+- uid: GmodMongoDb.Binding.TypeTools.PullType``1(GmodNET.API.ILua,System.Int32,System.Boolean)
+  name: PullType<T>(ILua, Int32, Boolean)
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_PullType__1_GmodNET_API_ILua_System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.Binding.TypeTools.PullType``1(GmodNET.API.ILua,System.Int32,System.Boolean)
+  name.vb: PullType(Of T)(ILua, Int32, Boolean)
+  fullName: GmodMongoDb.Binding.TypeTools.PullType<T>(GmodNET.API.ILua, System.Int32, System.Boolean)
+  fullName.vb: GmodMongoDb.Binding.TypeTools.PullType(Of T)(GmodNET.API.ILua, System.Int32, System.Boolean)
+  nameWithType: TypeTools.PullType<T>(ILua, Int32, Boolean)
+  nameWithType.vb: TypeTools.PullType(Of T)(ILua, Int32, Boolean)
+- uid: GmodMongoDb.Binding.TypeTools.PushManagedObject(GmodNET.API.ILua,System.Object)
+  name: PushManagedObject(ILua, Object)
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_PushManagedObject_GmodNET_API_ILua_System_Object_
+  commentId: M:GmodMongoDb.Binding.TypeTools.PushManagedObject(GmodNET.API.ILua,System.Object)
+  fullName: GmodMongoDb.Binding.TypeTools.PushManagedObject(GmodNET.API.ILua, System.Object)
+  nameWithType: TypeTools.PushManagedObject(ILua, Object)
+- uid: GmodMongoDb.Binding.TypeTools.PushManagedObject*
+  name: PushManagedObject
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_PushManagedObject_
+  commentId: Overload:GmodMongoDb.Binding.TypeTools.PushManagedObject
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.TypeTools.PushManagedObject
+  nameWithType: TypeTools.PushManagedObject
+- uid: GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua,System.Type,System.Object)
+  name: PushType(ILua, Type, Object)
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_PushType_GmodNET_API_ILua_System_Type_System_Object_
+  commentId: M:GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua,System.Type,System.Object)
+  fullName: GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua, System.Type, System.Object)
+  nameWithType: TypeTools.PushType(ILua, Type, Object)
+- uid: GmodMongoDb.Binding.TypeTools.PushType*
+  name: PushType
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_PushType_
+  commentId: Overload:GmodMongoDb.Binding.TypeTools.PushType
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.TypeTools.PushType
+  nameWithType: TypeTools.PushType
+- uid: GmodMongoDb.Binding.TypeTools.TryGetMetaTableType(System.Int32,System.Type@)
+  name: TryGetMetaTableType(Int32, out Type)
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_TryGetMetaTableType_System_Int32_System_Type__
+  commentId: M:GmodMongoDb.Binding.TypeTools.TryGetMetaTableType(System.Int32,System.Type@)
+  name.vb: TryGetMetaTableType(Int32, ByRef Type)
+  fullName: GmodMongoDb.Binding.TypeTools.TryGetMetaTableType(System.Int32, out System.Type)
+  fullName.vb: GmodMongoDb.Binding.TypeTools.TryGetMetaTableType(System.Int32, ByRef System.Type)
+  nameWithType: TypeTools.TryGetMetaTableType(Int32, out Type)
+  nameWithType.vb: TypeTools.TryGetMetaTableType(Int32, ByRef Type)
+- uid: GmodMongoDb.Binding.TypeTools.TryGetMetaTableType*
+  name: TryGetMetaTableType
+  href: api/GmodMongoDb.Binding.TypeTools.html#GmodMongoDb_Binding_TypeTools_TryGetMetaTableType_
+  commentId: Overload:GmodMongoDb.Binding.TypeTools.TryGetMetaTableType
+  isSpec: "True"
+  fullName: GmodMongoDb.Binding.TypeTools.TryGetMetaTableType
+  nameWithType: TypeTools.TryGetMetaTableType
+- uid: GmodMongoDb.BsonDocument
+  name: BsonDocument
+  href: api/GmodMongoDb.BsonDocument.html
+  commentId: T:GmodMongoDb.BsonDocument
+  fullName: GmodMongoDb.BsonDocument
+  nameWithType: BsonDocument
+- uid: GmodMongoDb.BsonDocument.#ctor(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)
+  name: BsonDocument(ILua, BsonDocument)
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument__ctor_GmodNET_API_ILua_MongoDB_Bson_BsonDocument_
+  commentId: M:GmodMongoDb.BsonDocument.#ctor(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)
+  fullName: GmodMongoDb.BsonDocument.BsonDocument(GmodNET.API.ILua, MongoDB.Bson.BsonDocument)
+  nameWithType: BsonDocument.BsonDocument(ILua, BsonDocument)
+- uid: GmodMongoDb.BsonDocument.#ctor*
+  name: BsonDocument
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument__ctor_
+  commentId: Overload:GmodMongoDb.BsonDocument.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.BsonDocument
+  nameWithType: BsonDocument.BsonDocument
+- uid: GmodMongoDb.BsonDocument.Constructor(GmodNET.API.ILua,GmodMongoDb.BsonDocument)
+  name: Constructor(ILua, BsonDocument)
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_Constructor_GmodNET_API_ILua_GmodMongoDb_BsonDocument_
+  commentId: M:GmodMongoDb.BsonDocument.Constructor(GmodNET.API.ILua,GmodMongoDb.BsonDocument)
+  fullName: GmodMongoDb.BsonDocument.Constructor(GmodNET.API.ILua, GmodMongoDb.BsonDocument)
+  nameWithType: BsonDocument.Constructor(ILua, BsonDocument)
+- uid: GmodMongoDb.BsonDocument.Constructor*
+  name: Constructor
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_Constructor_
+  commentId: Overload:GmodMongoDb.BsonDocument.Constructor
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.Constructor
+  nameWithType: BsonDocument.Constructor
+- uid: GmodMongoDb.BsonDocument.Equals(GmodMongoDb.BsonDocument)
+  name: Equals(BsonDocument)
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_Equals_GmodMongoDb_BsonDocument_
+  commentId: M:GmodMongoDb.BsonDocument.Equals(GmodMongoDb.BsonDocument)
+  fullName: GmodMongoDb.BsonDocument.Equals(GmodMongoDb.BsonDocument)
+  nameWithType: BsonDocument.Equals(BsonDocument)
+- uid: GmodMongoDb.BsonDocument.Equals*
+  name: Equals
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_Equals_
+  commentId: Overload:GmodMongoDb.BsonDocument.Equals
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.Equals
+  nameWithType: BsonDocument.Equals
+- uid: GmodMongoDb.BsonDocument.FromJson(GmodNET.API.ILua,System.String)
+  name: FromJson(ILua, String)
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_FromJson_GmodNET_API_ILua_System_String_
+  commentId: M:GmodMongoDb.BsonDocument.FromJson(GmodNET.API.ILua,System.String)
+  fullName: GmodMongoDb.BsonDocument.FromJson(GmodNET.API.ILua, System.String)
+  nameWithType: BsonDocument.FromJson(ILua, String)
+- uid: GmodMongoDb.BsonDocument.FromJson*
+  name: FromJson
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_FromJson_
+  commentId: Overload:GmodMongoDb.BsonDocument.FromJson
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.FromJson
+  nameWithType: BsonDocument.FromJson
+- uid: GmodMongoDb.BsonDocument.FromLuaTable(GmodNET.API.ILua,GmodMongoDb.Binding.LuaTableReference)
+  name: FromLuaTable(ILua, LuaTableReference)
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_FromLuaTable_GmodNET_API_ILua_GmodMongoDb_Binding_LuaTableReference_
+  commentId: M:GmodMongoDb.BsonDocument.FromLuaTable(GmodNET.API.ILua,GmodMongoDb.Binding.LuaTableReference)
+  fullName: GmodMongoDb.BsonDocument.FromLuaTable(GmodNET.API.ILua, GmodMongoDb.Binding.LuaTableReference)
+  nameWithType: BsonDocument.FromLuaTable(ILua, LuaTableReference)
+- uid: GmodMongoDb.BsonDocument.FromLuaTable*
+  name: FromLuaTable
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_FromLuaTable_
+  commentId: Overload:GmodMongoDb.BsonDocument.FromLuaTable
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.FromLuaTable
+  nameWithType: BsonDocument.FromLuaTable
+- uid: GmodMongoDb.BsonDocument.Index(System.String)
+  name: Index(String)
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_Index_System_String_
+  commentId: M:GmodMongoDb.BsonDocument.Index(System.String)
+  fullName: GmodMongoDb.BsonDocument.Index(System.String)
+  nameWithType: BsonDocument.Index(String)
+- uid: GmodMongoDb.BsonDocument.Index*
+  name: Index
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_Index_
+  commentId: Overload:GmodMongoDb.BsonDocument.Index
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.Index
+  nameWithType: BsonDocument.Index
+- uid: GmodMongoDb.BsonDocument.LessOrEqual(GmodMongoDb.BsonDocument)
+  name: LessOrEqual(BsonDocument)
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_LessOrEqual_GmodMongoDb_BsonDocument_
+  commentId: M:GmodMongoDb.BsonDocument.LessOrEqual(GmodMongoDb.BsonDocument)
+  fullName: GmodMongoDb.BsonDocument.LessOrEqual(GmodMongoDb.BsonDocument)
+  nameWithType: BsonDocument.LessOrEqual(BsonDocument)
+- uid: GmodMongoDb.BsonDocument.LessOrEqual*
+  name: LessOrEqual
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_LessOrEqual_
+  commentId: Overload:GmodMongoDb.BsonDocument.LessOrEqual
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.LessOrEqual
+  nameWithType: BsonDocument.LessOrEqual
+- uid: GmodMongoDb.BsonDocument.LessThan(GmodMongoDb.BsonDocument)
+  name: LessThan(BsonDocument)
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_LessThan_GmodMongoDb_BsonDocument_
+  commentId: M:GmodMongoDb.BsonDocument.LessThan(GmodMongoDb.BsonDocument)
+  fullName: GmodMongoDb.BsonDocument.LessThan(GmodMongoDb.BsonDocument)
+  nameWithType: BsonDocument.LessThan(BsonDocument)
+- uid: GmodMongoDb.BsonDocument.LessThan*
+  name: LessThan
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_LessThan_
+  commentId: Overload:GmodMongoDb.BsonDocument.LessThan
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.LessThan
+  nameWithType: BsonDocument.LessThan
+- uid: GmodMongoDb.BsonDocument.Pairs
+  name: Pairs()
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_Pairs
+  commentId: M:GmodMongoDb.BsonDocument.Pairs
+  fullName: GmodMongoDb.BsonDocument.Pairs()
+  nameWithType: BsonDocument.Pairs()
+- uid: GmodMongoDb.BsonDocument.Pairs*
+  name: Pairs
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_Pairs_
+  commentId: Overload:GmodMongoDb.BsonDocument.Pairs
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.Pairs
+  nameWithType: BsonDocument.Pairs
+- uid: GmodMongoDb.BsonDocument.RawBsonDocument
+  name: RawBsonDocument
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_RawBsonDocument
+  commentId: P:GmodMongoDb.BsonDocument.RawBsonDocument
+  fullName: GmodMongoDb.BsonDocument.RawBsonDocument
+  nameWithType: BsonDocument.RawBsonDocument
+- uid: GmodMongoDb.BsonDocument.RawBsonDocument*
+  name: RawBsonDocument
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_RawBsonDocument_
+  commentId: Overload:GmodMongoDb.BsonDocument.RawBsonDocument
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.RawBsonDocument
+  nameWithType: BsonDocument.RawBsonDocument
+- uid: GmodMongoDb.BsonDocument.ToJson
+  name: ToJson()
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_ToJson
+  commentId: M:GmodMongoDb.BsonDocument.ToJson
+  fullName: GmodMongoDb.BsonDocument.ToJson()
+  nameWithType: BsonDocument.ToJson()
+- uid: GmodMongoDb.BsonDocument.ToJson*
+  name: ToJson
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_ToJson_
+  commentId: Overload:GmodMongoDb.BsonDocument.ToJson
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.ToJson
+  nameWithType: BsonDocument.ToJson
+- uid: GmodMongoDb.BsonDocument.ToString
+  name: ToString()
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_ToString
+  commentId: M:GmodMongoDb.BsonDocument.ToString
+  fullName: GmodMongoDb.BsonDocument.ToString()
+  nameWithType: BsonDocument.ToString()
+- uid: GmodMongoDb.BsonDocument.ToString*
+  name: ToString
+  href: api/GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_ToString_
+  commentId: Overload:GmodMongoDb.BsonDocument.ToString
+  isSpec: "True"
+  fullName: GmodMongoDb.BsonDocument.ToString
+  nameWithType: BsonDocument.ToString
+- uid: GmodMongoDb.DataTransforming
+  name: GmodMongoDb.DataTransforming
+  href: api/GmodMongoDb.DataTransforming.html
+  commentId: N:GmodMongoDb.DataTransforming
+  fullName: GmodMongoDb.DataTransforming
+  nameWithType: GmodMongoDb.DataTransforming
+- uid: GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable
+  name: BetweenBsonDocumentAndTable
+  href: api/GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.html
+  commentId: T:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable
+  fullName: GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable
+  nameWithType: BetweenBsonDocumentAndTable
+- uid: GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.Convert(GmodNET.API.ILua,GmodMongoDb.BsonDocument)
+  name: Convert(ILua, BsonDocument)
+  href: api/GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.html#GmodMongoDb_DataTransforming_BetweenBsonDocumentAndTable_Convert_GmodNET_API_ILua_GmodMongoDb_BsonDocument_
+  commentId: M:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.Convert(GmodNET.API.ILua,GmodMongoDb.BsonDocument)
+  fullName: GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.Convert(GmodNET.API.ILua, GmodMongoDb.BsonDocument)
+  nameWithType: BetweenBsonDocumentAndTable.Convert(ILua, BsonDocument)
+- uid: GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.Convert*
+  name: Convert
+  href: api/GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.html#GmodMongoDb_DataTransforming_BetweenBsonDocumentAndTable_Convert_
+  commentId: Overload:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.Convert
+  isSpec: "True"
+  fullName: GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.Convert
+  nameWithType: BetweenBsonDocumentAndTable.Convert
+- uid: GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua,GmodMongoDb.BsonDocument@,System.Int32,System.Boolean)
+  name: TryParse(ILua, out BsonDocument, Int32, Boolean)
+  href: api/GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.html#GmodMongoDb_DataTransforming_BetweenBsonDocumentAndTable_TryParse_GmodNET_API_ILua_GmodMongoDb_BsonDocument__System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua,GmodMongoDb.BsonDocument@,System.Int32,System.Boolean)
+  name.vb: TryParse(ILua, ByRef BsonDocument, Int32, Boolean)
+  fullName: GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua, out GmodMongoDb.BsonDocument, System.Int32, System.Boolean)
+  fullName.vb: GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua, ByRef GmodMongoDb.BsonDocument, System.Int32, System.Boolean)
+  nameWithType: BetweenBsonDocumentAndTable.TryParse(ILua, out BsonDocument, Int32, Boolean)
+  nameWithType.vb: BetweenBsonDocumentAndTable.TryParse(ILua, ByRef BsonDocument, Int32, Boolean)
+- uid: GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.TryParse*
+  name: TryParse
+  href: api/GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.html#GmodMongoDb_DataTransforming_BetweenBsonDocumentAndTable_TryParse_
+  commentId: Overload:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.TryParse
+  isSpec: "True"
+  fullName: GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.TryParse
+  nameWithType: BetweenBsonDocumentAndTable.TryParse
+- uid: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable
+  name: BetweenBsonDocumentListAndTable
+  href: api/GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.html
+  commentId: T:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable
+  fullName: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable
+  nameWithType: BetweenBsonDocumentListAndTable
+- uid: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.Convert(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument})
+  name: Convert(ILua, List<BsonDocument>)
+  href: api/GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.html#GmodMongoDb_DataTransforming_BetweenBsonDocumentListAndTable_Convert_GmodNET_API_ILua_System_Collections_Generic_List_MongoDB_Bson_BsonDocument__
+  commentId: M:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.Convert(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument})
+  name.vb: Convert(ILua, List(Of BsonDocument))
+  fullName: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.Convert(GmodNET.API.ILua, System.Collections.Generic.List<MongoDB.Bson.BsonDocument>)
+  fullName.vb: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.Convert(GmodNET.API.ILua, System.Collections.Generic.List(Of MongoDB.Bson.BsonDocument))
+  nameWithType: BetweenBsonDocumentListAndTable.Convert(ILua, List<BsonDocument>)
+  nameWithType.vb: BetweenBsonDocumentListAndTable.Convert(ILua, List(Of BsonDocument))
+- uid: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.Convert*
+  name: Convert
+  href: api/GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.html#GmodMongoDb_DataTransforming_BetweenBsonDocumentListAndTable_Convert_
+  commentId: Overload:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.Convert
+  isSpec: "True"
+  fullName: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.Convert
+  nameWithType: BetweenBsonDocumentListAndTable.Convert
+- uid: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.TryParse(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument}@,System.Int32,System.Boolean)
+  name: TryParse(ILua, out List<BsonDocument>, Int32, Boolean)
+  href: api/GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.html#GmodMongoDb_DataTransforming_BetweenBsonDocumentListAndTable_TryParse_GmodNET_API_ILua_System_Collections_Generic_List_MongoDB_Bson_BsonDocument___System_Int32_System_Boolean_
+  commentId: M:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.TryParse(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument}@,System.Int32,System.Boolean)
+  name.vb: TryParse(ILua, ByRef List(Of BsonDocument), Int32, Boolean)
+  fullName: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.TryParse(GmodNET.API.ILua, out System.Collections.Generic.List<MongoDB.Bson.BsonDocument>, System.Int32, System.Boolean)
+  fullName.vb: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.TryParse(GmodNET.API.ILua, ByRef System.Collections.Generic.List(Of MongoDB.Bson.BsonDocument), System.Int32, System.Boolean)
+  nameWithType: BetweenBsonDocumentListAndTable.TryParse(ILua, out List<BsonDocument>, Int32, Boolean)
+  nameWithType.vb: BetweenBsonDocumentListAndTable.TryParse(ILua, ByRef List(Of BsonDocument), Int32, Boolean)
+- uid: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.TryParse*
+  name: TryParse
+  href: api/GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.html#GmodMongoDb_DataTransforming_BetweenBsonDocumentListAndTable_TryParse_
+  commentId: Overload:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.TryParse
+  isSpec: "True"
+  fullName: GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.TryParse
+  nameWithType: BetweenBsonDocumentListAndTable.TryParse
+- uid: GmodMongoDb.MongoClient
+  name: MongoClient
+  href: api/GmodMongoDb.MongoClient.html
+  commentId: T:GmodMongoDb.MongoClient
+  fullName: GmodMongoDb.MongoClient
+  nameWithType: MongoClient
+- uid: GmodMongoDb.MongoClient.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoClient)
+  name: MongoClient(ILua, IMongoClient)
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient__ctor_GmodNET_API_ILua_MongoDB_Driver_IMongoClient_
+  commentId: M:GmodMongoDb.MongoClient.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoClient)
+  fullName: GmodMongoDb.MongoClient.MongoClient(GmodNET.API.ILua, MongoDB.Driver.IMongoClient)
+  nameWithType: MongoClient.MongoClient(ILua, IMongoClient)
+- uid: GmodMongoDb.MongoClient.#ctor*
+  name: MongoClient
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient__ctor_
+  commentId: Overload:GmodMongoDb.MongoClient.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoClient.MongoClient
+  nameWithType: MongoClient.MongoClient
+- uid: GmodMongoDb.MongoClient.Constructor(GmodNET.API.ILua,System.String)
+  name: Constructor(ILua, String)
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_Constructor_GmodNET_API_ILua_System_String_
+  commentId: M:GmodMongoDb.MongoClient.Constructor(GmodNET.API.ILua,System.String)
+  fullName: GmodMongoDb.MongoClient.Constructor(GmodNET.API.ILua, System.String)
+  nameWithType: MongoClient.Constructor(ILua, String)
+- uid: GmodMongoDb.MongoClient.Constructor*
+  name: Constructor
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_Constructor_
+  commentId: Overload:GmodMongoDb.MongoClient.Constructor
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoClient.Constructor
+  nameWithType: MongoClient.Constructor
+- uid: GmodMongoDb.MongoClient.Dispose
+  name: Dispose()
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_Dispose
+  commentId: M:GmodMongoDb.MongoClient.Dispose
+  fullName: GmodMongoDb.MongoClient.Dispose()
+  nameWithType: MongoClient.Dispose()
+- uid: GmodMongoDb.MongoClient.Dispose*
+  name: Dispose
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_Dispose_
+  commentId: Overload:GmodMongoDb.MongoClient.Dispose
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoClient.Dispose
+  nameWithType: MongoClient.Dispose
+- uid: GmodMongoDb.MongoClient.DropDatabase(System.String)
+  name: DropDatabase(String)
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_DropDatabase_System_String_
+  commentId: M:GmodMongoDb.MongoClient.DropDatabase(System.String)
+  fullName: GmodMongoDb.MongoClient.DropDatabase(System.String)
+  nameWithType: MongoClient.DropDatabase(String)
+- uid: GmodMongoDb.MongoClient.DropDatabase*
+  name: DropDatabase
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_DropDatabase_
+  commentId: Overload:GmodMongoDb.MongoClient.DropDatabase
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoClient.DropDatabase
+  nameWithType: MongoClient.DropDatabase
+- uid: GmodMongoDb.MongoClient.DropDatabaseAsync(System.String,GmodMongoDb.Binding.LuaFunctionReference)
+  name: DropDatabaseAsync(String, LuaFunctionReference)
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_DropDatabaseAsync_System_String_GmodMongoDb_Binding_LuaFunctionReference_
+  commentId: M:GmodMongoDb.MongoClient.DropDatabaseAsync(System.String,GmodMongoDb.Binding.LuaFunctionReference)
+  fullName: GmodMongoDb.MongoClient.DropDatabaseAsync(System.String, GmodMongoDb.Binding.LuaFunctionReference)
+  nameWithType: MongoClient.DropDatabaseAsync(String, LuaFunctionReference)
+- uid: GmodMongoDb.MongoClient.DropDatabaseAsync*
+  name: DropDatabaseAsync
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_DropDatabaseAsync_
+  commentId: Overload:GmodMongoDb.MongoClient.DropDatabaseAsync
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoClient.DropDatabaseAsync
+  nameWithType: MongoClient.DropDatabaseAsync
+- uid: GmodMongoDb.MongoClient.Equals(GmodMongoDb.MongoClient)
+  name: Equals(MongoClient)
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_Equals_GmodMongoDb_MongoClient_
+  commentId: M:GmodMongoDb.MongoClient.Equals(GmodMongoDb.MongoClient)
+  fullName: GmodMongoDb.MongoClient.Equals(GmodMongoDb.MongoClient)
+  nameWithType: MongoClient.Equals(MongoClient)
+- uid: GmodMongoDb.MongoClient.Equals*
+  name: Equals
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_Equals_
+  commentId: Overload:GmodMongoDb.MongoClient.Equals
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoClient.Equals
+  nameWithType: MongoClient.Equals
+- uid: GmodMongoDb.MongoClient.GetDatabase(System.String)
+  name: GetDatabase(String)
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_GetDatabase_System_String_
+  commentId: M:GmodMongoDb.MongoClient.GetDatabase(System.String)
+  fullName: GmodMongoDb.MongoClient.GetDatabase(System.String)
+  nameWithType: MongoClient.GetDatabase(String)
+- uid: GmodMongoDb.MongoClient.GetDatabase*
+  name: GetDatabase
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_GetDatabase_
+  commentId: Overload:GmodMongoDb.MongoClient.GetDatabase
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoClient.GetDatabase
+  nameWithType: MongoClient.GetDatabase
+- uid: GmodMongoDb.MongoClient.ListDatabaseNames
+  name: ListDatabaseNames()
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_ListDatabaseNames
+  commentId: M:GmodMongoDb.MongoClient.ListDatabaseNames
+  fullName: GmodMongoDb.MongoClient.ListDatabaseNames()
+  nameWithType: MongoClient.ListDatabaseNames()
+- uid: GmodMongoDb.MongoClient.ListDatabaseNames*
+  name: ListDatabaseNames
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_ListDatabaseNames_
+  commentId: Overload:GmodMongoDb.MongoClient.ListDatabaseNames
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoClient.ListDatabaseNames
+  nameWithType: MongoClient.ListDatabaseNames
+- uid: GmodMongoDb.MongoClient.ListDatabaseNamesAsync(GmodMongoDb.Binding.LuaFunctionReference)
+  name: ListDatabaseNamesAsync(LuaFunctionReference)
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_ListDatabaseNamesAsync_GmodMongoDb_Binding_LuaFunctionReference_
+  commentId: M:GmodMongoDb.MongoClient.ListDatabaseNamesAsync(GmodMongoDb.Binding.LuaFunctionReference)
+  fullName: GmodMongoDb.MongoClient.ListDatabaseNamesAsync(GmodMongoDb.Binding.LuaFunctionReference)
+  nameWithType: MongoClient.ListDatabaseNamesAsync(LuaFunctionReference)
+- uid: GmodMongoDb.MongoClient.ListDatabaseNamesAsync*
+  name: ListDatabaseNamesAsync
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_ListDatabaseNamesAsync_
+  commentId: Overload:GmodMongoDb.MongoClient.ListDatabaseNamesAsync
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoClient.ListDatabaseNamesAsync
+  nameWithType: MongoClient.ListDatabaseNamesAsync
+- uid: GmodMongoDb.MongoClient.ListDatabases
+  name: ListDatabases()
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_ListDatabases
+  commentId: M:GmodMongoDb.MongoClient.ListDatabases
+  fullName: GmodMongoDb.MongoClient.ListDatabases()
+  nameWithType: MongoClient.ListDatabases()
+- uid: GmodMongoDb.MongoClient.ListDatabases*
+  name: ListDatabases
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_ListDatabases_
+  commentId: Overload:GmodMongoDb.MongoClient.ListDatabases
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoClient.ListDatabases
+  nameWithType: MongoClient.ListDatabases
+- uid: GmodMongoDb.MongoClient.ListDatabasesAsync(GmodMongoDb.Binding.LuaFunctionReference)
+  name: ListDatabasesAsync(LuaFunctionReference)
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_ListDatabasesAsync_GmodMongoDb_Binding_LuaFunctionReference_
+  commentId: M:GmodMongoDb.MongoClient.ListDatabasesAsync(GmodMongoDb.Binding.LuaFunctionReference)
+  fullName: GmodMongoDb.MongoClient.ListDatabasesAsync(GmodMongoDb.Binding.LuaFunctionReference)
+  nameWithType: MongoClient.ListDatabasesAsync(LuaFunctionReference)
+- uid: GmodMongoDb.MongoClient.ListDatabasesAsync*
+  name: ListDatabasesAsync
+  href: api/GmodMongoDb.MongoClient.html#GmodMongoDb_MongoClient_ListDatabasesAsync_
+  commentId: Overload:GmodMongoDb.MongoClient.ListDatabasesAsync
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoClient.ListDatabasesAsync
+  nameWithType: MongoClient.ListDatabasesAsync
+- uid: GmodMongoDb.MongoCollection
+  name: MongoCollection
+  href: api/GmodMongoDb.MongoCollection.html
+  commentId: T:GmodMongoDb.MongoCollection
+  fullName: GmodMongoDb.MongoCollection
+  nameWithType: MongoCollection
+- uid: GmodMongoDb.MongoCollection.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoCollection{MongoDB.Bson.BsonDocument})
+  name: MongoCollection(ILua, IMongoCollection<BsonDocument>)
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection__ctor_GmodNET_API_ILua_MongoDB_Driver_IMongoCollection_MongoDB_Bson_BsonDocument__
+  commentId: M:GmodMongoDb.MongoCollection.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoCollection{MongoDB.Bson.BsonDocument})
+  name.vb: MongoCollection(ILua, IMongoCollection(Of BsonDocument))
+  fullName: GmodMongoDb.MongoCollection.MongoCollection(GmodNET.API.ILua, MongoDB.Driver.IMongoCollection<MongoDB.Bson.BsonDocument>)
+  fullName.vb: GmodMongoDb.MongoCollection.MongoCollection(GmodNET.API.ILua, MongoDB.Driver.IMongoCollection(Of MongoDB.Bson.BsonDocument))
+  nameWithType: MongoCollection.MongoCollection(ILua, IMongoCollection<BsonDocument>)
+  nameWithType.vb: MongoCollection.MongoCollection(ILua, IMongoCollection(Of BsonDocument))
+- uid: GmodMongoDb.MongoCollection.#ctor*
+  name: MongoCollection
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection__ctor_
+  commentId: Overload:GmodMongoDb.MongoCollection.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoCollection.MongoCollection
+  nameWithType: MongoCollection.MongoCollection
+- uid: GmodMongoDb.MongoCollection.Database
+  name: Database
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_Database
+  commentId: P:GmodMongoDb.MongoCollection.Database
+  fullName: GmodMongoDb.MongoCollection.Database
+  nameWithType: MongoCollection.Database
+- uid: GmodMongoDb.MongoCollection.Database*
+  name: Database
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_Database_
+  commentId: Overload:GmodMongoDb.MongoCollection.Database
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoCollection.Database
+  nameWithType: MongoCollection.Database
+- uid: GmodMongoDb.MongoCollection.Find(GmodMongoDb.BsonDocument)
+  name: Find(BsonDocument)
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_Find_GmodMongoDb_BsonDocument_
+  commentId: M:GmodMongoDb.MongoCollection.Find(GmodMongoDb.BsonDocument)
+  fullName: GmodMongoDb.MongoCollection.Find(GmodMongoDb.BsonDocument)
+  nameWithType: MongoCollection.Find(BsonDocument)
+- uid: GmodMongoDb.MongoCollection.Find*
+  name: Find
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_Find_
+  commentId: Overload:GmodMongoDb.MongoCollection.Find
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoCollection.Find
+  nameWithType: MongoCollection.Find
+- uid: GmodMongoDb.MongoCollection.FindAsync(GmodMongoDb.BsonDocument,GmodMongoDb.Binding.LuaFunctionReference)
+  name: FindAsync(BsonDocument, LuaFunctionReference)
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_FindAsync_GmodMongoDb_BsonDocument_GmodMongoDb_Binding_LuaFunctionReference_
+  commentId: M:GmodMongoDb.MongoCollection.FindAsync(GmodMongoDb.BsonDocument,GmodMongoDb.Binding.LuaFunctionReference)
+  fullName: GmodMongoDb.MongoCollection.FindAsync(GmodMongoDb.BsonDocument, GmodMongoDb.Binding.LuaFunctionReference)
+  nameWithType: MongoCollection.FindAsync(BsonDocument, LuaFunctionReference)
+- uid: GmodMongoDb.MongoCollection.FindAsync*
+  name: FindAsync
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_FindAsync_
+  commentId: Overload:GmodMongoDb.MongoCollection.FindAsync
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoCollection.FindAsync
+  nameWithType: MongoCollection.FindAsync
+- uid: GmodMongoDb.MongoCollection.FindOneAndDelete(GmodMongoDb.BsonDocument)
+  name: FindOneAndDelete(BsonDocument)
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_FindOneAndDelete_GmodMongoDb_BsonDocument_
+  commentId: M:GmodMongoDb.MongoCollection.FindOneAndDelete(GmodMongoDb.BsonDocument)
+  fullName: GmodMongoDb.MongoCollection.FindOneAndDelete(GmodMongoDb.BsonDocument)
+  nameWithType: MongoCollection.FindOneAndDelete(BsonDocument)
+- uid: GmodMongoDb.MongoCollection.FindOneAndDelete*
+  name: FindOneAndDelete
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_FindOneAndDelete_
+  commentId: Overload:GmodMongoDb.MongoCollection.FindOneAndDelete
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoCollection.FindOneAndDelete
+  nameWithType: MongoCollection.FindOneAndDelete
+- uid: GmodMongoDb.MongoCollection.FindOneAndDeleteAsync(GmodMongoDb.BsonDocument,GmodMongoDb.Binding.LuaFunctionReference)
+  name: FindOneAndDeleteAsync(BsonDocument, LuaFunctionReference)
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_FindOneAndDeleteAsync_GmodMongoDb_BsonDocument_GmodMongoDb_Binding_LuaFunctionReference_
+  commentId: M:GmodMongoDb.MongoCollection.FindOneAndDeleteAsync(GmodMongoDb.BsonDocument,GmodMongoDb.Binding.LuaFunctionReference)
+  fullName: GmodMongoDb.MongoCollection.FindOneAndDeleteAsync(GmodMongoDb.BsonDocument, GmodMongoDb.Binding.LuaFunctionReference)
+  nameWithType: MongoCollection.FindOneAndDeleteAsync(BsonDocument, LuaFunctionReference)
+- uid: GmodMongoDb.MongoCollection.FindOneAndDeleteAsync*
+  name: FindOneAndDeleteAsync
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_FindOneAndDeleteAsync_
+  commentId: Overload:GmodMongoDb.MongoCollection.FindOneAndDeleteAsync
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoCollection.FindOneAndDeleteAsync
+  nameWithType: MongoCollection.FindOneAndDeleteAsync
+- uid: GmodMongoDb.MongoCollection.FindOneAndReplace(GmodMongoDb.BsonDocument,MongoDB.Bson.BsonDocument)
+  name: FindOneAndReplace(BsonDocument, BsonDocument)
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_FindOneAndReplace_GmodMongoDb_BsonDocument_MongoDB_Bson_BsonDocument_
+  commentId: M:GmodMongoDb.MongoCollection.FindOneAndReplace(GmodMongoDb.BsonDocument,MongoDB.Bson.BsonDocument)
+  fullName: GmodMongoDb.MongoCollection.FindOneAndReplace(GmodMongoDb.BsonDocument, MongoDB.Bson.BsonDocument)
+  nameWithType: MongoCollection.FindOneAndReplace(BsonDocument, BsonDocument)
+- uid: GmodMongoDb.MongoCollection.FindOneAndReplace*
+  name: FindOneAndReplace
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_FindOneAndReplace_
+  commentId: Overload:GmodMongoDb.MongoCollection.FindOneAndReplace
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoCollection.FindOneAndReplace
+  nameWithType: MongoCollection.FindOneAndReplace
+- uid: GmodMongoDb.MongoCollection.FindOneAndReplaceAsync(GmodMongoDb.BsonDocument,MongoDB.Bson.BsonDocument,GmodMongoDb.Binding.LuaFunctionReference)
+  name: FindOneAndReplaceAsync(BsonDocument, BsonDocument, LuaFunctionReference)
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_FindOneAndReplaceAsync_GmodMongoDb_BsonDocument_MongoDB_Bson_BsonDocument_GmodMongoDb_Binding_LuaFunctionReference_
+  commentId: M:GmodMongoDb.MongoCollection.FindOneAndReplaceAsync(GmodMongoDb.BsonDocument,MongoDB.Bson.BsonDocument,GmodMongoDb.Binding.LuaFunctionReference)
+  fullName: GmodMongoDb.MongoCollection.FindOneAndReplaceAsync(GmodMongoDb.BsonDocument, MongoDB.Bson.BsonDocument, GmodMongoDb.Binding.LuaFunctionReference)
+  nameWithType: MongoCollection.FindOneAndReplaceAsync(BsonDocument, BsonDocument, LuaFunctionReference)
+- uid: GmodMongoDb.MongoCollection.FindOneAndReplaceAsync*
+  name: FindOneAndReplaceAsync
+  href: api/GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_FindOneAndReplaceAsync_
+  commentId: Overload:GmodMongoDb.MongoCollection.FindOneAndReplaceAsync
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoCollection.FindOneAndReplaceAsync
+  nameWithType: MongoCollection.FindOneAndReplaceAsync
+- uid: GmodMongoDb.MongoDatabase
+  name: MongoDatabase
+  href: api/GmodMongoDb.MongoDatabase.html
+  commentId: T:GmodMongoDb.MongoDatabase
+  fullName: GmodMongoDb.MongoDatabase
+  nameWithType: MongoDatabase
+- uid: GmodMongoDb.MongoDatabase.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoDatabase)
+  name: MongoDatabase(ILua, IMongoDatabase)
+  href: api/GmodMongoDb.MongoDatabase.html#GmodMongoDb_MongoDatabase__ctor_GmodNET_API_ILua_MongoDB_Driver_IMongoDatabase_
+  commentId: M:GmodMongoDb.MongoDatabase.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoDatabase)
+  fullName: GmodMongoDb.MongoDatabase.MongoDatabase(GmodNET.API.ILua, MongoDB.Driver.IMongoDatabase)
+  nameWithType: MongoDatabase.MongoDatabase(ILua, IMongoDatabase)
+- uid: GmodMongoDb.MongoDatabase.#ctor*
+  name: MongoDatabase
+  href: api/GmodMongoDb.MongoDatabase.html#GmodMongoDb_MongoDatabase__ctor_
+  commentId: Overload:GmodMongoDb.MongoDatabase.#ctor
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoDatabase.MongoDatabase
+  nameWithType: MongoDatabase.MongoDatabase
+- uid: GmodMongoDb.MongoDatabase.Client
+  name: Client
+  href: api/GmodMongoDb.MongoDatabase.html#GmodMongoDb_MongoDatabase_Client
+  commentId: P:GmodMongoDb.MongoDatabase.Client
+  fullName: GmodMongoDb.MongoDatabase.Client
+  nameWithType: MongoDatabase.Client
+- uid: GmodMongoDb.MongoDatabase.Client*
+  name: Client
+  href: api/GmodMongoDb.MongoDatabase.html#GmodMongoDb_MongoDatabase_Client_
+  commentId: Overload:GmodMongoDb.MongoDatabase.Client
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoDatabase.Client
+  nameWithType: MongoDatabase.Client
+- uid: GmodMongoDb.MongoDatabase.Equals(GmodMongoDb.MongoDatabase)
+  name: Equals(MongoDatabase)
+  href: api/GmodMongoDb.MongoDatabase.html#GmodMongoDb_MongoDatabase_Equals_GmodMongoDb_MongoDatabase_
+  commentId: M:GmodMongoDb.MongoDatabase.Equals(GmodMongoDb.MongoDatabase)
+  fullName: GmodMongoDb.MongoDatabase.Equals(GmodMongoDb.MongoDatabase)
+  nameWithType: MongoDatabase.Equals(MongoDatabase)
+- uid: GmodMongoDb.MongoDatabase.Equals*
+  name: Equals
+  href: api/GmodMongoDb.MongoDatabase.html#GmodMongoDb_MongoDatabase_Equals_
+  commentId: Overload:GmodMongoDb.MongoDatabase.Equals
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoDatabase.Equals
+  nameWithType: MongoDatabase.Equals
+- uid: GmodMongoDb.MongoDatabase.GetCollection(System.String)
+  name: GetCollection(String)
+  href: api/GmodMongoDb.MongoDatabase.html#GmodMongoDb_MongoDatabase_GetCollection_System_String_
+  commentId: M:GmodMongoDb.MongoDatabase.GetCollection(System.String)
+  fullName: GmodMongoDb.MongoDatabase.GetCollection(System.String)
+  nameWithType: MongoDatabase.GetCollection(String)
+- uid: GmodMongoDb.MongoDatabase.GetCollection*
+  name: GetCollection
+  href: api/GmodMongoDb.MongoDatabase.html#GmodMongoDb_MongoDatabase_GetCollection_
+  commentId: Overload:GmodMongoDb.MongoDatabase.GetCollection
+  isSpec: "True"
+  fullName: GmodMongoDb.MongoDatabase.GetCollection
+  nameWithType: MongoDatabase.GetCollection
+- uid: GmodMongoDb.Setup
+  name: Setup
+  href: api/GmodMongoDb.Setup.html
+  commentId: T:GmodMongoDb.Setup
+  fullName: GmodMongoDb.Setup
+  nameWithType: Setup
+- uid: GmodMongoDb.Setup.Load(GmodNET.API.ILua,System.Boolean,GmodNET.API.ModuleAssemblyLoadContext)
+  name: Load(ILua, Boolean, ModuleAssemblyLoadContext)
+  href: api/GmodMongoDb.Setup.html#GmodMongoDb_Setup_Load_GmodNET_API_ILua_System_Boolean_GmodNET_API_ModuleAssemblyLoadContext_
+  commentId: M:GmodMongoDb.Setup.Load(GmodNET.API.ILua,System.Boolean,GmodNET.API.ModuleAssemblyLoadContext)
+  fullName: GmodMongoDb.Setup.Load(GmodNET.API.ILua, System.Boolean, GmodNET.API.ModuleAssemblyLoadContext)
+  nameWithType: Setup.Load(ILua, Boolean, ModuleAssemblyLoadContext)
+- uid: GmodMongoDb.Setup.Load*
+  name: Load
+  href: api/GmodMongoDb.Setup.html#GmodMongoDb_Setup_Load_
+  commentId: Overload:GmodMongoDb.Setup.Load
+  isSpec: "True"
+  fullName: GmodMongoDb.Setup.Load
+  nameWithType: Setup.Load
+- uid: GmodMongoDb.Setup.ModuleName
+  name: ModuleName
+  href: api/GmodMongoDb.Setup.html#GmodMongoDb_Setup_ModuleName
+  commentId: P:GmodMongoDb.Setup.ModuleName
+  fullName: GmodMongoDb.Setup.ModuleName
+  nameWithType: Setup.ModuleName
+- uid: GmodMongoDb.Setup.ModuleName*
+  name: ModuleName
+  href: api/GmodMongoDb.Setup.html#GmodMongoDb_Setup_ModuleName_
+  commentId: Overload:GmodMongoDb.Setup.ModuleName
+  isSpec: "True"
+  fullName: GmodMongoDb.Setup.ModuleName
+  nameWithType: Setup.ModuleName
+- uid: GmodMongoDb.Setup.ModuleVersion
+  name: ModuleVersion
+  href: api/GmodMongoDb.Setup.html#GmodMongoDb_Setup_ModuleVersion
+  commentId: P:GmodMongoDb.Setup.ModuleVersion
+  fullName: GmodMongoDb.Setup.ModuleVersion
+  nameWithType: Setup.ModuleVersion
+- uid: GmodMongoDb.Setup.ModuleVersion*
+  name: ModuleVersion
+  href: api/GmodMongoDb.Setup.html#GmodMongoDb_Setup_ModuleVersion_
+  commentId: Overload:GmodMongoDb.Setup.ModuleVersion
+  isSpec: "True"
+  fullName: GmodMongoDb.Setup.ModuleVersion
+  nameWithType: Setup.ModuleVersion
+- uid: GmodMongoDb.Setup.Unload(GmodNET.API.ILua)
+  name: Unload(ILua)
+  href: api/GmodMongoDb.Setup.html#GmodMongoDb_Setup_Unload_GmodNET_API_ILua_
+  commentId: M:GmodMongoDb.Setup.Unload(GmodNET.API.ILua)
+  fullName: GmodMongoDb.Setup.Unload(GmodNET.API.ILua)
+  nameWithType: Setup.Unload(ILua)
+- uid: GmodMongoDb.Setup.Unload*
+  name: Unload
+  href: api/GmodMongoDb.Setup.html#GmodMongoDb_Setup_Unload_
+  commentId: Overload:GmodMongoDb.Setup.Unload
+  isSpec: "True"
+  fullName: GmodMongoDb.Setup.Unload
+  nameWithType: Setup.Unload

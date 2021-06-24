@@ -1,0 +1,726 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class BsonDocument
+   | Gmod MongoDB Wrapper Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class BsonDocument
+   | Gmod MongoDB Wrapper Docs ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="GmodMongoDb.BsonDocument">
+  
+  
+  <h1 id="GmodMongoDb_BsonDocument" data-uid="GmodMongoDb.BsonDocument" class="text-break">Class BsonDocument
+  </h1>
+  <div class="markdown level0 summary"><p>Exposes a MongoDB BSON Document to Lua.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html">LuaMetaObjectBinding</a></div>
+    <div class="level2"><span class="xref">BsonDocument</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_MetaTableTypeId">LuaMetaObjectBinding.MetaTableTypeId</a>
+    </div>
+    <div>
+      <a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_Reference">LuaMetaObjectBinding.Reference</a>
+    </div>
+    <div>
+      <a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_lua">LuaMetaObjectBinding.lua</a>
+    </div>
+    <div>
+      <a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_NewIndex_System_String_GmodMongoDb_Binding_LuaReference_">LuaMetaObjectBinding.NewIndex(String, LuaReference)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="GmodMongoDb.html">GmodMongoDb</a></h6>
+  <h6><strong>Assembly</strong>: GmodMongoDb.dll</h6>
+  <h5 id="GmodMongoDb_BsonDocument_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMetaTable(&quot;MongoBsonDocument&quot;)]
+public class BsonDocument : LuaMetaObjectBinding</code></pre>
+  </div>
+  <h5 id="GmodMongoDb_BsonDocument_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>In Lua you can get a BSON document by querying a collection using <a class="xref" href="GmodMongoDb.MongoCollection.html#GmodMongoDb_MongoCollection_Find_GmodMongoDb_BsonDocument_">Find(BsonDocument)</a>.
+You can also generate your own BSON document from a table by using <a class="xref" href="GmodMongoDb.BsonDocument.html#GmodMongoDb_BsonDocument_Constructor_GmodNET_API_ILua_GmodMongoDb_BsonDocument_">Constructor(ILua, BsonDocument)</a></p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument__ctor_GmodNET_API_ILua_MongoDB_Bson_BsonDocument_.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.%23ctor(GmodNET.API.ILua%2CMongoDB.Bson.BsonDocument)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L28">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument__ctor_" data-uid="GmodMongoDb.BsonDocument.#ctor*"></a>
+  <h4 id="GmodMongoDb_BsonDocument__ctor_GmodNET_API_ILua_MongoDB_Bson_BsonDocument_" data-uid="GmodMongoDb.BsonDocument.#ctor(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">BsonDocument(ILua, BsonDocument)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BsonDocument(ILua lua, BsonDocument document)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">MongoDB.Bson.BsonDocument</span></td>
+        <td><span class="parametername">document</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument_RawBsonDocument.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.RawBsonDocument%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L23">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument_RawBsonDocument_" data-uid="GmodMongoDb.BsonDocument.RawBsonDocument*"></a>
+  <h4 id="GmodMongoDb_BsonDocument_RawBsonDocument" data-uid="GmodMongoDb.BsonDocument.RawBsonDocument">RawBsonDocument</h4>
+  <div class="markdown level1 summary"><p>The native MongoDB BSON Document object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BsonDocument RawBsonDocument { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MongoDB.Bson.BsonDocument</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument_Constructor_GmodNET_API_ILua_GmodMongoDb_BsonDocument_.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.Constructor(GmodNET.API.ILua%2CGmodMongoDb.BsonDocument)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L72">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument_Constructor_" data-uid="GmodMongoDb.BsonDocument.Constructor*"></a>
+  <h4 id="GmodMongoDb_BsonDocument_Constructor_GmodNET_API_ILua_GmodMongoDb_BsonDocument_" data-uid="GmodMongoDb.BsonDocument.Constructor(GmodNET.API.ILua,GmodMongoDb.BsonDocument)">Constructor(ILua, BsonDocument)</h4>
+  <div class="markdown level1 summary"><p>Creates a new BSON Document from the provided Lua table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null, IsConstructor = true)]
+public static BsonDocument Constructor(ILua lua, BsonDocument table)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.BsonDocument.html">BsonDocument</a></td>
+        <td><span class="parametername">table</span></td>
+        <td><p>The table to use to build a BSON Document</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.BsonDocument.html">BsonDocument</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="GmodMongoDb_BsonDocument_Constructor_GmodNET_API_ILua_GmodMongoDb_BsonDocument__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p><a class="xref" href="GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.html#GmodMongoDb_DataTransforming_BetweenBsonDocumentAndTable_TryParse_GmodNET_API_ILua_GmodMongoDb_BsonDocument__System_Int32_System_Boolean_">TryParse(ILua, out BsonDocument, Int32, Boolean)</a> will automatically handle this conversion.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument_Equals_GmodMongoDb_BsonDocument_.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.Equals(GmodMongoDb.BsonDocument)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L222">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument_Equals_" data-uid="GmodMongoDb.BsonDocument.Equals*"></a>
+  <h4 id="GmodMongoDb_BsonDocument_Equals_GmodMongoDb_BsonDocument_" data-uid="GmodMongoDb.BsonDocument.Equals(GmodMongoDb.BsonDocument)">Equals(BsonDocument)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(&quot;__eq&quot;)]
+public bool Equals(BsonDocument other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.BsonDocument.html">BsonDocument</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument_FromJson_GmodNET_API_ILua_System_String_.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.FromJson(GmodNET.API.ILua%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L103">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument_FromJson_" data-uid="GmodMongoDb.BsonDocument.FromJson*"></a>
+  <h4 id="GmodMongoDb_BsonDocument_FromJson_GmodNET_API_ILua_System_String_" data-uid="GmodMongoDb.BsonDocument.FromJson(GmodNET.API.ILua,System.String)">FromJson(ILua, String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new BSON Document from the provided json.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null)]
+public static BsonDocument FromJson(ILua lua, string json)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">json</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.BsonDocument.html">BsonDocument</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument_FromLuaTable_GmodNET_API_ILua_GmodMongoDb_Binding_LuaTableReference_.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.FromLuaTable(GmodNET.API.ILua%2CGmodMongoDb.Binding.LuaTableReference)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L78">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument_FromLuaTable_" data-uid="GmodMongoDb.BsonDocument.FromLuaTable*"></a>
+  <h4 id="GmodMongoDb_BsonDocument_FromLuaTable_GmodNET_API_ILua_GmodMongoDb_Binding_LuaTableReference_" data-uid="GmodMongoDb.BsonDocument.FromLuaTable(GmodNET.API.ILua,GmodMongoDb.Binding.LuaTableReference)">FromLuaTable(ILua, LuaTableReference)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null)]
+public static BsonDocument FromLuaTable(ILua lua, LuaTableReference table)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.Binding.LuaTableReference.html">LuaTableReference</a></td>
+        <td><span class="parametername">table</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.BsonDocument.html">BsonDocument</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument_Index_System_String_.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.Index(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L117">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument_Index_" data-uid="GmodMongoDb.BsonDocument.Index*"></a>
+  <h4 id="GmodMongoDb_BsonDocument_Index_System_String_" data-uid="GmodMongoDb.BsonDocument.Index(System.String)">Index(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(&quot;__index&quot;)]
+public override object Index(string key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="GmodMongoDb.Binding.LuaMetaObjectBinding.html#GmodMongoDb_Binding_LuaMetaObjectBinding_Index_System_String_">LuaMetaObjectBinding.Index(String)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument_LessOrEqual_GmodMongoDb_BsonDocument_.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.LessOrEqual(GmodMongoDb.BsonDocument)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L218">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument_LessOrEqual_" data-uid="GmodMongoDb.BsonDocument.LessOrEqual*"></a>
+  <h4 id="GmodMongoDb_BsonDocument_LessOrEqual_GmodMongoDb_BsonDocument_" data-uid="GmodMongoDb.BsonDocument.LessOrEqual(GmodMongoDb.BsonDocument)">LessOrEqual(BsonDocument)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(&quot;__le&quot;)]
+public bool LessOrEqual(BsonDocument other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.BsonDocument.html">BsonDocument</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument_LessThan_GmodMongoDb_BsonDocument_.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.LessThan(GmodMongoDb.BsonDocument)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L214">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument_LessThan_" data-uid="GmodMongoDb.BsonDocument.LessThan*"></a>
+  <h4 id="GmodMongoDb_BsonDocument_LessThan_GmodMongoDb_BsonDocument_" data-uid="GmodMongoDb.BsonDocument.LessThan(GmodMongoDb.BsonDocument)">LessThan(BsonDocument)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(&quot;__lt&quot;)]
+public bool LessThan(BsonDocument other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="GmodMongoDb.BsonDocument.html">BsonDocument</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument_Pairs.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.Pairs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L185">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument_Pairs_" data-uid="GmodMongoDb.BsonDocument.Pairs*"></a>
+  <h4 id="GmodMongoDb_BsonDocument_Pairs" data-uid="GmodMongoDb.BsonDocument.Pairs">Pairs()</h4>
+  <div class="markdown level1 summary"><p>Call this function instead of using <code>pairs</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(&quot;__pairs&quot;)]
+[LuaMethod(&quot;Pairs&quot;)]
+public object[] Pairs()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>[]</td>
+        <td><p>Multiple values: the next function that iterates the object, the object/table itself and nil</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="GmodMongoDb_BsonDocument_Pairs_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The __pairs metamethod is implemented, but won't work in Garry's Mod. If Garry's Mod updates to a version &gt;= Lua 5.2 it will.
+Read more about pairs in <a href="https://www.lua.org/manual/5.3/manual.html#pdf-next">the Lua manual</a></p>
+</div>
+  <h5 id="GmodMongoDb_BsonDocument_Pairs_examples">Examples</h5>
+  <p>You can loop over the values in a BSON Document like so:</p>
+<pre><code class="lang-Lua">for key, value in bsonDocument:Pairs() do
+    print(key, value)
+end</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument_ToJson.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.ToJson%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L113">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument_ToJson_" data-uid="GmodMongoDb.BsonDocument.ToJson*"></a>
+  <h4 id="GmodMongoDb_BsonDocument_ToJson" data-uid="GmodMongoDb.BsonDocument.ToJson">ToJson()</h4>
+  <div class="markdown level1 summary"><p>Converts the BSON Document to a JSON string</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(null)]
+public string ToJson()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The JSON representation of this BSON Document</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument_ToString.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L206">View Source</a>
+  </span>
+  <a id="GmodMongoDb_BsonDocument_ToString_" data-uid="GmodMongoDb.BsonDocument.ToString*"></a>
+  <h4 id="GmodMongoDb_BsonDocument_ToString" data-uid="GmodMongoDb.BsonDocument.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Converts the BSON Document to a json string</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[LuaMethod(&quot;__tostring&quot;)]
+public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The JSON representation of this BSON Document</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/luttje/gmod-net-mongodb/new/main/apiSpec/new?filename=GmodMongoDb_BsonDocument.md&amp;value=---%0Auid%3A%20GmodMongoDb.BsonDocument%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/luttje/gmod-net-mongodb/blob/main/GmodMongoDb/BsonDocument.cs/#L17" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

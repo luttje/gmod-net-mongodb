@@ -1,0 +1,479 @@
+{
+  "homepages": [],
+  "source_base_path": "D:/a/gmod-net-mongodb/gmod-net-mongodb/DocFx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "Articles/intro.html",
+          "hash": "9PJw+acFPFlZYXRVG3POIS5B2rJiVPpevPcRjW0mTN8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "Articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Articles/toc.html",
+          "hash": "BlPxk5mtl2kgfcZUgkEguqiSAR/EUyUTT4EdebwkQvs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute.html",
+          "hash": "lujIm5HofVwR6c52BOT3KNBnJFPfnwcOxBO7ry+KzKY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.Annotating.LuaMethodAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.Annotating.LuaMethodAttribute.html",
+          "hash": "lXWVZ1irNT3WDZjdyCqhzLRfmTqQlMAgzSqwFuep4bU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.Annotating.LuaPropertyAttribute.html",
+          "hash": "A7eyMeR+sN5DdZguKao9qOk4cLyqQShYiNLUFNsva3A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.Annotating.PropertyMethodNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.Annotating.PropertyMethodNames.html",
+          "hash": "dFHdq3prrv9dMNS2vU32H2+4rfv06CPM7bWfIqzM6Ps="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.Annotating.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.Annotating.html",
+          "hash": "E4209edFyiz8m4yVi2NDPSqChFaI0/kv9aHiIfp57Oc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.DataTransforming.BaseLuaValueTransformer.html",
+          "hash": "V4c2ZHJcDP9zUWxvvKFBrrQxJ4oCugRRXFSxTawi/s4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.DataTransforming.BetweenObjectArrayAndMultipleResults.html",
+          "hash": "auktwfS4Dz5voYvumN3KhSlLxAv80QFLVuDPTyFNCG0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.DataTransforming.BetweenStringListAndTable.html",
+          "hash": "/epLQ1jhKTfgqqv41G9fRHqRfc4vVF4Nmj3w/lfzhag="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.DataTransforming.LuaTransformerExtensions.html",
+          "hash": "IVRo0PiN5VkGlET55n55KQEjlSi5ZjL9PPmieXP6C1Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.DataTransforming.LuaValueTransformer-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.DataTransforming.LuaValueTransformer-1.html",
+          "hash": "sK4v/TlMkfkytzXiLIZS5jEnml8BVFe7LNiF6BQtk30="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.DataTransforming.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.DataTransforming.html",
+          "hash": "wtC0xRWPdwTeZ/XXz/2wRCfwl0QiFTH4BXB+5eXcMrQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.LuaExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.LuaExtensions.html",
+          "hash": "hHcnkly7cjoIkb6ekwpeLRUFPEHw+39gm4ilc+jcpUs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.LuaFunctionReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.LuaFunctionReference.html",
+          "hash": "fsJWP/Z7HZgx3Pat1JwQk03WPldHuPTRLSUJbzuiVHM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.LuaMetaObjectBinding.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.LuaMetaObjectBinding.html",
+          "hash": "bYMDrqoIsGiBKNvaVgmEb7Gb3bGK1plktaQr0qcVSC0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.LuaReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.LuaReference.html",
+          "hash": "FtK9lrlBDRtyf4oX696Wu5o9pitDqTHwpo5h2TjaLus="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.LuaTableReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.LuaTableReference.html",
+          "hash": "2P++R8wAyxjp1ePor/gmMASqN6POKOlOG6F5yZ9GucQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.LuaTaskScheduler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.LuaTaskScheduler.html",
+          "hash": "GCsj2RnCBBuiTyplo8Sr0kpL5Hc/B1JlEV9iBBv/uzI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.ReferenceManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.ReferenceManager.html",
+          "hash": "om/JDIY9Jw21ujVKQhhukjJAFecaGc3MohnvvCOuPGg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.TypeTools.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.TypeTools.html",
+          "hash": "aPllv9Unqecv9gR9FI7np5PIKSnzLGPrP+wcwbvovCc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Binding.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Binding.html",
+          "hash": "ndazbWIGSg4xEcIrB43rEiMryAEkKk8CBuVx6AWocPM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.BsonDocument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.BsonDocument.html",
+          "hash": "LifsLzIydFzY34oxNt0RfKPWscvKUpgJ/MvNmJZLoKg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.html",
+          "hash": "C6GB0oN5nv2XwRGM3BO3OtIUHMf9ilqpEx/phjhJge8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.html",
+          "hash": "Nq9aMsfk1THffuqdQKoXWWs5QQsszSy48OUAFSqjhks="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.DataTransforming.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.DataTransforming.html",
+          "hash": "ffXtoCAprqAzvqXzzAedGFKYQLc61sA2Q7/Wp2ZJoWI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.MongoClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.MongoClient.html",
+          "hash": "GdhRWItmdbdWyjlaFFWdUQv8tZMII7lGxcFiaYD+vVk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.MongoCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.MongoCollection.html",
+          "hash": "HvS996Er3DffFfcDlTfy3Ypt3T+0//r/MG6zxdEp9HY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.MongoDatabase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.MongoDatabase.html",
+          "hash": "mhxIkDz6gV2lLM5REB6W926nYZbrFEflBUkMBvNKHOs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.Setup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.Setup.html",
+          "hash": "l937igIou8iTJBF8uHF84g/ipfceTq8rhH7vCDvmKoU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/GmodMongoDb.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/GmodMongoDb.html",
+          "hash": "WJL+kLiJX/gVzLmsQnQ2/0X64nSw8+Kfz9C7nYXA7Tc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "Vdv/NEgsYiSOf6WESf6vjoOd8q9ZY/PhsFJ7Ga9PL5I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "d3AiYfM55qdTe1hBIOqnBDjl9VWtFAmiGi/p7AF55aE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "ZmUBs//cl1nJtA1SvVDVwCpa3FT/DoPYTWKGur+uCGE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "Ezd8PbYsdrS9RgZB0uxFgt9RLuSxu86ZgzNJDpMp92c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 3,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 29,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
