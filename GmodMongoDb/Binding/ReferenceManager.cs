@@ -42,7 +42,7 @@ namespace GmodMongoDb.Binding
         /// </summary>
         public static void KillAll()
         {
-            if(handles != null)
+            if (handles != null)
             {
                 foreach (var handle in handles)
                 {
@@ -54,7 +54,7 @@ namespace GmodMongoDb.Binding
                 handles = null;
             }
 
-            if(disposables != null)
+            if (disposables != null)
             {
 
                 foreach (var disposable in disposables)

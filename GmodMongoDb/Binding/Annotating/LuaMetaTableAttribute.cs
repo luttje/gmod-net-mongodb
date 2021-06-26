@@ -6,7 +6,7 @@ namespace GmodMongoDb.Binding.Annotating
     /// Apply this attribute to classes to change the metatable type name they'll receive in Lua
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class LuaMetaTableAttribute : Attribute
+    public class LuaMetaTableAttribute : LuaBindingAttribute
     {
         /// <summary>
         /// The desired metatable type name in Lua

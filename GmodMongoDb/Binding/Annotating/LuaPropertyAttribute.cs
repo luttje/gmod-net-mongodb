@@ -21,7 +21,7 @@ namespace GmodMongoDb.Binding.Annotating
     /// Apply this attribute to property methods that should be exposed to Lua.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
-    public class LuaPropertyAttribute : Attribute
+    public class LuaPropertyAttribute : LuaBindingAttribute
     {
         private static readonly Dictionary<Type, Dictionary<string, PropertyMethodNames>> AvailableProperties = new();
 

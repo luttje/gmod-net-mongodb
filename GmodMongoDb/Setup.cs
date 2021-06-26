@@ -19,7 +19,7 @@ namespace GmodMongoDb
             LuaTaskScheduler.RegisterLuaCallback(lua);
             TypeTools.DiscoverDataTransformers();
 
-            TypeTools.CreateBindings(lua, typeof(MongoDB.Driver.MongoClient));
+            TypeTools.CreateBindings(lua, new Bindings.MongoClient());
             TypeTools.CreateBindings(lua, typeof(MongoDB.Driver.IMongoDatabase));
             TypeTools.CreateBindings(lua, typeof(MongoDB.Bson.BsonDocument));
             TypeTools.CreateBindings(lua, typeof(MongoDB.Driver.MongoCollectionBase<MongoDB.Bson.BsonDocument>));
@@ -28,7 +28,7 @@ namespace GmodMongoDb
         /// <inheritdoc/>
         public void Unload(ILua lua)
         {
-            TypeTools.CleanUpStaticFunctionTables(lua);
+            TypeTools.CleanUpMetaTables(lua);
 
             LuaTaskScheduler.UnregisterLuaCallback(lua);
             ReferenceManager.KillAll();

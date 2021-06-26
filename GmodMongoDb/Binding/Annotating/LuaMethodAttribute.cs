@@ -11,7 +11,7 @@ namespace GmodMongoDb.Binding.Annotating
     /// Apply this attribute to methods that should be exposed to Lua.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    public class LuaMethodAttribute : Attribute
+    public class LuaMethodAttribute : LuaBindingAttribute
     {
         /// <summary>
         /// The name this method will receive in Lua.
@@ -109,11 +109,12 @@ namespace GmodMongoDb.Binding.Annotating
 
                 genericTypes[index] = (Type) genericType;
             });
+            genericsTable.Free();
 
             methodInfo = methodInfo.MakeGenericMethod(genericTypes);
 
             // Return the real function result
-            lua.PushManagedFunction(lua =>
+            var handle = lua.PushManagedFunction(lua =>
             {
                 // Move the instance back to the front
                 TypeTools.PushReference(lua, instance, (int) metaTableTypeId);
@@ -121,6 +122,7 @@ namespace GmodMongoDb.Binding.Annotating
 
                 return CallSimpleFunction(lua, methodInfo, metaTableTypeId, forceWithoutFinder);
             });
+            //ReferenceManager.Add(handle);
 
             return 1;
         }
@@ -151,7 +153,7 @@ namespace GmodMongoDb.Binding.Annotating
                     return CallSimpleFunction(lua, method, metaTableTypeId, forceWithoutFinder);
                 }
             });
-            ReferenceManager.Add(handle);
+            //ReferenceManager.Add(handle);
         }
 
         /// <summary>
@@ -161,7 +163,7 @@ namespace GmodMongoDb.Binding.Annotating
         /// <param name="lua"></param>
         /// <param name="method">The method to execute</param>
         /// <returns></returns>
-        private static int ExecuteMethod(object? instance, ILua lua, MethodBase method)
+        private int ExecuteMethod(object? instance, ILua lua, MethodBase method)
         {
             int offset = 0;
             var parameters = method.GetParameters();
@@ -192,11 +194,16 @@ namespace GmodMongoDb.Binding.Annotating
                     ReferenceManager.Add(reference);
             }
 
-            // For methods
-            if(method is MethodInfo methodInfo)
+            if (method is MethodInfo methodInfo)
             {
+                if (BoundType != null)
+                    method = BoundType.PreMethodInvoke(lua, instance, method, ref newParameters);
+
                 // Call the method with the given parameters
                 var returned = methodInfo.Invoke(instance, newParameters);
+
+                if (BoundType != null)
+                    returned = BoundType.PostMethodInvoke(lua, instance, method, returned);
 
                 if (methodInfo.ReturnType == typeof(void))
                     return 0;
@@ -218,8 +225,13 @@ namespace GmodMongoDb.Binding.Annotating
             if (constructor == null)
                 throw new NullReferenceException("Method is neither constructor nor MethodInfo!? Not supported.");
 
-            // Otherwise it's a constructor
+            if (BoundType != null)
+                constructor = BoundType.PreConstructorInvoke(lua, constructor, ref newParameters);
+
             var newInstance = constructor.Invoke(newParameters);
+
+            if (BoundType != null)
+                newInstance = BoundType.PostConstructorInvoke(lua, constructor, newInstance);
 
             TypeTools.GenerateUserDataFromObject(lua, newInstance);
 
@@ -234,7 +246,7 @@ namespace GmodMongoDb.Binding.Annotating
         /// <param name="lua"></param>
         /// <param name="methodName"></param>
         /// <returns></returns>
-        private static int FindAndExecuteMethod(Type instanceType, object? instance, ILua lua, string methodName)
+        private int FindAndExecuteMethod(Type instanceType, object? instance, ILua lua, string methodName)
         {
             var stack = lua.Top();
             var signature = new Type[stack];

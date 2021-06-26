@@ -4,6 +4,11 @@
         <name>GmodMongoDb</name>
     </assembly>
     <members>
+        <member name="P:GmodMongoDb.Binding.Annotating.LuaBindingAttribute.BoundType">
+            <summary>
+            An binding connected to this type
+            </summary>
+        </member>
         <member name="T:GmodMongoDb.Binding.Annotating.LuaMetaTableAttribute">
             <summary>
             Apply this attribute to classes to change the metatable type name they'll receive in Lua
@@ -508,13 +513,21 @@
             <param name="type">The type to scan for suitable constructors, methods and properties to bind to Lua</param>
             <param name="onlyAnnotated">Only create bindings for methods and properties that are annotated</param>
         </member>
+        <member name="M:GmodMongoDb.Binding.TypeTools.CreateBindings(GmodNET.API.ILua,GmodMongoDb.Binding.LuaBinding,System.Boolean)">
+            <summary>
+            Automatically creates bindings for the given type, detecting suitable constructors, methods and properties using reflection.
+            </summary>
+            <param name="lua"></param>
+            <param name="binding">The binding that defines the type and handles events</param>
+            <param name="onlyAnnotated">Only create bindings for methods and properties that are annotated</param>
+        </member>
         <member name="M:GmodMongoDb.Binding.TypeTools.CreateDiscoveredMetaTableDefinitions(GmodNET.API.ILua)">
             <summary>
             Eagerly search for metatable definitions and create the metatables.
             </summary>
             <param name="lua"></param>
         </member>
-        <member name="M:GmodMongoDb.Binding.TypeTools.CleanUpStaticFunctionTables(GmodNET.API.ILua)">
+        <member name="M:GmodMongoDb.Binding.TypeTools.CleanUpMetaTables(GmodNET.API.ILua)">
             <summary>
             Cleans up the static tables made with <see cref="M:GmodMongoDb.Binding.TypeTools.CreateDiscoveredMetaTableDefinitions(GmodNET.API.ILua)"/>
             </summary>

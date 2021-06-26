@@ -44,6 +44,18 @@ namespace GmodMongoDb.Binding
         /// <param name="onlyAnnotated">Only create bindings for methods and properties that are annotated</param>
         internal static void CreateBindings(ILua lua, Type type, bool onlyAnnotated = false)
         {
+            CreateBindings(lua, new LuaBinding(type), onlyAnnotated);
+        }
+
+        /// <summary>
+        /// Automatically creates bindings for the given type, detecting suitable constructors, methods and properties using reflection.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="binding">The binding that defines the type and handles events</param>
+        /// <param name="onlyAnnotated">Only create bindings for methods and properties that are annotated</param>
+        internal static void CreateBindings(ILua lua, LuaBinding binding, bool onlyAnnotated = false)
+        {
+            var type = binding.GetBindingType();
             var metaTableName = GetMetaTableTypeName(type);
             var typeId = CreateRegisteredTypeMetaTable(lua, metaTableName, type);
 
@@ -54,7 +66,7 @@ namespace GmodMongoDb.Binding
             // Add a default __index method for automatically generated types and search for constructors
             if (!onlyAnnotated)
             {
-                lua.PushManagedFunction((lua) =>
+                var handle = lua.PushManagedFunction((lua) =>
                 {
                     var instance = PullManagedObject(lua, typeId, 1);
                     string key = lua.GetString(1);
@@ -77,6 +89,7 @@ namespace GmodMongoDb.Binding
                     return 1;
                 });
                 lua.SetField(-2, "__index");
+                //ReferenceManager.Add(handle);
 
                 // TODO: __newindex
 
@@ -86,11 +99,12 @@ namespace GmodMongoDb.Binding
                 {
                     var attribute = new LuaMethodAttribute()
                     {
-                        IsConstructor = true
+                        IsConstructor = true,
+                        BoundType = binding
                     };
 
                     // Bind constructors with recognized datatypes
-                    lua.Print($"Found constructor {constructor} with parameters {string.Join<ParameterInfo>(", ", constructor.GetParameters())}");
+                    //lua.Print($"Found constructor {constructor} with parameters {string.Join<ParameterInfo>(", ", constructor.GetParameters())}");
 
                     attribute.PushFunction(lua, constructor);
                     lua.SetField(1, "__call");
@@ -108,6 +122,8 @@ namespace GmodMongoDb.Binding
                     foreach (var attribute in attributes)
                     {
                         var stackPos = -2; // Position of the metatable
+
+                        attribute.BoundType = binding;
                         attribute.PushFunction(lua, method, typeId);
 
                         if (method.IsStatic)
@@ -128,7 +144,7 @@ namespace GmodMongoDb.Binding
                 else
                 {
                     // Bind all methods
-                    lua.Print($"Found method {method} with return type {method.ReturnType} and parameters {string.Join<ParameterInfo>(", ", method.GetParameters())}");
+                    //lua.Print($"Found method {method} with return type {method.ReturnType} and parameters {string.Join<ParameterInfo>(", ", method.GetParameters())}");
 
                     var methodName = method.Name;
                     var attribute = new LuaMethodAttribute(methodName);
@@ -153,6 +169,7 @@ namespace GmodMongoDb.Binding
                     var attributes = property.GetCustomAttributes<LuaPropertyAttribute>();
                     foreach (var attribute in attributes)
                     {
+                        //TODO: attribute.BoundType = binding;
                         LuaPropertyAttribute.RegisterAvailableProperty(type, attribute.Name ?? property.Name, property.GetGetMethod()?.Name, property.GetSetMethod()?.Name);
                     }
                 }
@@ -214,7 +231,7 @@ namespace GmodMongoDb.Binding
         /// Cleans up the static tables made with <see cref="CreateDiscoveredMetaTableDefinitions"/>
         /// </summary>
         /// <param name="lua"></param>
-        internal static void CleanUpStaticFunctionTables(ILua lua)
+        internal static void CleanUpMetaTables(ILua lua)
         {
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
 
@@ -222,6 +239,22 @@ namespace GmodMongoDb.Binding
             {
                 if (metaTableName == null)
                     continue;
+
+                // Clear the metatable
+                lua.GetField(-1, metaTableName);
+                if (lua.GetMetaTable(-1))
+                {
+                    lua.PushNil();
+                    lua.SetField(-2, "__index");
+                    lua.PushNil();
+                    lua.SetField(-2, "__newindex");
+                    lua.PushNil();
+                    lua.SetField(-2, "__call");
+                    lua.PushNil();
+                    lua.SetField(-2, "__pairs");
+                    lua.Pop(1); // Pop the metatable
+                }
+                lua.Pop(1); // Pop the value
 
                 lua.PushNil();
                 lua.SetField(-2, metaTableName);
@@ -366,8 +399,6 @@ namespace GmodMongoDb.Binding
                 {
                     if(keyPair.Value == type)
                     {
-                        lua.Print($"Found exact userdata type match for {type} in {keyPair.Value}");
-
                         var handle = GCHandle.Alloc(value, GCHandleType.Weak);
                         ReferenceManager.Add(handle);
                         lua.PushUserType((IntPtr)handle, keyPair.Key);
@@ -381,7 +412,6 @@ namespace GmodMongoDb.Binding
                         if (parentLuaType > -1)
                             lua.Print("Warning! Unknown behaviour on multiple userdata type match");
 
-                        lua.Print($"Found inherited userdata type match for {type} in {keyPair.Value}");
                         parentLuaType = keyPair.Key;
                     }
                 }
