@@ -394,7 +394,6 @@ namespace GmodMongoDb.Binding
             {
                 int parentLuaType = -1;
 
-                // TODO: Also for pulltype?
                 foreach (var keyPair in MetaTableTypeIds)
                 {
                     if(keyPair.Value == type)
@@ -449,7 +448,7 @@ namespace GmodMongoDb.Binding
         public static object PullType(ILua lua, Type type, int stackPos = -1, bool forceKeepOnStack = false)
         {
             bool pop = true;
-            object value;
+            object? value = null;
 
             if (type == typeof(string))
                 value = lua.GetString(stackPos);
@@ -489,8 +488,37 @@ namespace GmodMongoDb.Binding
                 pop = false;
             }
             else
-                // TODO
-                throw new NotImplementedException($"This type is not registered for conversion from Lua to .NET! Consider building a Transformer. Type is: {type.FullName}");
+            {
+                int parentLuaType = -1;
+
+                foreach (var keyPair in MetaTableTypeIds)
+                {
+                    if (keyPair.Value == type)
+                    {
+                        value = lua.GetUserType(stackPos, keyPair.Key);
+                    }
+
+                    if (keyPair.Value.IsAssignableFrom(type))
+                    {
+                        // TODO: I imagine this can cause conflicts with multiple inheritance
+                        if (parentLuaType > -1)
+                            lua.Print("Warning! Unknown behaviour on multiple userdata type match");
+
+                        parentLuaType = keyPair.Key;
+                    }
+                }
+
+                if (parentLuaType > -1)
+                {
+                    value = lua.GetUserType(stackPos, parentLuaType);
+                }
+                else if(value == null)
+                {
+                    // TODO
+                    throw new NotImplementedException($"This type is not registered for conversion from Lua to .NET! Consider building a Transformer. Type is: {type.FullName}");
+                }
+
+            }
 
             if (pop && !forceKeepOnStack)
                 lua.Remove(stackPos);
