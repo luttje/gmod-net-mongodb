@@ -53,6 +53,16 @@
             </summary>
             <param name="name">The name the method should receive in Lua</param>
         </member>
+        <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.CallGenericFunction(GmodNET.API.ILua,System.Reflection.MethodBase,System.Nullable{System.Int32},System.Boolean)">
+            <summary>
+            Pushes a dummy function which will accept only a table with types. That function will return the real function.
+            </summary>
+            <param name="lua"></param>
+            <param name="method"></param>
+            <param name="metaTableTypeId"></param>
+            <param name="forceWithoutFinder"></param>
+            <returns></returns>
+        </member>
         <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.PushFunction(GmodNET.API.ILua,System.Reflection.MethodBase,System.Nullable{System.Int32},System.Boolean)">
             <summary>
             Pushes a function to the Lua stack. Lua can call the provided method and this function will automatically convert the arguments. If a method is overloaded a finder will be activated to inspect the stack and find the appropriate method to call.
@@ -404,7 +414,13 @@
         </member>
         <member name="M:GmodMongoDb.Binding.LuaTableReference.ForEach(System.Action{System.Object,System.Object})">
             <summary>
-            Iterate the Lua table through a callback
+            Iterate the Lua table and callback
+            </summary>
+            <param name="action">A callback which is given the key and value of each item in the table</param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaTableReference.ForEach(System.Action{System.Object,System.Object,GmodNET.API.TYPES})">
+            <summary>
+            Iterate the Lua table and callback with the type
             </summary>
             <param name="action">A callback which is given the key and value of each item in the table</param>
         </member>

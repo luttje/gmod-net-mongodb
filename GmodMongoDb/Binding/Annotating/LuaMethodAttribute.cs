@@ -45,6 +45,86 @@ namespace GmodMongoDb.Binding.Annotating
             this.IsOverloaded = false;
         }
 
+        private int CallSimpleFunction(ILua lua, MethodBase method, int? metaTableTypeId = null, bool forceWithoutFinder = false)
+        {
+            object? instance = null;
+
+            if (!method.IsStatic && metaTableTypeId != null)
+            {
+                // Copy the object so we can pull it into a .NET object below with `BindingHelper.PullManagedObject`
+                lua.Push(1);
+                int callerCopy = lua.ReferenceCreate(); // Will be freed before returning to Lua
+
+                instance = TypeTools.PullManagedObject(lua, (int)metaTableTypeId, 1);
+
+                if (instance is LuaMetaObjectBinding binding)
+                    binding.Reference = callerCopy;
+            }
+
+            if (method.IsStatic)
+                lua.Remove(1); // Remove the static table reference, we don't need it in this static method.
+
+            try
+            {
+                if (this.IsOverloaded && !forceWithoutFinder)
+                {
+                    return FindAndExecuteMethod(method.DeclaringType, instance, lua, method.Name);
+                }
+
+                return ExecuteMethod(instance, lua, method);
+            }
+            finally
+            {
+                if (instance is LuaMetaObjectBinding binding && binding != null)
+                    binding.Reference = null;
+            }
+        }
+
+        /// <summary>
+        /// Pushes a dummy function which will accept only a table with types. That function will return the real function.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="method"></param>
+        /// <param name="metaTableTypeId"></param>
+        /// <param name="forceWithoutFinder"></param>
+        /// <returns></returns>
+        private int CallGenericFunction(ILua lua, MethodBase method, int? metaTableTypeId = null, bool forceWithoutFinder = false)
+        {
+            var methodInfo = method as MethodInfo;
+            var genericArguments = methodInfo.GetGenericArguments();
+            var genericTypes = new Type[genericArguments.Length];
+
+            // Pull the instance from the stack
+            var instance = TypeTools.PullManagedObject(lua, (int)metaTableTypeId, 1);
+
+            // Pull the generic table from our stack
+            var genericsTable = new LuaTableReference(lua, 1);
+
+            genericsTable.ForEach((i, genericType, luaType) =>
+            {
+                var index = Convert.ToInt32((double)i - 1);
+
+                if (TypeTools.LuaTypeToDotNetType(luaType) != typeof(Type))
+                    throw new ArgumentException($"Error! Generic arguments at index {(double)i} needs to be a Type.");
+
+                genericTypes[index] = (Type) genericType;
+            });
+
+            methodInfo = methodInfo.MakeGenericMethod(genericTypes);
+
+            // Return the real function result
+            lua.PushManagedFunction(lua =>
+            {
+                // Move the instance back to the front
+                TypeTools.PushReference(lua, instance, (int) metaTableTypeId);
+                lua.Insert(1);
+
+                return CallSimpleFunction(lua, methodInfo, metaTableTypeId, forceWithoutFinder);
+            });
+
+            return 1;
+        }
+
 #nullable enable
         /// <summary>
         /// Pushes a function to the Lua stack. Lua can call the provided method and this function will automatically convert the arguments. If a method is overloaded a finder will be activated to inspect the stack and find the appropriate method to call.
@@ -62,48 +142,16 @@ namespace GmodMongoDb.Binding.Annotating
                 this.IsOverloaded = true;
 
             var handle = lua.PushManagedFunction((lua) => {
-                object? instance = null;
-
-                if (!method.IsStatic && metaTableTypeId != null)
+                if (method.ContainsGenericParameters)
                 {
-                    // Copy the object so we can pull it into a .NET object below with `BindingHelper.PullManagedObject`
-                    lua.Push(1);
-                    int callerCopy = lua.ReferenceCreate(); // Will be freed before returning to Lua
-
-                    instance = TypeTools.PullManagedObject(lua, (int)metaTableTypeId, 1);
-
-                    if (instance is LuaMetaObjectBinding binding)
-                        binding.Reference = callerCopy;
+                    return CallGenericFunction(lua, method, metaTableTypeId, forceWithoutFinder);
                 }
-
-                if (method.IsStatic)
-                    lua.Remove(1); // Remove the table reference, we don't want it now.
-
-                try
+                else
                 {
-                    if (this.IsOverloaded && !forceWithoutFinder)
-                    {
-                        return FindAndExecuteMethod(method.DeclaringType, instance, lua, method.Name);
-                    }
-
-                    return ExecuteMethod(instance, lua, method);
-                }
-                finally
-                {
-                    if (instance is LuaMetaObjectBinding binding && binding != null)
-                        binding.Reference = null;
+                    return CallSimpleFunction(lua, method, metaTableTypeId, forceWithoutFinder);
                 }
             });
             ReferenceManager.Add(handle);
-        }
-
-        internal void PushConstructorMetaTable(ILua lua, MethodBase method)
-        {
-            // TODO: Test what happens with overloaded initializers
-            // Create a metatable for the static table and add the __call metamethod to it
-            lua.CreateTable();
-            this.PushFunction(lua, method);
-            lua.SetField(-2, "__call");
         }
 
         /// <summary>
@@ -147,12 +195,6 @@ namespace GmodMongoDb.Binding.Annotating
             // For methods
             if(method is MethodInfo methodInfo)
             {
-                if (methodInfo.ContainsGenericParameters)
-                {
-                    // TODO: This is just an ugly hack (always using BsonDocument) to get the example working. I'll have to think of a way to pass generic types from Lua nicely
-                    methodInfo = methodInfo.MakeGenericMethod(typeof(MongoDB.Bson.BsonDocument));
-                }
-
                 // Call the method with the given parameters
                 var returned = methodInfo.Invoke(instance, newParameters);
 

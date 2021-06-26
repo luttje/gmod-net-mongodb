@@ -40,6 +40,7 @@ namespace GmodMongoDb.Binding.Annotating
         }
 
 
+        // TODO: Doesn't support generics yet!
         internal static void RegisterAvailableProperty(Type metaTableType, string propertyName, string? getterName, string? setterName)
         {
             if (!AvailableProperties.ContainsKey(metaTableType))

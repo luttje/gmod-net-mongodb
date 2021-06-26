@@ -42,28 +42,14 @@ namespace GmodMongoDb.Binding
         /// <param name="lua"></param>
         /// <param name="type">The type to scan for suitable constructors, methods and properties to bind to Lua</param>
         /// <param name="onlyAnnotated">Only create bindings for methods and properties that are annotated</param>
-        internal static void CreateBindings(ILua lua, Type type, bool onlyAnnotated = true)
+        internal static void CreateBindings(ILua lua, Type type, bool onlyAnnotated = false)
         {
             var metaTableName = GetMetaTableTypeName(type);
-            var typeId = lua.CreateMetaTable(metaTableName);
-
-            lua.Print($"Creating binding for {metaTableName} ({type}): {typeId}");
-
-            if (!MetaTableTypeIds.ContainsKey(typeId))
-            {
-                MetaTableTypeIds.Add(typeId, type);
-                MetaTableTypeNames.Add(metaTableName);
-            }
+            var typeId = CreateRegisteredTypeMetaTable(lua, metaTableName, type);
 
             // Have a place for this type's static methods
-            lua.CreateTable();
-            lua.Push(-1);
+            int internalTypeId = CreateRegisteredTypeMetaTable(lua, $"#{metaTableName}Type", typeof(Type));
             lua.Insert(1); // Move mt._static to the bottom of the stack so we can fill it later
-                           // Add the static method table currently at the top of the stack to the global table
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.Insert(-2);
-            lua.SetField(-2, metaTableName);
-            lua.Pop(1); // pop the global table
 
             // Add a default __index method for automatically generated types and search for constructors
             if (!onlyAnnotated)
@@ -106,8 +92,8 @@ namespace GmodMongoDb.Binding
                     // Bind constructors with recognized datatypes
                     lua.Print($"Found constructor {constructor} with parameters {string.Join<ParameterInfo>(", ", constructor.GetParameters())}");
 
-                    attribute.PushConstructorMetaTable(lua, constructor);
-                    lua.SetMetaTable(1); // Pops the metatable created by PushConstructorMetaTable
+                    attribute.PushFunction(lua, constructor);
+                    lua.SetField(1, "__call");
                 }
             }
 
@@ -130,8 +116,8 @@ namespace GmodMongoDb.Binding
 
                             if (attribute.IsConstructor)
                             {
-                                attribute.PushConstructorMetaTable(lua, method);
-                                lua.SetMetaTable(stackPos); // Pops the metatable created by PushConstructorMetaTable
+                                attribute.PushFunction(lua, method);
+                                lua.SetField(stackPos, "__call");
                             }
                         }
 
@@ -173,13 +159,38 @@ namespace GmodMongoDb.Binding
                 else
                 {
                     // Bind properties with recognized datatypes
-                    lua.Print($"Found property {property} with return type {property.PropertyType}");
-                    LuaPropertyAttribute.RegisterAvailableProperty(type, property.Name, property.GetGetMethod()?.Name, property.GetSetMethod()?.Name);
+                    //lua.Print($"Found property {property} with return type {property.PropertyType}");
+                    //LuaPropertyAttribute.RegisterAvailableProperty(type, property.Name, property.GetGetMethod()?.Name, property.GetSetMethod()?.Name);
                 }
             }
 
-            lua.Pop(1); // Pop the metatable
-            lua.Pop(1); // Pop the static functions table
+            lua.Pop(1); // Pop the metatable, leaving only the the static method metatable currently at the top of the stack
+
+            // Make the static metatable it become it's own index
+            lua.Push(1);
+            lua.SetField(-2, "__index");
+
+            // Pop the static metatable
+            lua.Pop(1);
+
+            // Add the type static metatable to the global table
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            PushReference(lua, type, internalTypeId);
+            lua.SetField(-2, metaTableName);
+            lua.Pop(1); // pop the global table
+        }
+
+        private static int CreateRegisteredTypeMetaTable(ILua lua, string metaTableName, Type type)
+        {
+            int typeId = lua.CreateMetaTable(metaTableName);
+
+            if (!MetaTableTypeIds.ContainsKey(typeId))
+            {
+                MetaTableTypeIds.Add(typeId, type);
+                MetaTableTypeNames.Add(metaTableName);
+            }
+
+            return typeId;
         }
 
         /// <summary>
@@ -195,7 +206,7 @@ namespace GmodMongoDb.Binding
 
             foreach (var metaTableType in discoveredTypes)
             {
-                CreateBindings(lua, metaTableType);
+                CreateBindings(lua, metaTableType, true);
             }
         }
 
@@ -238,6 +249,13 @@ namespace GmodMongoDb.Binding
             return instanceTypeId;
         }
 
+        public static void PushReference(ILua lua, object managed, int typeId)
+        {
+            var handle = GCHandle.Alloc(managed, GCHandleType.Weak);
+            ReferenceManager.Add(handle);
+            lua.PushUserType((IntPtr)handle, typeId);
+        }
+
         /// <summary>
         /// Pushes a .NET managed object onto the stack as userdata.
         /// 
@@ -248,9 +266,6 @@ namespace GmodMongoDb.Binding
         /// <returns>Returns the metatable type id which was applied to the userdata</returns>
         public static int PushManagedObject(ILua lua, object managed)
         {
-            var handle = GCHandle.Alloc(managed, GCHandleType.Weak);
-            ReferenceManager.Add(handle);
-
             // CreateMetaTable will automatically find an existing metatable with this type name, so no need to look in MetaTableTypeIds for it. 
             string typeName = GetMetaTableTypeName(managed.GetType());
             var typeId = lua.CreateMetaTable(typeName);
@@ -259,7 +274,7 @@ namespace GmodMongoDb.Binding
             if(managed is LuaMetaObjectBinding objectBinding)
                 objectBinding.MetaTableTypeId = typeId;
 
-            lua.PushUserType((IntPtr)handle, typeId);
+            PushReference(lua, managed, typeId);
 
             return typeId;
         }

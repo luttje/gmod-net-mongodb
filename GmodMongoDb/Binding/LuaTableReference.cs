@@ -38,7 +38,7 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Iterate the Lua table through a callback
+        /// Iterate the Lua table and callback
         /// </summary>
         /// <param name="action">A callback which is given the key and value of each item in the table</param>
         public void ForEach(Action<object, object> action)
@@ -50,6 +50,24 @@ namespace GmodMongoDb.Binding
                 object value = TypeTools.PullType(lua, -1, true);
 
                 action(key, value);
+            }
+            lua.Pop(1); // Pops the table
+        }
+
+        /// <summary>
+        /// Iterate the Lua table and callback with the type
+        /// </summary>
+        /// <param name="action">A callback which is given the key and value of each item in the table</param>
+        public void ForEach(Action<object, object, TYPES> action)
+        {
+            this.Push();
+            for (lua.PushNil(); lua.Next(-2) != 0; lua.Pop(1))
+            {
+                object key = TypeTools.PullType(lua, -2, true);
+                TYPES luaType = (TYPES)lua.GetType(-1);
+                object value = TypeTools.PullType(lua, -1, true);
+
+                action(key, value, luaType);
             }
             lua.Pop(1); // Pops the table
         }
