@@ -16,7 +16,7 @@ namespace GmodMongoDb.Binding
     {
         private static readonly Dictionary<int, Type> MetaTableTypeIds = new();
         private static readonly Dictionary<Type, Type> TransformerTypes = new();
-        private static string[] metaTableTypeNames = null;
+        private static readonly List<string> MetaTableTypeNames = new();
 
         /// <summary>
         /// Iterates all Transformers and registers their Type for later use. In order to create a transformer you should inherit LuaValueTransformer
@@ -37,43 +37,88 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Eagerly search for metatable definitions and create the metatables.
+        /// Automatically creates bindings for the given type, detecting suitable constructors, methods and properties using reflection.
         /// </summary>
         /// <param name="lua"></param>
-        internal static void CreateDiscoveredMetaTableDefinitions(ILua lua)
+        /// <param name="type">The type to scan for suitable constructors, methods and properties to bind to Lua</param>
+        /// <param name="onlyAnnotated">Only create bindings for methods and properties that are annotated</param>
+        internal static void CreateBindings(ILua lua, Type type, bool onlyAnnotated = true)
         {
-            var metaTableBaseType = typeof(LuaMetaObjectBinding);
-            var discoveredTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(metaTableBaseType));
-            metaTableTypeNames = new string[discoveredTypes.Count()];
-            var i = 0;
+            var metaTableName = GetMetaTableTypeName(type);
+            var typeId = lua.CreateMetaTable(metaTableName);
 
-            foreach (var metaTableType in discoveredTypes)
+            lua.Print($"Creating binding for {metaTableName} ({type}): {typeId}");
+
+            if (!MetaTableTypeIds.ContainsKey(typeId))
             {
-                var metaTableName = GetMetaTableTypeName(metaTableType);
-                var typeId = lua.CreateMetaTable(metaTableName);
+                MetaTableTypeIds.Add(typeId, type);
+                MetaTableTypeNames.Add(metaTableName);
+            }
 
-                if (!MetaTableTypeIds.ContainsKey(typeId))
-                    MetaTableTypeIds.Add(typeId, metaTableType);
+            // Have a place for this type's static methods
+            lua.CreateTable();
+            lua.Push(-1);
+            lua.Insert(1); // Move mt._static to the bottom of the stack so we can fill it later
+                           // Add the static method table currently at the top of the stack to the global table
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.Insert(-2);
+            lua.SetField(-2, metaTableName);
+            lua.Pop(1); // pop the global table
 
-                // Have a place for this type's static methods
-                lua.CreateTable();
-                lua.Push(-1);
-                lua.Insert(1); // Move mt._static to the bottom of the stack so we can fill it later
-                // Add the static method table currently at the top of the stack to the global table
-                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-                lua.Insert(-2);
-                lua.SetField(-2, metaTableName);
-                metaTableTypeNames[i] = metaTableName;
-                lua.Pop(1); // pop the global table
-
-                MethodInfo[] methods = metaTableType.GetMethods();
-
-                foreach (var method in methods)
+            // Add a default __index method for automatically generated types and search for constructors
+            if (!onlyAnnotated)
+            {
+                lua.PushManagedFunction((lua) =>
                 {
-                    var attributes = method.GetCustomAttributes<LuaMethodAttribute>();
+                    var instance = PullManagedObject(lua, typeId, 1);
+                    string key = lua.GetString(1);
+                    lua.Pop(1);//Pop the string
+                    string? getterName = LuaPropertyAttribute.GetAvailablePropertyGetter(type, key);
 
+                    if (getterName != null)
+                    {
+                        var method = type.GetMethod(getterName);
+
+                        PushType(lua, method.ReturnType, method.Invoke(method.IsStatic ? null : instance, null));
+                        return 1;
+                    }
+
+                    lua.PushMetaTable((int)typeId);
+                    lua.GetField(-1, key);
+
+                    object result = TypeTools.PullType(lua, -1, true);
+                    lua.Remove(-2); // remove the metatable, leaving only the fetched field value on the stakc
+                    return 1;
+                });
+                lua.SetField(-2, "__index");
+
+                // TODO: __newindex
+
+                var constructors = type.GetConstructors();
+
+                foreach (var constructor in constructors)
+                {
+                    var attribute = new LuaMethodAttribute()
+                    {
+                        IsConstructor = true
+                    };
+
+                    // Bind constructors with recognized datatypes
+                    lua.Print($"Found constructor {constructor} with parameters {string.Join<ParameterInfo>(", ", constructor.GetParameters())}");
+
+                    attribute.PushConstructorMetaTable(lua, constructor);
+                    lua.SetMetaTable(1); // Pops the metatable created by PushConstructorMetaTable
+                }
+            }
+
+            var methods = type.GetMethods();
+
+            foreach (var method in methods)
+            {
+                if (onlyAnnotated)
+                {
+                    // Bind only annotated methods
+                    var attributes = method.GetCustomAttributes<LuaMethodAttribute>();
                     foreach (var attribute in attributes)
                     {
                         var stackPos = -2; // Position of the metatable
@@ -85,12 +130,8 @@ namespace GmodMongoDb.Binding
 
                             if (attribute.IsConstructor)
                             {
-                                // TODO: Test what happens with overloaded initializers
-                                // Create a metatable for the static table and add the __call metamethod to it
-                                lua.CreateTable();
-                                attribute.PushFunction(lua, method);
-                                lua.SetField(-2, "__call");
-                                lua.SetMetaTable(stackPos); // Pops the metatable for the static table
+                                attribute.PushConstructorMetaTable(lua, method);
+                                lua.SetMetaTable(stackPos); // Pops the metatable created by PushConstructorMetaTable
                             }
                         }
 
@@ -98,21 +139,63 @@ namespace GmodMongoDb.Binding
                         lua.SetField(stackPos, methodName);
                     }
                 }
-
-                PropertyInfo[] properties = metaTableType.GetProperties();
-
-                foreach (var property in properties)
+                else
                 {
-                    var attributes = property.GetCustomAttributes<LuaPropertyAttribute>();
+                    // Bind all methods
+                    lua.Print($"Found method {method} with return type {method.ReturnType} and parameters {string.Join<ParameterInfo>(", ", method.GetParameters())}");
 
+                    var methodName = method.Name;
+                    var attribute = new LuaMethodAttribute(methodName);
+
+                    var stackPos = -2; // Position of the metatable
+                    attribute.PushFunction(lua, method, typeId);
+
+                    if (method.IsStatic)
+                        stackPos = 1; // Position of the static table
+
+                    lua.SetField(stackPos, methodName);
+                }
+            }
+
+            var properties = type.GetProperties();
+
+            foreach (var property in properties)
+            {
+                if (onlyAnnotated)
+                {
+                    // Bind annotated properties
+                    var attributes = property.GetCustomAttributes<LuaPropertyAttribute>();
                     foreach (var attribute in attributes)
                     {
-                        LuaPropertyAttribute.RegisterAvailableProperty(metaTableType, attribute.Name ?? property.Name, property.GetGetMethod()?.Name, property.GetSetMethod()?.Name);
+                        LuaPropertyAttribute.RegisterAvailableProperty(type, attribute.Name ?? property.Name, property.GetGetMethod()?.Name, property.GetSetMethod()?.Name);
                     }
                 }
+                else
+                {
+                    // Bind properties with recognized datatypes
+                    lua.Print($"Found property {property} with return type {property.PropertyType}");
+                    LuaPropertyAttribute.RegisterAvailableProperty(type, property.Name, property.GetGetMethod()?.Name, property.GetSetMethod()?.Name);
+                }
+            }
 
-                lua.Pop(1); // Pop the metatable
-                lua.Pop(1); // Pop the static functions table
+            lua.Pop(1); // Pop the metatable
+            lua.Pop(1); // Pop the static functions table
+        }
+
+        /// <summary>
+        /// Eagerly search for metatable definitions and create the metatables.
+        /// </summary>
+        /// <param name="lua"></param>
+        internal static void CreateDiscoveredMetaTableDefinitions(ILua lua)
+        {
+            var metaTableBaseType = typeof(LuaMetaObjectBinding);
+            var discoveredTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(metaTableBaseType));
+
+            foreach (var metaTableType in discoveredTypes)
+            {
+                CreateBindings(lua, metaTableType);
             }
         }
 
@@ -122,12 +205,9 @@ namespace GmodMongoDb.Binding
         /// <param name="lua"></param>
         internal static void CleanUpStaticFunctionTables(ILua lua)
         {
-            if (metaTableTypeNames == null)
-                return;
-
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
 
-            foreach (var metaTableName in metaTableTypeNames)
+            foreach (var metaTableName in MetaTableTypeNames)
             {
                 if (metaTableName == null)
                     continue;
@@ -151,7 +231,7 @@ namespace GmodMongoDb.Binding
         /// <param name="lua"></param>
         /// <param name="instance">The object to generate into userdata</param>
         /// <returns>The metatable type id that was created for this userdata</returns>
-        public static int GenerateUserDataFromObject(ILua lua, LuaMetaObjectBinding instance)
+        public static int GenerateUserDataFromObject(ILua lua, object instance)
         {
             int instanceTypeId = PushManagedObject(lua, instance);
             
@@ -263,8 +343,52 @@ namespace GmodMongoDb.Binding
             else if (TransformerTypes.ContainsKey(type))
                 return lua.ApplyTransformerConvert(TransformerTypes[type], value);
             else
-                // TODO
-                throw new NotImplementedException($"This type is not registered for conversion to Lua from .NET! Consider building a Transformer. Type is: {type.FullName}");
+            {
+                int parentLuaType = -1;
+
+                // TODO: Also for pulltype?
+                foreach (var keyPair in MetaTableTypeIds)
+                {
+                    if(keyPair.Value == type)
+                    {
+                        lua.Print($"Found exact userdata type match for {type} in {keyPair.Value}");
+
+                        var handle = GCHandle.Alloc(value, GCHandleType.Weak);
+                        ReferenceManager.Add(handle);
+                        lua.PushUserType((IntPtr)handle, keyPair.Key);
+
+                        return 1;
+                    }
+
+                    if (keyPair.Value.IsAssignableFrom(type))
+                    {
+                        // TODO: I imagine this can cause conflicts with multiple inheritance
+                        if (parentLuaType > -1)
+                            lua.Print("Warning! Unknown behaviour on multiple userdata type match");
+
+                        lua.Print($"Found inherited userdata type match for {type} in {keyPair.Value}");
+                        parentLuaType = keyPair.Key;
+                    }
+                }
+
+                if(parentLuaType > -1)
+                {
+                    var handle = GCHandle.Alloc(value, GCHandleType.Weak);
+                    ReferenceManager.Add(handle);
+                    lua.PushUserType((IntPtr)handle, parentLuaType);
+
+                    return 1;
+                }
+            }
+
+
+            foreach (var keyPair in MetaTableTypeIds)
+            {
+                lua.Print($"{keyPair.Value} was not a match for {type}! --> {keyPair.Value.IsAssignableFrom(type)}");
+            }
+
+            // TODO
+            throw new NotImplementedException($"This type is not registered for conversion to Lua from .NET! Consider building a Transformer or binding the type. Type is: {type.FullName}");
 
             return 0;
         }

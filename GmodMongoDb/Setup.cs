@@ -18,7 +18,10 @@ namespace GmodMongoDb
         {
             LuaTaskScheduler.RegisterLuaCallback(lua);
             TypeTools.DiscoverDataTransformers();
-            TypeTools.CreateDiscoveredMetaTableDefinitions(lua);
+            //TypeTools.CreateDiscoveredMetaTableDefinitions(lua);
+            TypeTools.CreateBindings(lua, typeof(MongoDB.Driver.MongoClient), false);
+            TypeTools.CreateBindings(lua, typeof(MongoDB.Driver.IMongoDatabase), false);
+            TypeTools.CreateBindings(lua, typeof(MongoDB.Driver.MongoCollectionBase<MongoDB.Bson.BsonDocument>), false);
         }
 
         /// <inheritdoc/>

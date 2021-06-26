@@ -53,7 +53,7 @@ namespace GmodMongoDb.Binding.Annotating
         /// <param name="method">The method to push to the Lua stack</param>
         /// <param name="metaTableTypeId">The type id of the object instance's metatable or null if static</param>
         /// <param name="forceWithoutFinder">Forces the method to be pushed, never pushing the finder</param>
-        public void PushFunction(ILua lua, MethodInfo method, int? metaTableTypeId = null, bool forceWithoutFinder = false)
+        public void PushFunction(ILua lua, MethodBase method, int? metaTableTypeId = null, bool forceWithoutFinder = false)
         {
             // Check if the method is overloaded and mark it as such
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -62,7 +62,7 @@ namespace GmodMongoDb.Binding.Annotating
                 this.IsOverloaded = true;
 
             var handle = lua.PushManagedFunction((lua) => {
-                LuaMetaObjectBinding? instance = null;
+                object? instance = null;
 
                 if (!method.IsStatic && metaTableTypeId != null)
                 {
@@ -70,12 +70,10 @@ namespace GmodMongoDb.Binding.Annotating
                     lua.Push(1);
                     int callerCopy = lua.ReferenceCreate(); // Will be freed before returning to Lua
 
-                    instance = TypeTools.PullManagedObject(lua, (int)metaTableTypeId, 1) as LuaMetaObjectBinding;
+                    instance = TypeTools.PullManagedObject(lua, (int)metaTableTypeId, 1);
 
-                    if (instance is not LuaMetaObjectBinding)
-                        throw new NullReferenceException("Invalid instance!");
-
-                    instance.Reference = callerCopy;
+                    if (instance is LuaMetaObjectBinding binding)
+                        binding.Reference = callerCopy;
                 }
 
                 if (method.IsStatic)
@@ -92,11 +90,20 @@ namespace GmodMongoDb.Binding.Annotating
                 }
                 finally
                 {
-                    if (instance != null)
-                        instance.Reference = null;
+                    if (instance is LuaMetaObjectBinding binding && binding != null)
+                        binding.Reference = null;
                 }
             });
             ReferenceManager.Add(handle);
+        }
+
+        internal void PushConstructorMetaTable(ILua lua, MethodBase method)
+        {
+            // TODO: Test what happens with overloaded initializers
+            // Create a metatable for the static table and add the __call metamethod to it
+            lua.CreateTable();
+            this.PushFunction(lua, method);
+            lua.SetField(-2, "__call");
         }
 
         /// <summary>
@@ -106,7 +113,7 @@ namespace GmodMongoDb.Binding.Annotating
         /// <param name="lua"></param>
         /// <param name="method">The method to execute</param>
         /// <returns></returns>
-        private static int ExecuteMethod(LuaMetaObjectBinding? instance, ILua lua, MethodInfo method)
+        private static int ExecuteMethod(object? instance, ILua lua, MethodBase method)
         {
             int offset = 0;
             var parameters = method.GetParameters();
@@ -118,8 +125,18 @@ namespace GmodMongoDb.Binding.Annotating
                 offset = 1;
             }
 
+            if(method is ConstructorInfo)
+            {
+                lua.Remove(1); // Remove the userdata reference from the bottom of the stack
+            }
+
             for (int i = offset; i < parameters.Length; i++)
             {
+                var argumentType = (TYPES)lua.GetType(1);
+
+                if (parameters[i].IsOptional && argumentType == TYPES.NIL)
+                    continue;
+
                 newParameters[i] = TypeTools.PullType(lua, parameters[i].ParameterType, 1);
 
                 // Get ready to throw away unused references on close (so methods don't have to do this themselves.
@@ -127,22 +144,44 @@ namespace GmodMongoDb.Binding.Annotating
                     ReferenceManager.Add(reference);
             }
 
-            // Call the method with the given parameters
-            var returned = method.Invoke(instance, newParameters);
-
-            if (method.ReturnType == typeof(void))
-                return 0;
-
-            Type? returnedType = returned?.GetType();
-
-            // Convert value returned by method to a Lua recognized type (or metatable if possible)
-            if (returnedType == null || returned is not LuaMetaObjectBinding binding)
-                return TypeTools.PushType(lua, returnedType, returned);
-            else
+            // For methods
+            if(method is MethodInfo methodInfo)
             {
-                TypeTools.GenerateUserDataFromObject(lua, binding);
-                return 1;
+                if (methodInfo.ContainsGenericParameters)
+                {
+                    // TODO: This is just an ugly hack (always using BsonDocument) to get the example working. I'll have to think of a way to pass generic types from Lua nicely
+                    methodInfo = methodInfo.MakeGenericMethod(typeof(MongoDB.Bson.BsonDocument));
+                }
+
+                // Call the method with the given parameters
+                var returned = methodInfo.Invoke(instance, newParameters);
+
+                if (methodInfo.ReturnType == typeof(void))
+                    return 0;
+
+                Type? returnedType = returned?.GetType();
+
+                // Convert value returned by method to a Lua recognized type (or metatable if possible)
+                if (returnedType == null || returned is not LuaMetaObjectBinding binding)
+                    return TypeTools.PushType(lua, returnedType, returned);
+                else
+                {
+                    TypeTools.GenerateUserDataFromObject(lua, binding);
+                    return 1;
+                }
             }
+
+            var constructor = method as ConstructorInfo;
+
+            if (constructor == null)
+                throw new NullReferenceException("Method is neither constructor nor MethodInfo!? Not supported.");
+
+            // Otherwise it's a constructor
+            var newInstance = constructor.Invoke(newParameters);
+
+            TypeTools.GenerateUserDataFromObject(lua, newInstance);
+
+            return 1;
         }
 
         /// <summary>
@@ -153,7 +192,7 @@ namespace GmodMongoDb.Binding.Annotating
         /// <param name="lua"></param>
         /// <param name="methodName"></param>
         /// <returns></returns>
-        private static int FindAndExecuteMethod(Type instanceType, LuaMetaObjectBinding? instance, ILua lua, string methodName)
+        private static int FindAndExecuteMethod(Type instanceType, object? instance, ILua lua, string methodName)
         {
             var stack = lua.Top();
             var signature = new Type[stack];

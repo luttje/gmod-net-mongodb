@@ -53,7 +53,7 @@
             </summary>
             <param name="name">The name the method should receive in Lua</param>
         </member>
-        <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.PushFunction(GmodNET.API.ILua,System.Reflection.MethodInfo,System.Nullable{System.Int32},System.Boolean)">
+        <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.PushFunction(GmodNET.API.ILua,System.Reflection.MethodBase,System.Nullable{System.Int32},System.Boolean)">
             <summary>
             Pushes a function to the Lua stack. Lua can call the provided method and this function will automatically convert the arguments. If a method is overloaded a finder will be activated to inspect the stack and find the appropriate method to call.
             </summary>
@@ -62,7 +62,7 @@
             <param name="metaTableTypeId">The type id of the object instance's metatable or null if static</param>
             <param name="forceWithoutFinder">Forces the method to be pushed, never pushing the finder</param>
         </member>
-        <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.ExecuteMethod(GmodMongoDb.Binding.LuaMetaObjectBinding,GmodNET.API.ILua,System.Reflection.MethodInfo)">
+        <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.ExecuteMethod(System.Object,GmodNET.API.ILua,System.Reflection.MethodBase)">
             <summary>
             Simply runs the specified method on the provided instance, picking arguments from the stack.
             </summary>
@@ -71,7 +71,7 @@
             <param name="method">The method to execute</param>
             <returns></returns>
         </member>
-        <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.FindAndExecuteMethod(System.Type,GmodMongoDb.Binding.LuaMetaObjectBinding,GmodNET.API.ILua,System.String)">
+        <member name="M:GmodMongoDb.Binding.Annotating.LuaMethodAttribute.FindAndExecuteMethod(System.Type,System.Object,GmodNET.API.ILua,System.String)">
             <summary>
             Finds a method based on the signature formed by the arguments on the Lua stack
             </summary>
@@ -484,6 +484,14 @@
             Iterates all Transformers and registers their Type for later use. In order to create a transformer you should inherit LuaValueTransformer
             </summary>
         </member>
+        <member name="M:GmodMongoDb.Binding.TypeTools.CreateBindings(GmodNET.API.ILua,System.Type,System.Boolean)">
+            <summary>
+            Automatically creates bindings for the given type, detecting suitable constructors, methods and properties using reflection.
+            </summary>
+            <param name="lua"></param>
+            <param name="type">The type to scan for suitable constructors, methods and properties to bind to Lua</param>
+            <param name="onlyAnnotated">Only create bindings for methods and properties that are annotated</param>
+        </member>
         <member name="M:GmodMongoDb.Binding.TypeTools.CreateDiscoveredMetaTableDefinitions(GmodNET.API.ILua)">
             <summary>
             Eagerly search for metatable definitions and create the metatables.
@@ -496,7 +504,7 @@
             </summary>
             <param name="lua"></param>
         </member>
-        <member name="M:GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)">
+        <member name="M:GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject(GmodNET.API.ILua,System.Object)">
             <summary>
             Generates userdata with a metatable by looking at attributes on the given object. Pushes the userdata onto the stack.
             </summary>
@@ -508,7 +516,7 @@
             <summary>
             Pushes a .NET managed object onto the stack as userdata.
             
-            Consider using <see cref="M:GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)"/> if you want to interact with the userdata from Lua.
+            Consider using <see cref="M:GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject(GmodNET.API.ILua,System.Object)"/> if you want to interact with the userdata from Lua.
             </summary>
             <param name="lua"></param>
             <param name="managed">The object to convert to userdata and push</param>
@@ -519,7 +527,7 @@
             Pull userdata from the stack at the given position that has the given type id. Converts it to a .NET object.
             </summary>
             <param name="lua"></param>
-            <param name="typeId">The metatable type id of the userdata as returned by <see cref="M:GmodMongoDb.Binding.TypeTools.PushManagedObject(GmodNET.API.ILua,System.Object)"/> or <see cref="M:GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject(GmodNET.API.ILua,GmodMongoDb.Binding.LuaMetaObjectBinding)"/></param>
+            <param name="typeId">The metatable type id of the userdata as returned by <see cref="M:GmodMongoDb.Binding.TypeTools.PushManagedObject(GmodNET.API.ILua,System.Object)"/> or <see cref="M:GmodMongoDb.Binding.TypeTools.GenerateUserDataFromObject(GmodNET.API.ILua,System.Object)"/></param>
             <param name="stackPos">The position of the managed object</param>
             <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
             <returns>The .NET object converted from Lua</returns>
@@ -583,190 +591,6 @@
             </summary>
             <param name="luaType">The Lua type to convert (must be castable to <see cref="T:GmodNET.API.TYPES"/>)</param>
             <returns>The converted .NET type</returns>
-        </member>
-        <member name="T:GmodMongoDb.BsonDocument">
-            <summary>
-            Exposes a MongoDB BSON Document to Lua.
-            </summary>
-            <remarks>
-            In Lua you can get a BSON document by querying a collection using <see cref="M:GmodMongoDb.MongoCollection.Find(GmodMongoDb.BsonDocument)"/>.
-            You can also generate your own BSON document from a table by using <see cref="M:GmodMongoDb.BsonDocument.Constructor(GmodNET.API.ILua,GmodMongoDb.BsonDocument)"/>
-            </remarks>
-        </member>
-        <member name="P:GmodMongoDb.BsonDocument.RawBsonDocument">
-            <summary>
-            The native MongoDB BSON Document object
-            </summary>
-        </member>
-        <member name="M:GmodMongoDb.BsonDocument.#ctor(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
-            <inheritdoc/>
-        </member>
-        <member name="M:GmodMongoDb.BsonDocument.Constructor(GmodNET.API.ILua,GmodMongoDb.BsonDocument)">
-            <summary>
-            Creates a new BSON Document from the provided Lua table.
-            </summary>
-            <param name="lua"></param>
-            <param name="table">The table to use to build a BSON Document</param>
-            <returns></returns>
-            <remarks><see cref="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua,GmodMongoDb.BsonDocument@,System.Int32,System.Boolean)"/> will automatically handle this conversion.</remarks>
-        </member>
-        <member name="M:GmodMongoDb.BsonDocument.FromJson(GmodNET.API.ILua,System.String)">
-            <summary>
-            Creates a new BSON Document from the provided json.
-            </summary>
-            <param name="lua"></param>
-            <param name="json"></param>
-            <returns></returns>
-        </member>
-        <member name="M:GmodMongoDb.BsonDocument.ToJson">
-            <summary>
-            Converts the BSON Document to a JSON string
-            </summary>
-            <returns>The JSON representation of this BSON Document</returns>
-        </member>
-        <member name="M:GmodMongoDb.BsonDocument.Pairs">
-            <summary>
-            Call this function instead of using <c language="Lua">pairs</c>.
-            </summary>
-            <remarks>
-            The __pairs metamethod is implemented, but won't work in Garry's Mod. If Garry's Mod updates to a version >= Lua 5.2 it will.
-            Read more about pairs in <a href="https://www.lua.org/manual/5.3/manual.html#pdf-next">the Lua manual</a>
-            </remarks>
-            <example>
-            You can loop over the values in a BSON Document like so:
-            <code language="Lua">
-            for key, value in bsonDocument:Pairs() do
-                print(key, value)
-            end
-            </code>
-            </example>
-            <returns>Multiple values: the next function that iterates the object, the object/table itself and nil</returns>
-        </member>
-        <member name="M:GmodMongoDb.BsonDocument.ToString">
-            <summary>
-            Converts the BSON Document to a json string
-            </summary>
-            <returns>The JSON representation of this BSON Document</returns>
-        </member>
-        <member name="T:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable">
-            <summary>
-            Transformers from a native BsonDocument to a Lua table or vice versa.
-            </summary>
-        </member>
-        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.CreateLuaBsonDocument(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
-            <summary>
-            Create a <see cref="T:GmodMongoDb.BsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
-            </summary>
-            <param name="lua"></param>
-            <param name="rawDocument">The true BsonDocument to encapsulate</param>
-        </member>
-        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.Convert(GmodNET.API.ILua,GmodMongoDb.BsonDocument)">
-            <inheritdoc/>
-        </member>
-        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentAndTable.TryParse(GmodNET.API.ILua,GmodMongoDb.BsonDocument@,System.Int32,System.Boolean)">
-            <inheritdoc/>
-        </member>
-        <member name="T:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable">
-            <summary>
-            Transformers from a native BsonDocument to a Lua table or vice versa.
-            </summary>
-        </member>
-        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.CreateLuaBsonDocument(GmodNET.API.ILua,MongoDB.Bson.BsonDocument)">
-            <summary>
-            Create a <see cref="T:GmodMongoDb.BsonDocument"/> object table with Lua metatable for the given BsonDocument. Pushes the object table to the stack.
-            </summary>
-            <param name="lua"></param>
-            <param name="rawDocument">The true BsonDocument to encapsulate</param>
-        </member>
-        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.Convert(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument})">
-            <inheritdoc/>
-        </member>
-        <member name="M:GmodMongoDb.DataTransforming.BetweenBsonDocumentListAndTable.TryParse(GmodNET.API.ILua,System.Collections.Generic.List{MongoDB.Bson.BsonDocument}@,System.Int32,System.Boolean)">
-            <inheritdoc/>
-        </member>
-        <member name="T:GmodMongoDb.MongoClient">
-            <summary>
-            Exposes a MongoDB connection client to Lua.
-            </summary>
-            <remarks>
-            In Lua you can get a client by using <see cref="M:GmodMongoDb.MongoClient.Constructor(GmodNET.API.ILua,System.String)"/> 
-            </remarks>
-        </member>
-        <member name="M:GmodMongoDb.MongoClient.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoClient)">
-            <inheritdoc/>
-        </member>
-        <member name="M:GmodMongoDb.MongoClient.Constructor(GmodNET.API.ILua,System.String)">
-            <summary>
-            Initiates a new MongoClient. Only one MongoClient should exist and it can be reused for multiple databases.
-            </summary>
-            <remarks>
-            <a href="mongodb.github.io/mongo-csharp-driver/2.2/reference/driver/connecting/#mongo-client">View the relevant .NET MongoDB Driver documentation</a>
-            </remarks>
-            <example>
-            Example how to call this method from Lua in order to connect to a database.
-            <code language="Lua">
-            client = MongoClient("mongodb://username_here:password_here@127.0.0.1:27017/database_here?retryWrites=true&amp;w=majority")
-            </code>
-            </example>
-            <param name="lua"></param>
-            <param name="connectionString">The connection string with connection information</param>
-            <returns>The MongoClient which will interface with database</returns>
-        </member>
-        <member name="M:GmodMongoDb.MongoClient.Dispose">
-            <summary>
-            Disposes the MongoDB client connection
-            </summary>
-        </member>
-        <member name="M:GmodMongoDb.MongoClient.GetDatabase(System.String)">
-            <summary>
-            Queries the connection for the database object identified by the given name. If it does not exist it will create it.
-            </summary>
-            <remarks>
-            <a href="mongodb.github.io/mongo-csharp-driver/2.2/reference/driver/connecting/#mongo-database">View the relevant .NET MongoDB Driver documentation</a>
-            </remarks>
-            <example>
-            In Lua you can get the database by asking a <see cref="T:GmodMongoDb.MongoClient"/> for it:
-            <code language="Lua"><![CDATA[
-            local database = client:GetDatabase("database_name")
-            ]]></code>
-            </example>
-            <param name="name">The database name</param>
-            <returns>The database object</returns>
-        </member>
-        <member name="T:GmodMongoDb.MongoCollection">
-            <summary>
-            Exposes a MongoDB collection to Lua.
-            </summary>
-            <remarks>
-            In Lua you can get the collection by using <see cref="M:GmodMongoDb.MongoDatabase.GetCollection(System.String)"/> 
-            </remarks>
-        </member>
-        <member name="M:GmodMongoDb.MongoCollection.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoCollection{MongoDB.Bson.BsonDocument})">
-            <inheritdoc/>
-        </member>
-        <member name="T:GmodMongoDb.MongoDatabase">
-            <summary>
-            Exposes a MongoDB database to Lua.
-            </summary>
-            <remarks>
-            In Lua you can get the collection by using <see cref="M:GmodMongoDb.MongoClient.GetDatabase(System.String)"/> 
-            </remarks>
-        </member>
-        <member name="M:GmodMongoDb.MongoDatabase.#ctor(GmodNET.API.ILua,MongoDB.Driver.IMongoDatabase)">
-            <inheritdoc/>
-        </member>
-        <member name="M:GmodMongoDb.MongoDatabase.GetCollection(System.String)">
-            <summary>
-            Fetches a MongoDB Collection from this database
-            </summary>
-            <example>
-            This is how you can get the collection in Lua:
-            <code language="Lua"><![CDATA[
-            local collection = database:GetCollection("collection_name")
-            ]]></code>
-            </example>
-            <param name="name">The name of the collection</param>
-            <returns>The retrieved collection</returns>
         </member>
         <member name="T:GmodMongoDb.NamespaceDoc">
             <summary>
