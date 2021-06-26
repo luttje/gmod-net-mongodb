@@ -1,24 +1,35 @@
 -- lua_openscript test_db.lua
+-- lua_run dotnet.load("GmodMongoDb")
+-- lua_run dotnet.unload("GmodMongoDb")
 
 print("GmodMongoDb", "load()")
 
 dotnet.load("GmodMongoDb")
 
-test_client = MongoClient("mongodb://bootlegger:395kjkh20jhq5wH65qwa5AST@127.0.0.1:27017/revolt?retryWrites=true&w=majority")
-local db = test_client:GetDatabase("revolt")
-local collection = db:GetCollection("bootlegrp_players")
+-- print(MongoClient)
+-- mdbClient = MongoClient("mongodb://bootlegger:395kjkh20jhq5wH65qwa5AST@127.0.0.1:27017/revolt?retryWrites=true&w=majority")
 
-print(db) -- Note how the userdata changes when we ask the collection for it's database below
+-- print(mdbClient)
+-- print(mdbClient.Cluster)
+-- PrintTable(mdbClient)
+
+print(MongoClient, type(MongoClient), BsonDocument, type(BsonDocument))
+
+local client = MongoClient("mongodb://bootlegger:395kjkh20jhq5wH65qwa5AST@127.0.0.1:27017/revolt?retryWrites=true&w=majority")
+local db = client:GetDatabase("revolt")
+local collection = db:GetCollection{BsonDocument}("bootlegrp_players")
+
+print(db)
 
 local filterTable = { _id = "singleplayer" }
 --local filterJson = util.TableToJSON(filterTable)
-local filter = MongoBsonDocument(filterTable)
-print(filter, type(filter))
-local results = collection:Find(filter)
-PrintTable(results)
+local filter = BsonDocument(util.TableToJSON(filterTable))
+--print(filter, type(filter))
+--local results = collection:Find(filter)
+--PrintTable(results)
 
-print("client", db.Client, db.Client == test_client)
-print("db", collection.Database, collection.Database == db)
+-- print("client", db.Client, db.Client == client)
+-- print("db", collection.Database, collection.Database == db)
 
 -- print(results[1], type(results[1]))
 -- local refindResults = collection:Find(results[1])
@@ -26,10 +37,10 @@ print("db", collection.Database, collection.Database == db)
 
 -- print(results[1] == refindResults[1])
 
--- local findWithBsonDocument = collection:Find(MongoBsonDocument({money = 500}))
+-- local findWithBsonDocument = collection:Find(BsonDocument({money = 500}))
 -- PrintTable(findWithBsonDocument)
 
--- local document = MongoBsonDocument(util.TableToJSON(filter))
+-- local document = BsonDocument(util.TableToJSON(filter))
 -- local findWithJsonBsonDocument = collection:Find(document)
 -- PrintTable(findWithJsonBsonDocument)
 
@@ -40,19 +51,19 @@ print("db", collection.Database, collection.Database == db)
 --   print(key, value)
 -- end
 
--- PrintTable(test_client:ListDatabaseNames())
+-- PrintTable(client:ListDatabaseNames())
 
 -- print(CurTime())
--- test_client:ListDatabaseNamesAsync(function(databases)
+-- client:ListDatabaseNamesAsync(function(databases)
 --   print(CurTime())
 --   PrintTable(databases)
 -- end)
 
--- test_client:DropDatabaseAsync("remove_me", function()
+-- client:DropDatabaseAsync("remove_me", function()
 --   print("done")
 -- end)
 
--- local databases = test_client:ListDatabases()
+-- local databases = client:ListDatabases()
 -- print(databases, table.Count(databases))
 
 
