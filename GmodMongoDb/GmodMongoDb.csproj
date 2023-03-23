@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GmodNET.API" Version="0.7.0-beta.2.44647640.main" />
+    <PackageReference Include="GmodNET.API" Version="1.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
   </ItemGroup>
 
