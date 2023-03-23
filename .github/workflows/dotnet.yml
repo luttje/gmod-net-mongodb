@@ -23,7 +23,7 @@ jobs:
       name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 7.0.x
     - 
       name: Restore dependencies
       run: dotnet restore --configfile ./nuget.config
@@ -37,7 +37,7 @@ jobs:
       name: Zip Built Files
       uses: vimtor/action-zip@5f1c4aa587ea41db1110df6a99981dbe19cee310
       with:
-        files: GmodMongoDb/bin/Release/net5.0/
+        files: GmodMongoDb/bin/Release/net7.0/
         dest: GmodMongoDb.zip
     - 
       name: Build Documentation
