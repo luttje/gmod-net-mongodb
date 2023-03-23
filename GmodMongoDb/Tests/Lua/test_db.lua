@@ -1,12 +1,12 @@
 -- lua_openscript test_db.lua
 
 print("GmodMongoDb", "load()")
-
+require("dotnet")
 dotnet.load("GmodMongoDb")
 
-test_client = MongoClient("mongodb://bootlegger:395kjkh20jhq5wH65qwa5AST@127.0.0.1:27017/revolt?retryWrites=true&w=majority")
-local db = test_client:GetDatabase("revolt")
-local collection = db:GetCollection("bootlegrp_players")
+test_client = MongoClient("mongodb://localhost:27017/repo_test?retryWrites=true&w=majority")
+local db = test_client:GetDatabase("repo_test")
+local collection = db:GetCollection("collection_test")
 
 print(db) -- Note how the userdata changes when we ask the collection for it's database below
 
