@@ -1,24 +1,28 @@
--- lua_openscript test_db.lua
+-- lua_openscript db_test.lua
 
 print("GmodMongoDb", "load()")
 require("dotnet")
+dotnet.unload("GmodMongoDb")
 dotnet.load("GmodMongoDb")
 
-test_client = MongoClient("mongodb://localhost:27017/repo_test?retryWrites=true&w=majority")
-local db = test_client:GetDatabase("repo_test")
-local collection = db:GetCollection("collection_test")
+print(MongoDB)
+print(MongoDB.Shared.HexUtils.ParseInt32("ffff"))
 
-print(db) -- Note how the userdata changes when we ask the collection for it's database below
+-- test_client = MongoClient("mongodb://localhost:27017/repo_test?retryWrites=true&w=majority")
+-- local db = test_client:GetDatabase("repo_test")
+-- local collection = db:GetCollection("collection_test")
 
-local filterTable = { _id = "singleplayer" }
---local filterJson = util.TableToJSON(filterTable)
-local filter = MongoBsonDocument(filterTable)
-print(filter, type(filter))
-local results = collection:Find(filter)
-PrintTable(results)
+-- print(db) -- Note how the userdata changes when we ask the collection for it's database below
 
-print("client", db.Client, db.Client == test_client)
-print("db", collection.Database, collection.Database == db)
+-- local filterTable = { _id = "singleplayer" }
+-- --local filterJson = util.TableToJSON(filterTable)
+-- local filter = MongoBsonDocument(filterTable)
+-- print(filter, type(filter))
+-- local results = collection:Find(filter)
+-- PrintTable(results)
+
+-- print("client", db.Client, db.Client == test_client)
+-- print("db", collection.Database, collection.Database == db)
 
 -- print(results[1], type(results[1]))
 -- local refindResults = collection:Find(results[1])

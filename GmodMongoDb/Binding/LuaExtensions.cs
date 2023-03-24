@@ -11,23 +11,13 @@ namespace GmodMongoDb.Binding
     public static class LuaExtensions
     {
         /// <summary>
-        /// Prints a message in Lua the next Lua tick
-        /// </summary>
-        /// <param name="lua"></param>
-        /// <param name="message">The message to show</param>
-        public static void PrintFromAsync(this ILua lua, string message)
-        {
-            LuaTaskScheduler.AddTask(() => lua.Print(message));
-        }
-
-        /// <summary>
         /// Prints a message in Lua
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="message">The message to show</param>
         public static void Print(this ILua lua, string message)
         {
-            lua.PushSpecial(GmodNET.API.SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "print");
             lua.PushString(message);
             lua.MCall(1, 0);
