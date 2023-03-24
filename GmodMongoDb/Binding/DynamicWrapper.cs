@@ -3,19 +3,39 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GmodMongoDb.Binding
 {
-    public class DynamicWrapper
+    public class DynamicWrapper : IDisposable
     {
+        private ILua lua;
+        private string? baseName;
+
+        /// <summary>
+        /// Create a wrapper that can create wrappers for any type
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="baseName"></param>
+        public DynamicWrapper(ILua lua, string? baseName = null)
+        {
+            this.lua = lua;
+            this.baseName = baseName;
+
+            if (baseName == null)
+                return;
+            
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB); // Global table
+            lua.CreateTable(); // baseName table
+
+            lua.SetField(-2, baseName); // baseName table
+            lua.Pop(); // Pop the Global table
+        }
+
         /// <summary>
         /// Gets or creates the namespace table (and all parent tables) for the given type. Puts it on top of the stack.
         /// </summary>
-        /// <param name="lua"></param>
         /// <param name="namespace"></param>
-        public static void GetNamespaceTable(ILua lua, string @namespace)
+        private void GetNamespaceTable(string @namespace)
         {
             var parts = @namespace.Split('.');
 
@@ -38,20 +58,24 @@ namespace GmodMongoDb.Binding
             }
         }
 
-        public static void RegisterType(ILua lua, Type type, string? trimNamespace = null)
+        /// <summary>
+        /// Registers a type in sub-tables for each namespace part (seperated by dots)
+        /// </summary>
+        /// <param name="type"></param>
+        public void RegisterType(Type type)
         {
             var @namespace = type.Namespace;
 
-            if (trimNamespace != null)
+            if (baseName != null)
             {
-                @namespace = @namespace?.Substring(trimNamespace.Length).TrimStart('.');
+                @namespace = @namespace?.Substring(baseName.Length).TrimStart('.');
             }
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB); // Global table
             lua.GetField(-1, "MongoDB"); // MongoDB table
             lua.Remove(-2); // Pop the global table
 
-            GetNamespaceTable(lua, @namespace); // Namespace table
+            GetNamespaceTable(@namespace); // Namespace table
 
             lua.CreateTable(); // Type table
 
@@ -60,8 +84,6 @@ namespace GmodMongoDb.Binding
             {
                 lua.PushManagedFunction((lua) =>
                 {
-                    Console.WriteLine($"{@namespace}.{type.Name}.{method.Name} was called");
-
                     var upValueCount = lua.Top();
                     var parameters = new object[upValueCount];
 
@@ -71,9 +93,6 @@ namespace GmodMongoDb.Binding
                         parameters[index] = TypeTools.PullType(lua);
                         Console.WriteLine($"Upvalue {index}: {parameters[index]}");
                     }
-
-                    LuaExtensions.Print(lua, "Function called!");
-                    LuaExtensions.Print(lua, lua.GetStack());
 
                     try
                     {
@@ -104,6 +123,18 @@ namespace GmodMongoDb.Binding
             lua.Pop(); // Pop the namespace table
 
             lua.Pop(); // Pop the MongoDB table
+        }
+
+        public void Dispose()
+        {
+            if (baseName == null)
+                return;
+            
+            // Set MongoDB to nil to release all references to the types.
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.PushNil();
+            lua.SetField(-2, baseName);
+            lua.Pop();
         }
     }
 }

@@ -4,11 +4,10 @@
         <name>GmodMongoDb</name>
     </assembly>
     <members>
-        <member name="M:GmodMongoDb.Binding.DynamicWrapper.GetNamespaceTable(GmodNET.API.ILua,System.String)">
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.GetNamespaceTable(System.String)">
             <summary>
             Gets or creates the namespace table (and all parent tables) for the given type. Puts it on top of the stack.
             </summary>
-            <param name="lua"></param>
             <param name="namespace"></param>
         </member>
         <member name="T:GmodMongoDb.Binding.LuaExtensions">
