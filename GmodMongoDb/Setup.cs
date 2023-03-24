@@ -28,7 +28,6 @@ namespace GmodMongoDb
 
             wrapper = new DynamicWrapper(lua, "MongoDB");
 
-            // The same as above, but using the InteropRegister
             foreach (var assembly in mongoDbAssemblies)
             {
                 var types = assembly.GetTypes()
