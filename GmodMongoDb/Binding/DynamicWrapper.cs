@@ -1,9 +1,11 @@
-﻿using GmodNET.API;
+﻿using GmodMongoDb.Util;
+using GmodNET.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace GmodMongoDb.Binding
 {
@@ -83,7 +85,10 @@ namespace GmodMongoDb.Binding
         {
             GetTypeTable(type, out var lastPartName); // Type table
 
-            foreach (var member in type.GetMembers(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance))
+            var members = type.GetMembers(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance)
+                .DistinctBy(m => m.Name);
+
+            foreach (var member in members)
             {
                 switch (member)
                 {
@@ -91,7 +96,7 @@ namespace GmodMongoDb.Binding
                         SetConstructorManagedMethod(constructor, type);
                         break;
                     case MethodInfo method when method.IsStatic:
-                        SetStaticManagedMethod(method);
+                        SetStaticManagedMethod(method, type);
                         break;
                     case MethodInfo method:
                         SetManagedMethod(method, type);
@@ -134,7 +139,9 @@ namespace GmodMongoDb.Binding
         /// <summary>
         /// Assumes the type table is on top of the stack.
         /// </summary>
-        private void SetStaticManagedMethod(MethodInfo method)
+        /// <param name="anyMethod"></param>
+        /// <param name="type"></param>
+        private void SetStaticManagedMethod(MethodInfo anyMethod, Type type)
         {
             lua.PushManagedFunction((lua) =>
             {
@@ -148,9 +155,22 @@ namespace GmodMongoDb.Binding
                     Console.WriteLine($"Upvalue {index}: {parameters[index]}");
                 }
 
+                var parameterTypes = parameters.Select(p => p.GetType()).ToList();
+                var method = type.GetAppropriateMethod(anyMethod.Name, ref parameterTypes);
+
+                if (method == null)
+                {
+                    var signatures = type.GetMethodSignatures(anyMethod.Name);
+                    throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name}.{anyMethod.Name}! {parameters.Length} parameters were passed, but only the following overloads exist: \n{signatures}");
+                }
+                
                 try
                 {
-                    var result = method.Invoke(null, TypeTools.NormalizeParameters(parameters, method.GetParameters()));
+                    parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
+
+                    // TODO: Handle static methods
+                    // method = method.MakeGenericMethod(typeof(SomeClass)); 
+                    var result = method.Invoke(null, parameters);
 
                     if (result != null)
                     {
@@ -158,18 +178,14 @@ namespace GmodMongoDb.Binding
                         return 1;
                     }
                 }
-                catch (TargetParameterCountException e)
-                {
-                    throw new Exception($"Incorrect parameters passed to {method.DeclaringType?.Namespace}.{method.DeclaringType?.Name}.{method.Name}! {parameters.Length} parameters were passed, but {method.GetParameters().Length} were expected.", e);
-                }
                 catch (Exception e)
                 {
-                    throw new Exception($"An error occurred while calling {method.DeclaringType?.Namespace}.{method.DeclaringType?.Name}.{method.Name}!", e);
+                    throw new Exception($"An error occurred while calling {type.Namespace}.{type.Name}.{method.Name}!", e);
                 }
                 
                 return 0;
             });
-            lua.SetField(-2, method.Name); // Type method
+            lua.SetField(-2, anyMethod.Name); // Type method
         }
 
         /// <summary>
@@ -177,29 +193,48 @@ namespace GmodMongoDb.Binding
         /// as the metatable for instances of this constructor.
         /// Assumes the type table is on top of the stack.
         /// </summary>
-        /// <param name="method"></param>
-        private void SetManagedMethod(MethodInfo method, Type type)
+        /// <param name="anyMethod"></param>
+        /// <param name="type"></param>
+        private void SetManagedMethod(MethodInfo anyMethod, Type type)
         {
             lua.PushTypeMetatable(type);
-
-            // Push the method
             lua.PushManagedFunction((lua) =>
             {
                 var upValueCount = lua.Top();
                 var parameters = new object[upValueCount - 1];
 
-                for (int i = 1; i < upValueCount - 1; i++)
+                for (int i = 1; i < upValueCount; i++)
                 {
-                    var index = upValueCount - i;
+                    var index = parameters.Length - i;
                     parameters[index] = lua.PullType();
                     Console.WriteLine($"Upvalue {index}: {parameters[index]}");
                 }
 
+                lua.Print(lua.GetStack());
                 var instance = lua.PullInstance();
+
+                var parameterTypes = parameters.Select(p => p.GetType()).ToList();
+                var method = type.GetAppropriateMethod(anyMethod.Name, ref parameterTypes);
+
+                if (method == null)
+                {
+                    // Print all types
+                    foreach (var t in parameterTypes)
+                    {
+                        lua.Print($"{t.Name}");
+                    }
+
+                    var signatures = type.GetMethodSignatures(anyMethod.Name);
+                    throw new Exception($"Incorrect parameters passed to {type?.Namespace}.{type?.Name}.{anyMethod.Name}! {parameters.Length} parameters were passed, but only the following overloads exist: \n{signatures}");
+                }
 
                 try
                 {
-                    var result = method.Invoke(instance, TypeTools.NormalizeParameters(parameters, method.GetParameters()));
+                    parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
+
+                    // TODO: Handle static methods
+                    // method = method.MakeGenericMethod(typeof(SomeClass)); 
+                    var result = method.Invoke(instance, parameters);
 
                     if (result != null)
                     {
@@ -207,22 +242,18 @@ namespace GmodMongoDb.Binding
                         return 1;
                     }
                 }
-                catch (TargetParameterCountException e)
-                {
-                    throw new Exception($"Incorrect parameters passed to {method.DeclaringType?.Namespace}.{method.DeclaringType?.Name}.{method.Name}! {parameters.Length} parameters were passed, but {method.GetParameters().Length} were expected.", e);
-                }
                 catch (Exception e)
                 {
-                    throw new Exception($"An error occurred while calling {method.DeclaringType?.Namespace}.{method.DeclaringType?.Name}.{method.Name}!", e);
+                    throw new Exception($"An error occurred while calling {type.Namespace}.{type.Name}.{method.Name}!", e);
                 }
 
                 return 0;
             });
-            lua.SetField(-2, method.Name); // Type method
+            lua.SetField(-2, anyMethod.Name); // Type method
             
-            if (method.Name == "ToString")
+            if (anyMethod.Name == "ToString")
             {
-                lua.GetField(-1, method.Name); // Type method
+                lua.GetField(-1, anyMethod.Name); // Type method
                 lua.SetField(-2, "__tostring");
             }
 
@@ -233,9 +264,9 @@ namespace GmodMongoDb.Binding
         /// Sets a function to return a table with the metatable.
         /// Assumes the type table is on top of the stack.
         /// </summary>
-        /// <param name="constructor"></param>
-        /// TODO: Support constructor overloading
-        private void SetConstructorManagedMethod(ConstructorInfo constructor, Type type)
+        /// <param name="anyConstructor"></param>
+        /// <param name="type"></param>
+        private void SetConstructorManagedMethod(ConstructorInfo anyConstructor, Type type)
         {
             lua.CreateTable();
             lua.PushManagedFunction((lua) =>
@@ -253,24 +284,27 @@ namespace GmodMongoDb.Binding
                 // Pop the table itself which is the first argument passed to __call (and thus lowest on the stack)
                 lua.Pop();
 
+                var parameterTypes = parameters.Select(p => p.GetType()).ToList();
+                var constructor = type.GetAppropriateConstructor(ref parameterTypes);
+
+                if (constructor == null)
+                {
+                    var signatures = type.GetConstructorSignatures();
+                    throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name} Constructor! {parameters.Length} parameters were passed, but only the following overloads exist: \n{signatures}");
+                }
+                
                 try
                 {
-                    if (parameters.Length != constructor.GetParameters().Length)
-                        throw new TargetParameterCountException();
+                    parameters = TypeTools.NormalizeParameters(parameters, constructor.GetParameters());
 
-                    var instance = constructor.Invoke(TypeTools.NormalizeParameters(parameters, constructor.GetParameters()));
+                    var instance = constructor.Invoke(parameters);
                     lua.PushInstance(instance);
 
-                    lua.Print(lua.GetStack());
                     return 1;
-                }
-                catch (TargetParameterCountException e)
-                {
-                    throw new Exception($"Incorrect parameters passed to {constructor.DeclaringType?.Namespace}.{constructor.DeclaringType?.Name}.{constructor.Name}! {parameters.Length} parameters were passed, but {constructor.GetParameters().Length} were expected.", e);
                 }
                 catch (Exception e)
                 {
-                    throw new Exception($"An error occurred while calling {constructor.DeclaringType?.Namespace}.{constructor.DeclaringType?.Name}.{constructor.Name}!", e);
+                    throw new Exception($"An error occurred while calling {type.Namespace}.{type.Name}.{constructor.Name}!", e);
                 }
             });
             lua.SetField(-2, "__call"); // Constructor method
@@ -280,6 +314,8 @@ namespace GmodMongoDb.Binding
         /// <summary>
         /// Assumes the type table is on top of the stack.
         /// </summary>
+        /// <param name="property"></param>
+        /// <param name="type"></param>
         private void SetManagedProperty(PropertyInfo property, Type type)
         {
         }
@@ -287,6 +323,8 @@ namespace GmodMongoDb.Binding
         /// <summary>
         /// Assumes the type table is on top of the stack.
         /// </summary>
+        /// <param name="field"></param>
+        /// <param name="type"></param>
         private void SetManagedField(FieldInfo field, Type type)
         {
         }

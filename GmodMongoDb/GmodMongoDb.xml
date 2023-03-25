@@ -24,10 +24,12 @@
             </summary>
             <param name="type"></param>
         </member>
-        <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetStaticManagedMethod(System.Reflection.MethodInfo)">
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetStaticManagedMethod(System.Reflection.MethodInfo,System.Type)">
             <summary>
             Assumes the type table is on top of the stack.
             </summary>
+            <param name="anyMethod"></param>
+            <param name="type"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetManagedMethod(System.Reflection.MethodInfo,System.Type)">
             <summary>
@@ -35,32 +37,37 @@
             as the metatable for instances of this constructor.
             Assumes the type table is on top of the stack.
             </summary>
-            <param name="method"></param>
+            <param name="anyMethod"></param>
+            <param name="type"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetConstructorManagedMethod(System.Reflection.ConstructorInfo,System.Type)">
             <summary>
             Sets a function to return a table with the metatable.
             Assumes the type table is on top of the stack.
             </summary>
-            <param name="constructor"></param>
-            TODO: Support constructor overloading
+            <param name="anyConstructor"></param>
+            <param name="type"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetManagedProperty(System.Reflection.PropertyInfo,System.Type)">
             <summary>
             Assumes the type table is on top of the stack.
             </summary>
+            <param name="property"></param>
+            <param name="type"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetManagedField(System.Reflection.FieldInfo,System.Type)">
             <summary>
             Assumes the type table is on top of the stack.
             </summary>
+            <param name="field"></param>
+            <param name="type"></param>
         </member>
         <member name="T:GmodMongoDb.Binding.LuaExtensions">
             <summary>
             Helpful functions to debug or message in Lua
             </summary>
         </member>
-        <member name="M:GmodMongoDb.Binding.LuaExtensions.Print(GmodNET.API.ILua,System.String)">
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.Print(GmodNET.API.ILua,System.Object)">
             <summary>
             Prints a message in Lua
             </summary>
@@ -236,6 +243,38 @@
         </member>
         <member name="M:GmodMongoDb.Setup.Unload(GmodNET.API.ILua)">
             <inheritdoc/>
+        </member>
+        <member name="M:GmodMongoDb.Util.ReflectionExtensions.GetMethodSignatures(System.Type,System.String)">
+            <summary>
+            Returns a string describing all available method signatures
+            </summary>
+            <param name="type"></param>
+            <param name="methodName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Util.ReflectionExtensions.GetConstructorSignatures(System.Type)">
+            <summary>
+            Returns a string describing all available constructor signatures
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Util.ReflectionExtensions.GetAppropriateMethod(System.Type,System.String,System.Collections.Generic.List{System.Type}@)">
+            <summary>
+            Gets a method that fits the provided parameter types
+            </summary>
+            <param name="type"></param>
+            <param name="methodName"></param>
+            <param name="parameterTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Util.ReflectionExtensions.GetAppropriateConstructor(System.Type,System.Collections.Generic.List{System.Type}@)">
+            <summary>
+            Gets a constructor that fits the provided parameter types
+            </summary>
+            <param name="type"></param>
+            <param name="parameterTypes"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

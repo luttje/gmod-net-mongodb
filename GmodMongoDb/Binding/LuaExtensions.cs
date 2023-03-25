@@ -20,11 +20,11 @@ namespace GmodMongoDb.Binding
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="message">The message to show</param>
-        public static void Print(this ILua lua, string message)
+        public static void Print(this ILua lua, object message)
         {
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "print");
-            lua.PushString(message);
+            lua.PushString(message.ToString());
             lua.MCall(1, 0);
             lua.Pop(1);
         }
