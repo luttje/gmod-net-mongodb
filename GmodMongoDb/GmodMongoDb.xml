@@ -4,11 +4,76 @@
         <name>GmodMongoDb</name>
     </assembly>
     <members>
-        <member name="M:GmodMongoDb.Binding.DynamicWrapper.GetNamespaceTable(System.String)">
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.#ctor(GmodNET.API.ILua,System.String)">
             <summary>
-            Gets or creates the namespace table (and all parent tables) for the given type. Puts it on top of the stack.
+            Create a wrapper that can create wrappers for any type
             </summary>
-            <param name="namespace"></param>
+            <param name="lua"></param>
+            <param name="baseName"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.GetTypeTable(System.Type,System.String@)">
+            <summary>
+            Gets or creates the Type table (and all parent tables) for the given type. Puts it on top of the stack.
+            </summary>
+            <param name="type"></param>
+            <param name="lastPartName"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.PushInstance(System.Object)">
+            <summary>
+            Creates a table for the object, assigning the appropriate type metatable and keeping a reference to the object pointer.
+            Leaves the instance table on top of the stack.
+            </summary>
+            <param name="instance"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.PushType(System.Object)">
+            <summary>
+            Creates a metatable for the given type. Puts it on top of the stack.
+            </summary>
+            <param name="instance"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.PullType(System.Int32)">
+            <summary>
+            Creates a metatable for the given type. Puts it on top of the stack.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.RegisterType(System.Type)">
+            <summary>
+            Registers a type in sub-tables for each namespace part (seperated by dots)
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetStaticManagedMethod(System.Reflection.MethodInfo)">
+            <summary>
+            Assumes the type table is on top of the stack.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetManagedMethod(System.Reflection.MethodInfo,System.Type)">
+            <summary>
+            Gets or creates a metatable and adds this method to it. It will later be used
+            as the metatable for instances of this constructor.
+            Assumes the type table is on top of the stack.
+            </summary>
+            <param name="method"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetConstructorManagedMethod(System.Reflection.ConstructorInfo,System.Type)">
+            <summary>
+            Sets a function to return a table with the metatable.
+            Assumes the type table is on top of the stack.
+            </summary>
+            <param name="constructor"></param>
+            TODO: Support constructor overloading
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetManagedProperty(System.Reflection.PropertyInfo,System.Type)">
+            <summary>
+            Assumes the type table is on top of the stack.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetManagedField(System.Reflection.FieldInfo,System.Type)">
+            <summary>
+            Assumes the type table is on top of the stack.
+            </summary>
         </member>
         <member name="T:GmodMongoDb.Binding.LuaExtensions">
             <summary>
@@ -29,14 +94,46 @@
             <param name="lua"></param>
             <returns>A string containing the types on the stack</returns>
         </member>
+        <member name="T:GmodMongoDb.Binding.LuaTable">
+            <summary>
+            Map of Lua types to .NET types
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaTable.Get(GmodNET.API.ILua,System.Int32)">
+            <summary>
+            Reads the Lua table at the top of the stack and returns it as a <see cref="T:GmodMongoDb.Binding.LuaTable"/>.
+            </summary>
+            <param name="lua"></param>
+            <param name="stackPos"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaTable.Push(GmodNET.API.ILua)">
+            <summary>
+            Pushes this Lua table to the top of the stack.
+            </summary>
+            <param name="lua"></param>
+        </member>
+        <member name="P:GmodMongoDb.Binding.LuaTable.LuaTableElement.Value">
+            <summary>
+            Value of any type, can also be a LuaTableElement
+            </summary>
+        </member>
         <member name="T:GmodMongoDb.Binding.TypeTools">
             <summary>
             Helps converting between .NET objects/types and Lua types
             </summary>
         </member>
+        <member name="M:GmodMongoDb.Binding.TypeTools.IsLuaType(System.Type)">
+            <summary>
+            Returns whether the given type is a primitive type.
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
         <member name="M:GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua,System.Type,System.Object)">
             <summary>
-            Push a value of a specific type to the Lua stack. Applies a transformer where possible.
+            Push a value of a specific type to the Lua stack.
             </summary>
             <param name="lua"></param>
             <param name="type">The type of the value to push</param>
@@ -71,14 +168,6 @@
             <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
             <returns>The .NET object</returns>
         </member>
-        <member name="M:GmodMongoDb.Binding.TypeTools.TryGetMetaTableType(System.Int32,System.Type@)">
-            <summary>
-            Try to convert a Lua type to a metatable.
-            </summary>
-            <param name="luaType">The type id that's suspected to be a metatable type</param>
-            <param name="result">The converted .NET type on success. Null otherwise.</param>
-            <returns>If the type is succesfully converted to a metatable type.</returns>
-        </member>
         <member name="M:GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType(GmodNET.API.TYPES)">
             <summary>
             Convert a specified Lua type to a .NET type.
@@ -92,6 +181,14 @@
             </summary>
             <param name="luaType">The Lua type to convert (must be castable to <see cref="T:GmodNET.API.TYPES"/>)</param>
             <returns>The converted .NET type</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeTools.NormalizeParameters(System.Object[],System.Reflection.ParameterInfo[])">
+            <summary>
+            Converts the parameters to the types specified in the <paramref name="parameterInfos"/> array.
+            </summary>
+            <param name="parameters"></param>
+            <param name="parameterInfos"></param>
+            <returns></returns>
         </member>
         <member name="T:GmodMongoDb.Setup">
             <inheritdoc/>

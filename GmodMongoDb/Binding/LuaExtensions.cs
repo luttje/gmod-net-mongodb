@@ -1,6 +1,7 @@
 ﻿using GmodNET.API;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace GmodMongoDb.Binding

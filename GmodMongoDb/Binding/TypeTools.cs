@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace GmodMongoDb.Binding
 {
@@ -10,53 +12,60 @@ namespace GmodMongoDb.Binding
     /// </summary>
     public static class TypeTools
     {
-        private static readonly Dictionary<int, Type> MetaTableTypeIds = new();
+        /// <summary>
+        /// Returns whether the given type is a primitive type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsLuaType(Type type)
+        {
+            return type == null
+                || type == typeof(string)
+                || type == typeof(bool)
+                || type == typeof(int)
+                || type == typeof(float)
+                || type == typeof(double)
+                || type == typeof(IntPtr);
+        }
 
         /// <summary>
-        /// Push a value of a specific type to the Lua stack. Applies a transformer where possible.
+        /// Push a value of a specific type to the Lua stack.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="type">The type of the value to push</param>
         /// <param name="value">The value to push</param>
-        public static int PushType(ILua lua, Type type, object value)
+        public static void PushType(ILua lua, Type type, object value)
         {
             if (type == null || value == null)
             {
                 lua.PushNil();
-
-                return 1;
             }
             else if (type == typeof(string))
             {
                 lua.PushString((string)value);
-
-                return 1;
             }
             else if (type == typeof(bool))
             {
                 lua.PushBool((bool)value);
-
-                return 1;
             }
             else if (type == typeof(int)
                 || type == typeof(float)
                 || type == typeof(double))
             {
                 lua.PushNumber(Convert.ToDouble(value));
-
-                return 1;
             }
+            else if (type == typeof(LuaTable))
+                ((LuaTable)value).Push(lua);
             else if (type == typeof(IntPtr))
             {
                 lua.ReferencePush((int)value);
-
-                return 1;
             }
             else
-                // TODO
-                throw new NotImplementedException($"This type is not registered for conversion to Lua from .NET! Consider building a Transformer. Type is: {type.FullName}");
+            {
+                throw new ArgumentException("Unsupported type: " + type.FullName);
+            }
         }
-
+        
         /// <summary>
         /// Pop a value from the Lua stack and convert it to the specified .NET type.
         /// </summary>
@@ -78,9 +87,17 @@ namespace GmodMongoDb.Binding
                 || type == typeof(float)
                 || type == typeof(double))
                 value = lua.GetNumber(stackPos);
+            else if (type == typeof(LuaTable))
+                value = LuaTable.Get(lua, stackPos);
+            else if (type == typeof(IntPtr))
+            {
+                value = (IntPtr) lua.ReferenceCreate();
+                pop = false;
+            }
             else
-                // TODO
-                throw new NotImplementedException($"This type is not registered for conversion from Lua to .NET! Consider building a Transformer. Type is: {type.FullName}");
+            {
+                throw new ArgumentException("Unsupported type: " + type.FullName);
+            }
 
             if (pop && !forceKeepOnStack)
                 lua.Remove(stackPos);
@@ -117,38 +134,21 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Try to convert a Lua type to a metatable.
-        /// </summary>
-        /// <param name="luaType">The type id that's suspected to be a metatable type</param>
-        /// <param name="result">The converted .NET type on success. Null otherwise.</param>
-        /// <returns>If the type is succesfully converted to a metatable type.</returns>
-        public static bool TryGetMetaTableType(int luaType, out Type result)
-        {
-            if (MetaTableTypeIds.ContainsKey((int)luaType))
-            {
-                result = MetaTableTypeIds[(int)luaType];
-                return true;
-            }
-
-            result = null;
-            return false;
-        }
-
-        /// <summary>
         /// Convert a specified Lua type to a .NET type.
         /// </summary>
         /// <param name="luaType">The Lua type to convert</param>
         /// <returns>The converted .NET type</returns>
         public static Type LuaTypeToDotNetType(TYPES luaType)
         {
-            if (TryGetMetaTableType((int) luaType, out Type result))
-                return result;
+            //if (TryGetMetaTableType((int) luaType, out Type result))
+            //    return result;
 
             return luaType switch
             {
                 TYPES.NUMBER => typeof(double),
                 TYPES.STRING => typeof(string),
                 TYPES.BOOL => typeof(bool),
+                TYPES.TABLE => typeof(LuaTable),
                 TYPES.NIL => null,
                 _ => throw new NotImplementedException($"This type is not registered for conversion from Lua to .NET! Type is: {luaType}"),
             };
@@ -161,5 +161,42 @@ namespace GmodMongoDb.Binding
         /// <returns>The converted .NET type</returns>
         public static Type LuaTypeToDotNetType(int luaType)
             => LuaTypeToDotNetType((TYPES)luaType);
+
+        /// <summary>
+        /// Converts the parameters to the types specified in the <paramref name="parameterInfos"/> array.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="parameterInfos"></param>
+        /// <returns></returns>
+        public static object[] NormalizeParameters(object[] parameters, ParameterInfo[] parameterInfos)
+        {
+            object[] normalizedParameters = new object[parameterInfos.Length];
+
+            for (int i = 0; i < parameterInfos.Length; i++)
+            {
+                if (i < parameters.Length)
+                {
+                    // Cast the parameter to the expected type
+                    var expectedType = parameterInfos[i].ParameterType;
+
+                    if (expectedType.IsEnum)
+                    {
+                        // If the expected type is an enum, try to convert the parameter to the underlying type of the enum
+                        normalizedParameters[i] = Enum.ToObject(expectedType, parameters[i]);
+                    }
+                    else
+                    {
+                        // If the expected type is not an enum, try to convert the parameter to the expected type
+                        normalizedParameters[i] = Convert.ChangeType(parameters[i], expectedType);
+                    }
+                }
+                else
+                {
+                    normalizedParameters[i] = parameterInfos[i].DefaultValue;
+                }
+            }
+
+            return normalizedParameters;
+        }
     }
 }
