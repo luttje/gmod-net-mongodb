@@ -78,6 +78,8 @@
             <summary>
             Prints a table in Lua
             </summary>
+            <param name="lua"></param>
+            <param name="index"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.GetStack(GmodNET.API.ILua)">
             <summary>
@@ -96,12 +98,14 @@
             <summary>
             Creates a metatable for the given type. Puts it on top of the stack.
             </summary>
+            <param name="lua"></param>
             <param name="instance"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.PullType(GmodNET.API.ILua,System.Int32)">
             <summary>
             Creates a metatable for the given type. Puts it on top of the stack.
             </summary>
+            <param name="lua"></param>
             <param name="index"></param>
             <returns></returns>
         </member>
@@ -110,6 +114,7 @@
             Creates a table for the object, assigning the appropriate type metatable and keeping a reference to the object pointer.
             Leaves the instance table on top of the stack.
             </summary>
+            <param name="lua"></param>
             <param name="instance"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.PullInstance(GmodNET.API.ILua)">
@@ -127,10 +132,34 @@
             <param name="lua"></param>
             <returns></returns>
         </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.CreateTypeMetaTable(GmodNET.API.ILua,System.Type)">
+            <summary>
+            Creates a table for the type and puts it on top of the stack. Should be used as a metatable.
+            </summary>
+            <param name="lua"></param>
+            <param name="type"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.IsTypeMetaTable(GmodNET.API.ILua,System.Int32)">
+            <summary>
+            Checks if the table on top of the stack is a type metatable.
+            </summary>
+            <param name="lua"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.GetTypeMetaTableType(GmodNET.API.ILua,System.Int32)">
+            <summary>
+            Gets the type stored with the metatable.
+            </summary>
+            <param name="lua"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.PushTypeMetatable(GmodNET.API.ILua,System.Type)">
             <summary>
             Pushes a metatable onto the stack for this type (fetching it from the registry). It creates a new metatable if it doesn't exist yet.
             </summary>
+            <param name="lua"></param>
             <param name="type"></param>
         </member>
         <member name="T:GmodMongoDb.Binding.LuaTable">

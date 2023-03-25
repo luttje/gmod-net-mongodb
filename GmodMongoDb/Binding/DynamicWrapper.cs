@@ -26,6 +26,26 @@ namespace GmodMongoDb.Binding
             this.lua = lua;
             this.baseName = baseName;
 
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.PushManagedFunction(lua =>
+            {
+                if (!lua.IsTypeMetaTable())
+                {
+                    lua.Pop(); // Pop the parameter
+                    lua.PushNil();
+                    return 1;
+                }
+
+                var type = lua.GetTypeMetaTableType();
+                lua.Pop(); // Pop the metatable parameter
+
+                lua.PushInstance(new GenericType(type));
+                
+                return 1;
+            });
+            lua.SetField(-2, "GenericType");
+            lua.Pop();
+
             if (baseName == null)
                 return;
             
@@ -168,7 +188,7 @@ namespace GmodMongoDb.Binding
                 {
                     parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
 
-                    // TODO: Handle static methods
+                    // TODO: Handle generic methods
                     // method = method.MakeGenericMethod(typeof(SomeClass)); 
                     var result = method.Invoke(null, parameters);
 
@@ -198,19 +218,33 @@ namespace GmodMongoDb.Binding
         private void SetManagedMethod(MethodInfo anyMethod, Type type)
         {
             lua.PushTypeMetatable(type);
-            lua.PushManagedFunction((lua) =>
+            lua.PushManagedFunction((Func<ILua, int>)((lua) =>
             {
                 var upValueCount = lua.Top();
                 var parameters = new object[upValueCount - 1];
+                GenericType[] genericArguments = null;
 
                 for (int i = 1; i < upValueCount; i++)
                 {
                     var index = parameters.Length - i;
-                    parameters[index] = lua.PullType();
-                    Console.WriteLine($"Upvalue {index}: {parameters[index]}");
+                    var parameterValue = parameters[index] = lua.PullType();
+
+                    if(parameterValue is GenericType)
+                    {
+                        if (genericArguments == null)
+                            genericArguments = new GenericType[upValueCount - parameters.Length];
+
+                        genericArguments[index] = (GenericType)parameterValue;
+                    }
+                    else
+                        Console.WriteLine($"Upvalue {index}: {parameters[index]}");
                 }
 
-                lua.Print(lua.GetStack());
+                // Remove the generic types from the parameters
+                if (genericArguments != null) { 
+                    parameters = parameters.Where(p => !(p is GenericType)).ToArray();
+                }
+
                 var instance = lua.PullInstance();
 
                 var parameterTypes = parameters.Select(p => p.GetType()).ToList();
@@ -218,22 +252,26 @@ namespace GmodMongoDb.Binding
 
                 if (method == null)
                 {
-                    // Print all types
-                    foreach (var t in parameterTypes)
-                    {
-                        lua.Print($"{t.Name}");
-                    }
-
                     var signatures = type.GetMethodSignatures(anyMethod.Name);
                     throw new Exception($"Incorrect parameters passed to {type?.Namespace}.{type?.Name}.{anyMethod.Name}! {parameters.Length} parameters were passed, but only the following overloads exist: \n{signatures}");
+                }
+                
+                if (method.ContainsGenericParameters)
+                {
+                    if (genericArguments == null)
+                        throw new Exception($"The method {type?.Namespace}.{type?.Name}.{method.Name} contains generic parameters, but no generic types were passed!");
+
+                    if (genericArguments.Length != method.GetGenericArguments().Length)
+                        throw new Exception($"The method {type?.Namespace}.{type?.Name}.{method.Name} contains {method.GetGenericArguments().Length} generic parameters, but only {genericArguments.Length} generic types were passed!");
+
+                    var types = genericArguments.Select(g => g.Type).ToArray();
+                    method = method.MakeGenericMethod(types);
                 }
 
                 try
                 {
                     parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
 
-                    // TODO: Handle static methods
-                    // method = method.MakeGenericMethod(typeof(SomeClass)); 
                     var result = method.Invoke(instance, parameters);
 
                     if (result != null)
@@ -248,7 +286,7 @@ namespace GmodMongoDb.Binding
                 }
 
                 return 0;
-            });
+            }));
             lua.SetField(-2, anyMethod.Name); // Type method
             
             if (anyMethod.Name == "ToString")
@@ -268,7 +306,7 @@ namespace GmodMongoDb.Binding
         /// <param name="type"></param>
         private void SetConstructorManagedMethod(ConstructorInfo anyConstructor, Type type)
         {
-            lua.CreateTable();
+            lua.CreateTypeMetaTable(type);
             lua.PushManagedFunction((lua) =>
             {
                 var upValueCount = lua.Top() - 1;

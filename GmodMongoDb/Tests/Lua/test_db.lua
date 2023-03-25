@@ -8,6 +8,12 @@ dotnet.load("GmodMongoDb")
 print(MongoDB)
 print(MongoDB.Shared.HexUtils.ParseInt32("ffff"))
 
+local testClient = MongoDB.Driver.MongoClient("mongodb://localhost:27017/repo_test?retryWrites=true&w=majority")
+local database = testClient:GetDatabase("repo_test")
+local collection = database:GetCollection(GenericType(MongoDB.Bson.BsonDocument), "collection_test")
+
+print(collection)
+
 -- test_client = MongoClient("mongodb://localhost:27017/repo_test?retryWrites=true&w=majority")
 -- local db = test_client:GetDatabase("repo_test")
 -- local collection = db:GetCollection("collection_test")

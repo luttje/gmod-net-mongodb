@@ -105,7 +105,9 @@ namespace GmodMongoDb.Binding
             }
             else
             {
-                throw new ArgumentException("Unsupported type: " + type.FullName);
+                lua.Print($"Unsupported type: {type?.FullName}");
+                lua.Print(lua.GetStack());
+                throw new ArgumentException("Unsupported type: " + type?.FullName);
             }
 
             if (pop && !forceKeepOnStack)
@@ -190,18 +192,20 @@ namespace GmodMongoDb.Binding
 
                     if (expectedType.IsEnum)
                     {
-                        // If the expected type is an enum, try to convert the parameter to the underlying type of the enum
                         normalizedParameters[i] = Enum.ToObject(expectedType, parameters[i]);
                     }
                     else
                     {
-                        // If the expected type is not an enum, try to convert the parameter to the expected type
                         normalizedParameters[i] = Convert.ChangeType(parameters[i], expectedType);
                     }
                 }
-                else
+                else if (parameterInfos[i].HasDefaultValue)
                 {
                     normalizedParameters[i] = parameterInfos[i].DefaultValue;
+                }
+                else
+                {
+                    normalizedParameters[i] = null;
                 }
             }
 

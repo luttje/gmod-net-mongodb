@@ -11,6 +11,7 @@ namespace GmodMongoDb.Binding
     /// </summary>
     public static class LuaExtensions
     {
+        public const string KEY_TYPE = "__GmodMongoDbType";
         public const string KEY_INSTANCE_ID = "__GmodMongoDbInstanceId";
         public const string KEY_INSTANCE_TYPE = "__GmodMongoDbInstanceType";
         public const string KEY_TYPE_META_TABLES = "__GmodMongoDbInstanceMetaTables";
@@ -32,6 +33,8 @@ namespace GmodMongoDb.Binding
         /// <summary>
         /// Prints a table in Lua
         /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="index"></param>
         public static void PrintTable(this ILua lua, int index)
         {
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
@@ -86,6 +89,7 @@ namespace GmodMongoDb.Binding
         /// <summary>
         /// Creates a metatable for the given type. Puts it on top of the stack.
         /// </summary>
+        /// <param name="lua"></param>
         /// <param name="instance"></param>
         public static void PushType(this ILua lua, object instance)
         {
@@ -103,6 +107,7 @@ namespace GmodMongoDb.Binding
         /// <summary>
         /// Creates a metatable for the given type. Puts it on top of the stack.
         /// </summary>
+        /// <param name="lua"></param>
         /// <param name="index"></param>
         /// <returns></returns>
         public static object PullType(this ILua lua, int index = -1)
@@ -113,7 +118,8 @@ namespace GmodMongoDb.Binding
                 if (lua.IsType(-1, TYPES.STRING))
                 {
                     var instanceId = lua.GetString(-1);
-                    lua.Pop();
+                    lua.Pop(); // Pop the instance id
+                    lua.Pop(); // Pop the table
                     return InstanceRepository.Instance.GetInstance(instanceId);
                 }
                 lua.Pop();
@@ -126,6 +132,7 @@ namespace GmodMongoDb.Binding
         /// Creates a table for the object, assigning the appropriate type metatable and keeping a reference to the object pointer.
         /// Leaves the instance table on top of the stack.
         /// </summary>
+        /// <param name="lua"></param>
         /// <param name="instance"></param>
         public static void PushInstance(this ILua lua, object instance)
         {
@@ -176,8 +183,63 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
+        /// Creates a table for the type and puts it on top of the stack. Should be used as a metatable.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="type"></param>
+        public static void CreateTypeMetaTable(this ILua lua, Type type)
+        {
+            lua.CreateTable();
+            lua.PushString(InstanceRepository.Instance.RegisterInstance(type));
+            lua.SetField(-2, KEY_TYPE);
+            lua.Push(-1);
+            lua.SetField(-2, "__index");
+        }
+
+        /// <summary>
+        /// Checks if the table on top of the stack is a type metatable.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static bool IsTypeMetaTable(this ILua lua, int index = -1)
+        {
+            if (!lua.IsType(index, TYPES.TABLE))
+                return false;
+            
+            lua.GetField(index, KEY_TYPE);
+            var instanceId = lua.GetString(-1);
+            lua.Pop(); // Pop the instance id
+
+            var instance = InstanceRepository.Instance.GetInstance(instanceId);
+            
+            return instance != null;
+        }
+
+        /// <summary>
+        /// Gets the type stored with the metatable.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static Type GetTypeMetaTableType(this ILua lua, int index = -1)
+        {
+            if (!lua.IsTypeMetaTable(index))
+                return null;
+
+            lua.GetField(index, KEY_TYPE);
+            var instanceId = lua.GetString(-1);
+            lua.Pop(); // Pop the instance id
+
+            var instance = InstanceRepository.Instance.GetInstance(instanceId);
+
+            return instance as Type;
+        }
+
+        /// <summary>
         /// Pushes a metatable onto the stack for this type (fetching it from the registry). It creates a new metatable if it doesn't exist yet.
         /// </summary>
+        /// <param name="lua"></param>
         /// <param name="type"></param>
         public static void PushTypeMetatable(this ILua lua, Type type)
         {
