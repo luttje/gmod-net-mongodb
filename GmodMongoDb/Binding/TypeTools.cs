@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -39,6 +40,16 @@ namespace GmodMongoDb.Binding
                 || type == typeof(bool)
                 || type == typeof(IntPtr)
                 || IsNumericType(type);
+        }
+
+        /// <summary>
+        /// Push a value of a specific type to the Lua stack.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="value">The value to push</param>
+        public static void PushType(ILua lua, object value)
+        {
+            PushType(lua, value.GetType(), value);
         }
 
         /// <summary>
@@ -102,9 +113,11 @@ namespace GmodMongoDb.Binding
                 value = lua.GetNumber(stackPos);
             else if (type == typeof(LuaTable))
                 value = LuaTable.Get(lua, stackPos);
+            else if (type == typeof(LuaFunction))
+                value = LuaFunction.Get(lua, stackPos);
             else if (type == typeof(IntPtr))
             {
-                value = (IntPtr) lua.ReferenceCreate();
+                value = (IntPtr)lua.ReferenceCreate();
                 pop = false;
             }
             else
@@ -164,6 +177,7 @@ namespace GmodMongoDb.Binding
                 TYPES.STRING => typeof(string),
                 TYPES.BOOL => typeof(bool),
                 TYPES.TABLE => typeof(LuaTable),
+                TYPES.FUNCTION => typeof(LuaFunction),
                 TYPES.NIL => null,
                 _ => throw new NotImplementedException($"This type is not registered for conversion from Lua to .NET! Type is: {luaType}"),
             };
@@ -194,7 +208,11 @@ namespace GmodMongoDb.Binding
                     // Cast the parameter to the expected type
                     var expectedType = parameterInfos[i].ParameterType;
 
-                    if (expectedType.IsEnum)
+                    if (parameters[i] is LuaFunction luaFunction && LuaFunction.GetCastsTo(expectedType))
+                    {
+                        normalizedParameters[i] = luaFunction.CastTo(expectedType);
+                    }
+                    else if (expectedType.IsEnum)
                     {
                         normalizedParameters[i] = Enum.ToObject(expectedType, parameters[i]);
                     }
@@ -214,6 +232,46 @@ namespace GmodMongoDb.Binding
             }
 
             return normalizedParameters;
+        }
+
+        /// <summary>
+        /// Converts the parameter types to the types specified in the <paramref name="parameterInfos"/> array.
+        /// </summary>
+        /// <param name="parameterTypes"></param>
+        /// <param name="constructorParameters"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        internal static List<object> NormalizeParameterTypes(List<Type> parameterTypes, ParameterInfo[] constructorParameters)
+        {
+            var normalizedParameterTypes = new object[constructorParameters.Length];
+
+            for (int i = 0; i < constructorParameters.Length; i++)
+            {
+                if (i < parameterTypes.Count)
+                {
+                    // Cast the parameter to the expected type
+                    var expectedType = constructorParameters[i].ParameterType;
+
+                    if (parameterTypes[i] == typeof(LuaFunction) && LuaFunction.GetCastsTo(expectedType))
+                    {
+                        normalizedParameterTypes[i] = expectedType;
+                    }
+                    else
+                    {
+                        normalizedParameterTypes[i] = parameterTypes[i];
+                    }
+                }
+                else if (constructorParameters[i].HasDefaultValue)
+                {
+                    normalizedParameterTypes[i] = Type.Missing;
+                }
+                else
+                {
+                    normalizedParameterTypes[i] = null;
+                }
+            }
+
+            return new List<object>(normalizedParameterTypes);
         }
     }
 }

@@ -163,48 +163,6 @@ namespace GmodMongoDb.Binding
         /// <param name="type"></param>
         private void SetStaticManagedMethod(MethodInfo anyMethod, Type type)
         {
-            //lua.PushManagedFunction((lua) =>
-            //{
-            //    var upValueCount = lua.Top();
-            //    var parameters = new object[upValueCount];
-
-            //    for (int i = 1; i <= upValueCount; i++)
-            //    {
-            //        var index = upValueCount - i;
-            //        parameters[index] = lua.PullType();
-            //        Console.WriteLine($"Upvalue {index}: {parameters[index]}");
-            //    }
-
-            //    var parameterTypes = parameters.Select(p => p.GetType()).ToList();
-            //    var method = type.GetAppropriateMethod(anyMethod.Name, ref parameterTypes);
-
-            //    if (method == null)
-            //    {
-            //        var signatures = type.GetMethodSignatures(anyMethod.Name);
-            //        throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name}.{anyMethod.Name}! {parameters.Length} parameters were passed, but only the following overloads exist: \n{signatures}");
-            //    }
-
-            //    try
-            //    {
-            //        parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
-
-            //        // TODO: Handle generic methods
-            //        // method = method.MakeGenericMethod(typeof(SomeClass)); 
-            //        var result = method.Invoke(null, parameters);
-
-            //        if (result != null)
-            //        {
-            //            lua.PushType(result);
-            //            return 1;
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        throw new Exception($"An error occurred while calling {type.Namespace}.{type.Name}.{method.Name}!", e);
-            //    }
-
-            //    return 0;
-            //});
             lua.PushManagedFunctionWrapper(type, anyMethod.Name, true);
             lua.SetField(-2, anyMethod.Name); // Type method
         }
@@ -255,13 +213,20 @@ namespace GmodMongoDb.Binding
                 // Pop the table itself which is the first argument passed to __call (and thus lowest on the stack)
                 lua.Pop();
 
+                // TODO: Handle types that have generic parameters
+                if (type.ContainsGenericParameters)
+                {
+                    //type = type.MakeGenericType();
+                }
+
                 var parameterTypes = parameters.Select(p => p.GetType()).ToList();
                 var constructor = type.GetAppropriateConstructor(ref parameterTypes);
 
                 if (constructor == null)
                 {
                     var signatures = type.GetConstructorSignatures();
-                    throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name} Constructor! {parameters.Length} parameters were passed, but only the following overloads exist: \n{signatures}");
+                    var types = string.Join(", ", parameterTypes);
+                    throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name} Constructor! {parameters.Length} parameters were passed (of types {types}), but only the following overloads exist: \n{signatures}");
                 }
                 
                 try

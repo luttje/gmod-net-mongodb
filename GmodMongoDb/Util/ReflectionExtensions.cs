@@ -173,16 +173,18 @@ namespace GmodMongoDb.Util
                 if (constructorParameters.Length < parameterTypes.Count)
                     continue;
 
+                var normalizedParameterTypes = TypeTools.NormalizeParameterTypes(parameterTypes, constructorParameters);
+
                 bool isAppropriate = true;
 
                 for (int i = 0; i < constructorParameters.Length; i++)
                 {
-                    if (i < parameterTypes.Count && constructorParameters[i].ParameterType != parameterTypes[i])
+                    if (i < normalizedParameterTypes.Count && constructorParameters[i].ParameterType != (Type)normalizedParameterTypes[i])
                     {
                         isAppropriate = false;
                         break;
                     }
-                    else if (i >= parameterTypes.Count && !(constructorParameters[i].IsOptional || constructorParameters[i].HasDefaultValue))
+                    else if (i >= normalizedParameterTypes.Count && !(constructorParameters[i].IsOptional || constructorParameters[i].HasDefaultValue))
                     {
                         isAppropriate = false;
                         break;

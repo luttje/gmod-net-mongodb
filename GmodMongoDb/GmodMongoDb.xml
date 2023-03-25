@@ -162,6 +162,45 @@
             <param name="lua"></param>
             <param name="type"></param>
         </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.PushManagedFunctionWrapper(GmodNET.API.ILua,System.Type,System.String,System.Boolean)">
+            <summary>
+            Pushes a function onto the stack that redirects calls to the specified method on the specified type.
+            </summary>
+            <param name="lua"></param>
+            <param name="type"></param>
+            <param name="methodName"></param>
+            <param name="isStatic"></param>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaFunction.Get(GmodNET.API.ILua,System.Int32)">
+            <summary>
+            Reads the Lua function at the top of the stack and returns it as a <see cref="T:GmodMongoDb.Binding.LuaFunction"/>.
+            </summary>
+            <param name="lua"></param>
+            <param name="stackPos"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaFunction.Push(GmodNET.API.ILua)">
+            <summary>
+            Pushes this Lua function to the top of the stack.
+            </summary>
+            <param name="lua"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaFunction.Invoke``1(System.Object[])">
+            <summary>
+            Calls the referenced function
+            </summary>
+            <param name="arguments"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaFunction.GetCastsTo(System.Type)">
+            <summary>
+            Gets whether LuaFunction can cast to the specified type.
+            </summary>
+            <param name="expectedType"></param>
+            <returns></returns>
+        </member>
         <member name="T:GmodMongoDb.Binding.LuaTable">
             <summary>
             Map of Lua types to .NET types
@@ -198,6 +237,13 @@
             </summary>
             <param name="type"></param>
             <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua,System.Object)">
+            <summary>
+            Push a value of a specific type to the Lua stack.
+            </summary>
+            <param name="lua"></param>
+            <param name="value">The value to push</param>
         </member>
         <member name="M:GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua,System.Type,System.Object)">
             <summary>
@@ -257,6 +303,15 @@
             <param name="parameters"></param>
             <param name="parameterInfos"></param>
             <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeTools.NormalizeParameterTypes(System.Collections.Generic.List{System.Type},System.Reflection.ParameterInfo[])">
+            <summary>
+            Converts the parameter types to the types specified in the <paramref name="parameterInfos"/> array.
+            </summary>
+            <param name="parameterTypes"></param>
+            <param name="constructorParameters"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="T:GmodMongoDb.Setup">
             <inheritdoc/>

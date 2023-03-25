@@ -301,6 +301,14 @@ namespace GmodMongoDb.Binding
             lua.Remove(-2); // Pop the meta tables collection
         }
 
+        /// <summary>
+        /// Pushes a function onto the stack that redirects calls to the specified method on the specified type.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="type"></param>
+        /// <param name="methodName"></param>
+        /// <param name="isStatic"></param>
+        /// <exception cref="Exception"></exception>
         public static void PushManagedFunctionWrapper(this ILua lua, Type type, string methodName, bool isStatic = false)
         {
             lua.PushManagedFunction((lua) =>
@@ -340,7 +348,8 @@ namespace GmodMongoDb.Binding
                 if (method == null)
                 {
                     var signatures = type.GetMethodSignatures(methodName);
-                    throw new Exception($"Incorrect parameters passed to {type?.Namespace}.{type?.Name}.{methodName}! {parameters.Length} parameters were passed, but only the following overloads exist: \n{signatures}");
+                    var types = string.Join(", ", parameterTypes);
+                    throw new Exception($"Incorrect parameters passed to {type?.Namespace}.{type?.Name}.{methodName}! {parameters.Length} parameters were passed (of types {types}, but only the following overloads exist: \n{signatures}");
                 }
 
                 if (method.ContainsGenericParameters)
