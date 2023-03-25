@@ -12,6 +12,21 @@ namespace GmodMongoDb.Binding
     /// </summary>
     public static class TypeTools
     {
+        private static bool IsNumericType(Type type)
+        {
+            return type == typeof(byte) ||
+                   type == typeof(sbyte) ||
+                   type == typeof(short) ||
+                   type == typeof(ushort) ||
+                   type == typeof(int) ||
+                   type == typeof(uint) ||
+                   type == typeof(long) ||
+                   type == typeof(ulong) ||
+                   type == typeof(float) ||
+                   type == typeof(double) ||
+                   type == typeof(decimal);
+        }
+        
         /// <summary>
         /// Returns whether the given type is a primitive type.
         /// </summary>
@@ -22,10 +37,8 @@ namespace GmodMongoDb.Binding
             return type == null
                 || type == typeof(string)
                 || type == typeof(bool)
-                || type == typeof(int)
-                || type == typeof(float)
-                || type == typeof(double)
-                || type == typeof(IntPtr);
+                || type == typeof(IntPtr)
+                || IsNumericType(type);
         }
 
         /// <summary>
@@ -48,9 +61,7 @@ namespace GmodMongoDb.Binding
             {
                 lua.PushBool((bool)value);
             }
-            else if (type == typeof(int)
-                || type == typeof(float)
-                || type == typeof(double))
+            else if (IsNumericType(type))
             {
                 lua.PushNumber(Convert.ToDouble(value));
             }
@@ -83,9 +94,7 @@ namespace GmodMongoDb.Binding
                 value = lua.GetString(stackPos);
             else if (type == typeof(bool))
                 value = lua.GetBool(stackPos);
-            else if (type == typeof(int)
-                || type == typeof(float)
-                || type == typeof(double))
+            else if (IsNumericType(type))
                 value = lua.GetNumber(stackPos);
             else if (type == typeof(LuaTable))
                 value = LuaTable.Get(lua, stackPos);

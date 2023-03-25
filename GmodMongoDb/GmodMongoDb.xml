@@ -18,26 +18,6 @@
             <param name="type"></param>
             <param name="lastPartName"></param>
         </member>
-        <member name="M:GmodMongoDb.Binding.DynamicWrapper.PushInstance(System.Object)">
-            <summary>
-            Creates a table for the object, assigning the appropriate type metatable and keeping a reference to the object pointer.
-            Leaves the instance table on top of the stack.
-            </summary>
-            <param name="instance"></param>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DynamicWrapper.PushType(System.Object)">
-            <summary>
-            Creates a metatable for the given type. Puts it on top of the stack.
-            </summary>
-            <param name="instance"></param>
-        </member>
-        <member name="M:GmodMongoDb.Binding.DynamicWrapper.PullType(System.Int32)">
-            <summary>
-            Creates a metatable for the given type. Puts it on top of the stack.
-            </summary>
-            <param name="index"></param>
-            <returns></returns>
-        </member>
         <member name="M:GmodMongoDb.Binding.DynamicWrapper.RegisterType(System.Type)">
             <summary>
             Registers a type in sub-tables for each namespace part (seperated by dots)
@@ -87,12 +67,64 @@
             <param name="lua"></param>
             <param name="message">The message to show</param>
         </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.PrintTable(GmodNET.API.ILua,System.Int32)">
+            <summary>
+            Prints a table in Lua
+            </summary>
+        </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.GetStack(GmodNET.API.ILua)">
             <summary>
             Builds a string representation of the stack by traversing all values on the Lua stack.
             </summary>
             <param name="lua"></param>
             <returns>A string containing the types on the stack</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.CleanTypeMetaTables(GmodNET.API.ILua)">
+            <summary>
+            Removes all type metatables to clear references.
+            </summary>
+            <param name="lua"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.PushType(GmodNET.API.ILua,System.Object)">
+            <summary>
+            Creates a metatable for the given type. Puts it on top of the stack.
+            </summary>
+            <param name="instance"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.PullType(GmodNET.API.ILua,System.Int32)">
+            <summary>
+            Creates a metatable for the given type. Puts it on top of the stack.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.PushInstance(GmodNET.API.ILua,System.Object)">
+            <summary>
+            Creates a table for the object, assigning the appropriate type metatable and keeping a reference to the object pointer.
+            Leaves the instance table on top of the stack.
+            </summary>
+            <param name="instance"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.PullInstance(GmodNET.API.ILua)">
+            <summary>
+            Pulls the instance that is on top of the stack as an object
+            </summary>
+            <param name="lua"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.GetInstance(GmodNET.API.ILua)">
+            <summary>
+            Gets the instance that is on top of the stack as an object.
+            Leaves the instance table on top of the stack.
+            </summary>
+            <param name="lua"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.PushTypeMetatable(GmodNET.API.ILua,System.Type)">
+            <summary>
+            Pushes a metatable onto the stack for this type (fetching it from the registry). It creates a new metatable if it doesn't exist yet.
+            </summary>
+            <param name="type"></param>
         </member>
         <member name="T:GmodMongoDb.Binding.LuaTable">
             <summary>

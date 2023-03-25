@@ -25,7 +25,7 @@ namespace GmodMongoDb.Binding
             return instanceId;
         }
 
-        public nint? GetInstance(string instanceId)
+        public nint? GetInstancePointer(string instanceId)
         {
             if (InstanceIds.TryGetValue(instanceId, out var pointer))
             {
@@ -33,6 +33,16 @@ namespace GmodMongoDb.Binding
             }
 
             return null;
+        }
+
+        public object GetInstance(string instanceId)
+        {
+            var pointer = GetInstancePointer(instanceId);
+
+            if (pointer == null)
+                return null;
+
+            return GCHandle.FromIntPtr((IntPtr)pointer).Target;
         }
     }
 }
