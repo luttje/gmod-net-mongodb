@@ -163,48 +163,49 @@ namespace GmodMongoDb.Binding
         /// <param name="type"></param>
         private void SetStaticManagedMethod(MethodInfo anyMethod, Type type)
         {
-            lua.PushManagedFunction((lua) =>
-            {
-                var upValueCount = lua.Top();
-                var parameters = new object[upValueCount];
+            //lua.PushManagedFunction((lua) =>
+            //{
+            //    var upValueCount = lua.Top();
+            //    var parameters = new object[upValueCount];
 
-                for (int i = 1; i <= upValueCount; i++)
-                {
-                    var index = upValueCount - i;
-                    parameters[index] = lua.PullType();
-                    Console.WriteLine($"Upvalue {index}: {parameters[index]}");
-                }
+            //    for (int i = 1; i <= upValueCount; i++)
+            //    {
+            //        var index = upValueCount - i;
+            //        parameters[index] = lua.PullType();
+            //        Console.WriteLine($"Upvalue {index}: {parameters[index]}");
+            //    }
 
-                var parameterTypes = parameters.Select(p => p.GetType()).ToList();
-                var method = type.GetAppropriateMethod(anyMethod.Name, ref parameterTypes);
+            //    var parameterTypes = parameters.Select(p => p.GetType()).ToList();
+            //    var method = type.GetAppropriateMethod(anyMethod.Name, ref parameterTypes);
 
-                if (method == null)
-                {
-                    var signatures = type.GetMethodSignatures(anyMethod.Name);
-                    throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name}.{anyMethod.Name}! {parameters.Length} parameters were passed, but only the following overloads exist: \n{signatures}");
-                }
-                
-                try
-                {
-                    parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
+            //    if (method == null)
+            //    {
+            //        var signatures = type.GetMethodSignatures(anyMethod.Name);
+            //        throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name}.{anyMethod.Name}! {parameters.Length} parameters were passed, but only the following overloads exist: \n{signatures}");
+            //    }
 
-                    // TODO: Handle generic methods
-                    // method = method.MakeGenericMethod(typeof(SomeClass)); 
-                    var result = method.Invoke(null, parameters);
+            //    try
+            //    {
+            //        parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
 
-                    if (result != null)
-                    {
-                        lua.PushType(result);
-                        return 1;
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception($"An error occurred while calling {type.Namespace}.{type.Name}.{method.Name}!", e);
-                }
-                
-                return 0;
-            });
+            //        // TODO: Handle generic methods
+            //        // method = method.MakeGenericMethod(typeof(SomeClass)); 
+            //        var result = method.Invoke(null, parameters);
+
+            //        if (result != null)
+            //        {
+            //            lua.PushType(result);
+            //            return 1;
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        throw new Exception($"An error occurred while calling {type.Namespace}.{type.Name}.{method.Name}!", e);
+            //    }
+
+            //    return 0;
+            //});
+            lua.PushManagedFunctionWrapper(type, anyMethod.Name, true);
             lua.SetField(-2, anyMethod.Name); // Type method
         }
 
@@ -218,75 +219,7 @@ namespace GmodMongoDb.Binding
         private void SetManagedMethod(MethodInfo anyMethod, Type type)
         {
             lua.PushTypeMetatable(type);
-            lua.PushManagedFunction((Func<ILua, int>)((lua) =>
-            {
-                var upValueCount = lua.Top();
-                var parameters = new object[upValueCount - 1];
-                GenericType[] genericArguments = null;
-
-                for (int i = 1; i < upValueCount; i++)
-                {
-                    var index = parameters.Length - i;
-                    var parameterValue = parameters[index] = lua.PullType();
-
-                    if(parameterValue is GenericType)
-                    {
-                        if (genericArguments == null)
-                            genericArguments = new GenericType[upValueCount - parameters.Length];
-
-                        genericArguments[index] = (GenericType)parameterValue;
-                    }
-                    else
-                        Console.WriteLine($"Upvalue {index}: {parameters[index]}");
-                }
-
-                // Remove the generic types from the parameters
-                if (genericArguments != null) { 
-                    parameters = parameters.Where(p => !(p is GenericType)).ToArray();
-                }
-
-                var instance = lua.PullInstance();
-
-                var parameterTypes = parameters.Select(p => p.GetType()).ToList();
-                var method = type.GetAppropriateMethod(anyMethod.Name, ref parameterTypes);
-
-                if (method == null)
-                {
-                    var signatures = type.GetMethodSignatures(anyMethod.Name);
-                    throw new Exception($"Incorrect parameters passed to {type?.Namespace}.{type?.Name}.{anyMethod.Name}! {parameters.Length} parameters were passed, but only the following overloads exist: \n{signatures}");
-                }
-                
-                if (method.ContainsGenericParameters)
-                {
-                    if (genericArguments == null)
-                        throw new Exception($"The method {type?.Namespace}.{type?.Name}.{method.Name} contains generic parameters, but no generic types were passed!");
-
-                    if (genericArguments.Length != method.GetGenericArguments().Length)
-                        throw new Exception($"The method {type?.Namespace}.{type?.Name}.{method.Name} contains {method.GetGenericArguments().Length} generic parameters, but only {genericArguments.Length} generic types were passed!");
-
-                    var types = genericArguments.Select(g => g.Type).ToArray();
-                    method = method.MakeGenericMethod(types);
-                }
-
-                try
-                {
-                    parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
-
-                    var result = method.Invoke(instance, parameters);
-
-                    if (result != null)
-                    {
-                        lua.PushType(result);
-                        return 1;
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception($"An error occurred while calling {type.Namespace}.{type.Name}.{method.Name}!", e);
-                }
-
-                return 0;
-            }));
+            lua.PushManagedFunctionWrapper(type, anyMethod.Name);
             lua.SetField(-2, anyMethod.Name); // Type method
             
             if (anyMethod.Name == "ToString")

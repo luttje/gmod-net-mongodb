@@ -41,7 +41,7 @@ namespace GmodMongoDb.Util
                     if (methodParameters[i].HasDefaultValue)
                     {
                         signatures.Append(" = ");
-                        signatures.Append(methodParameters[i].DefaultValue);
+                        signatures.Append(methodParameters[i].DefaultValue ?? "null");
                     }
 
                     if (i < methodParameters.Length - 1)
@@ -83,7 +83,7 @@ namespace GmodMongoDb.Util
                     if (constructorParameters[i].HasDefaultValue)
                     {
                         signatures.Append(" = ");
-                        signatures.Append(constructorParameters[i].DefaultValue);
+                        signatures.Append(constructorParameters[i].DefaultValue ?? "null");
                     }
                     
                     if (i < constructorParameters.Length - 1)

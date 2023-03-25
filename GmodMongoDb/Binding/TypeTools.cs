@@ -90,7 +90,11 @@ namespace GmodMongoDb.Binding
             bool pop = true;
             object value;
 
-            if (type == typeof(string))
+            if (type == null)
+            {
+                value = null;
+            }
+            else if (type == typeof(string))
                 value = lua.GetString(stackPos);
             else if (type == typeof(bool))
                 value = lua.GetBool(stackPos);
@@ -105,9 +109,9 @@ namespace GmodMongoDb.Binding
             }
             else
             {
-                lua.Print($"Unsupported type: {type?.FullName}");
+                lua.Print($"Unsupported type: {type.FullName}");
                 lua.Print(lua.GetStack());
-                throw new ArgumentException("Unsupported type: " + type?.FullName);
+                throw new ArgumentException("Unsupported type: " + type.FullName);
             }
 
             if (pop && !forceKeepOnStack)
