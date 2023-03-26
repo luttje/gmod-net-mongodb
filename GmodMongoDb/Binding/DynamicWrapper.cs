@@ -105,9 +105,11 @@ namespace GmodMongoDb.Binding
                         SetManagedMethod(method, type);
                         break;
                     case PropertyInfo property:
-                        // TODO: SetManagedProperty(property, type);
+                        SetManagedProperty(property, type);
+                        break;
                     case FieldInfo field:
-                        // TODO: SetManagedField(field, type);
+                        SetManagedField(field, type);
+                        break;
                     default:
                         //Console.WriteLine($"Member {member.Name} is currently not supported ({member.MemberType})");
                         break;
@@ -250,6 +252,17 @@ namespace GmodMongoDb.Binding
         /// <param name="type"></param>
         private void SetManagedProperty(PropertyInfo property, Type type)
         {
+            lua.PushTypeMetatable(type, TypeMetaSubTables.Properties);
+            lua.PushManagedFunction((lua) =>
+            {
+                var instance = lua.PullInstance();
+                var value = property.GetValue(instance);
+                lua.PushType(value);
+
+                return 1;
+            });
+            lua.SetField(-2, property.Name); // Type property getter
+            lua.Pop(); // Pop the instance meta table
         }
 
         /// <summary>
@@ -259,6 +272,17 @@ namespace GmodMongoDb.Binding
         /// <param name="type"></param>
         private void SetManagedField(FieldInfo field, Type type)
         {
+            lua.PushTypeMetatable(type, TypeMetaSubTables.Fields);
+            lua.PushManagedFunction((lua) =>
+            {
+                var instance = lua.PullInstance();
+                var value = field.GetValue(instance);
+                lua.PushType(value);
+
+                return 1;
+            });
+            lua.SetField(-2, field.Name); // Type field getter
+            lua.Pop(); // Pop the instance meta table
         }
     }
 }

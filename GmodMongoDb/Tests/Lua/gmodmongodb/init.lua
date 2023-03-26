@@ -18,7 +18,11 @@ MsgC(Color(255, 255, 0), "Starting test...")
 
 require("dotnet")
 
-dotnet.load("GmodMongoDb")
+if(GMOD_MONGODB_DEV_PATH ~= nil) then
+	dotnet.load(GMOD_MONGODB_DEV_PATH)
+else
+	dotnet.load("GmodMongoDb")
+end
 
 assert(include("tests/base.lua"), "Failed tests in tests/base.lua")
 assert(include("tests/client.lua"), "Failed tests in tests/client.lua")

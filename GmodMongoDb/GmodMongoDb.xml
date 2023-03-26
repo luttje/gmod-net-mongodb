@@ -160,12 +160,13 @@
             <param name="index"></param>
             <returns></returns>
         </member>
-        <member name="M:GmodMongoDb.Binding.LuaExtensions.PushTypeMetatable(GmodNET.API.ILua,System.Type)">
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.PushTypeMetatable(GmodNET.API.ILua,System.Type,System.Nullable{GmodMongoDb.Binding.TypeMetaSubTables})">
             <summary>
             Pushes a metatable onto the stack for this type (fetching it from the registry). It creates a new metatable if it doesn't exist yet.
             </summary>
             <param name="lua"></param>
             <param name="type"></param>
+            <param name="subTableToPush"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.PushManagedFunctionWrapper(GmodNET.API.ILua,System.Type,System.String,System.Boolean)">
             <summary>

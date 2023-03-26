@@ -299,7 +299,8 @@ namespace GmodMongoDb.Binding
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="type"></param>
-        public static void PushTypeMetatable(this ILua lua, Type type)
+        /// <param name="subTableToPush"></param>
+        public static void PushTypeMetatable(this ILua lua, Type type, TypeMetaSubTables? subTableToPush = null)
         {
             var registryKey = GetTypeRegistryKey(type);
 
@@ -308,22 +309,64 @@ namespace GmodMongoDb.Binding
             if (lua.IsType(-1, TYPES.NIL))
             {
                 lua.Pop(); // Pop the nil
-                lua.CreateTable(); // {}
+                lua.CreateTable();
                 lua.SetField(-2, KEY_TYPE_META_TABLES); // registry[KEY_INSTANCE_META_TABLES] = {}
                 lua.GetField(-1, KEY_TYPE_META_TABLES); // registry[KEY_INSTANCE_META_TABLES]
             }
             lua.Remove(-2); // Pop the registry
+            
             lua.GetField(-1, registryKey); // registry[KEY_INSTANCE_META_TABLES][registryKey]
+
+            // Create the metatable if it doesn't exist
             if (lua.IsType(-1, TYPES.NIL))
             {
                 lua.Pop(); // Pop the nil
-                lua.CreateTable(); // {}
+                lua.CreateTable();
                 lua.SetField(-2, registryKey); // registry[KEY_INSTANCE_META_TABLES][registryKey] = {}
-                lua.GetField(-1, registryKey); // registry[KEY_INSTANCE_META_TABLES][registryKey]
-                lua.Push(-1); // copy registry[KEY_INSTANCE_META_TABLES][registryKey]
 
-                // Set the __index to the metatable itself
-                lua.SetField(-2, "__index"); // pops the copy
+                lua.GetField(-1, registryKey); // registry[KEY_INSTANCE_META_TABLES][registryKey]
+
+                var allSubTables = Enum.GetValues<TypeMetaSubTables>();
+
+                foreach (var subTable in allSubTables)
+                {
+                    lua.CreateTable();
+                    lua.SetField(-2, Enum.GetName(subTable)); // registry[KEY_INSTANCE_META_TABLES][registryKey][subTableName] = {}
+                }
+
+                // Index function to try to find the value in the sub tables, falling back to the meta table itself
+                lua.PushManagedFunction((lua) =>
+                {
+                    var key = lua.GetString(-1);
+                    lua.Pop(); // Pop the key, leaving only the instance table
+
+                    foreach (var subTable in allSubTables)
+                    {
+                        lua.PushTypeMetatable(type, subTable);
+                        lua.GetField(-1, key); // function to call (or nil)
+
+                        if (!lua.IsType(-1, TYPES.NIL))
+                        {
+                            lua.Push(-3); // Push the instance table
+                            lua.MCall(1, 1); // Call the function with the instance table as the only argument
+                            lua.Remove(-2); // Remove the sub table
+                            lua.Remove(-2); // Remove the instance table
+                            return 1;
+                        }
+
+                        lua.Pop(2); // Pop the nil and the sub table
+                    }
+                    
+                    lua.Remove(-1); // Remove the instance table
+
+                    lua.PushTypeMetatable(type);
+                    lua.GetField(-1, key);
+                    lua.Remove(-2); // Remove the meta table
+
+                    return 1;
+                });
+
+                lua.SetField(-2, "__index"); // pops the function
 
                 // The default __tostring just prints the type and instance id
                 lua.PushManagedFunction(lua =>
@@ -341,6 +384,13 @@ namespace GmodMongoDb.Binding
 
             }
             lua.Remove(-2); // Pop the meta tables collection
+
+            if (subTableToPush == null)
+                return;
+
+            lua.GetField(-1, subTableToPush.ToString());
+
+            lua.Remove(-2); // Pop the metatable
         }
 
         /// <summary>
