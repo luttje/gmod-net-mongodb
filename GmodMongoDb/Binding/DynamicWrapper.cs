@@ -123,13 +123,11 @@ namespace GmodMongoDb.Binding
                         SetManagedMethod(method, type);
                         break;
                     case PropertyInfo property:
-                        //SetManagedProperty(property, type);
-                        break;
+                        // TODO: SetManagedProperty(property, type);
                     case FieldInfo field:
-                        //SetManagedField(field, type);
-                        break;
+                        // TODO: SetManagedField(field, type);
                     default:
-                        //Console.WriteLine($"Member {member.Name} is not supported ({member.MemberType})");
+                        Console.WriteLine($"Member {member.Name} is currently not supported ({member.MemberType})");
                         break;
                         //default:
                         //throw new NotImplementedException($"{member.GetType()} is not a supported member type yet for DynamicWrapper.");
@@ -208,7 +206,6 @@ namespace GmodMongoDb.Binding
                 for (int i = 1; i < upValueCount; i++)
                 {
                     var index = parameters.Length - i;
-                    lua.Print($"parameter count: {parameters.Length}, index: {index}, upValueCount: {upValueCount}, i: {i}");
                     var parameterValue = parameters[index] = lua.PullType();
 
                     if (parameterValue is GenericType)
@@ -218,8 +215,6 @@ namespace GmodMongoDb.Binding
 
                         genericArguments[index] = (GenericType)parameterValue;
                     }
-                    else
-                        Console.WriteLine($"Upvalue {index}: {parameters[index]}");
                 }
 
                 // Remove the generic types from the parameters
@@ -247,11 +242,11 @@ namespace GmodMongoDb.Binding
                     var types = string.Join(", ", parameterTypes);
                     throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name} Constructor! {parameters.Length} parameters were passed (of types {types}), but only the following overloads exist: \n{signatures}");
                 }
+
+                parameters = TypeTools.NormalizeParameters(parameters, constructor.GetParameters());
                 
                 try
                 {
-                    parameters = TypeTools.NormalizeParameters(parameters, constructor.GetParameters());
-
                     var instance = constructor.Invoke(parameters);
                     lua.PushInstance(instance);
 

@@ -5,18 +5,31 @@ require("dotnet")
 dotnet.unload("GmodMongoDb")
 dotnet.load("GmodMongoDb")
 
+dotnet.unload("D:/Projects/_Personal/Games/Gmod/gmod-net-mongodb/GmodMongoDb/bin/Debug/net7.0/GmodMongoDb.dll")
+dotnet.load("D:/Projects/_Personal/Games/Gmod/gmod-net-mongodb/GmodMongoDb/bin/Debug/net7.0/GmodMongoDb.dll")
+
 print(MongoDB)
 print(MongoDB.Shared.HexUtils.ParseInt32("ffff"))
 
 local testClient = MongoDB.Driver.MongoClient("mongodb://localhost:27017/repo_test?retryWrites=true&w=majority")
 local database = testClient:GetDatabase("repo_test")
-local collection = database:GetCollection(GenericType(MongoDB.Bson.BsonDocument), "collection_test")
+collection = database:GetCollection(GenericType(MongoDB.Bson.BsonDocument), "collection_test")
 
 print(collection)
 
--- test_client = MongoClient("mongodb://localhost:27017/repo_test?retryWrites=true&w=majority")
--- local db = test_client:GetDatabase("repo_test")
--- local collection = db:GetCollection("collection_test")
+filter = MongoDB.Driver["ExpressionFilterDefinition`1"](GenericType(MongoDB.Bson.BsonDocument), function(document)
+  return true 
+end)
+
+print(collection:Count(filter))
+-- lua_run PrintTable(collection:Find(filter)) -- TODO: Linq extension methods
+
+local newDocument = MongoDB.Bson.BsonDocument.Parse(util.TableToJSON({
+  name = "Jane Doe",
+  age = 28,
+  alive = true,
+}))
+collection:InsertOne(newDocument)
 
 -- print(db) -- Note how the userdata changes when we ask the collection for it's database below
 

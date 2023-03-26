@@ -187,13 +187,6 @@
             </summary>
             <param name="lua"></param>
         </member>
-        <member name="M:GmodMongoDb.Binding.LuaFunction.Invoke``1(System.Object[])">
-            <summary>
-            Calls the referenced function
-            </summary>
-            <param name="arguments"></param>
-            <returns></returns>
-        </member>
         <member name="M:GmodMongoDb.Binding.LuaFunction.GetCastsTo(System.Type)">
             <summary>
             Gets whether LuaFunction can cast to the specified type.
@@ -201,30 +194,14 @@
             <param name="expectedType"></param>
             <returns></returns>
         </member>
-        <member name="T:GmodMongoDb.Binding.LuaTable">
+        <member name="M:GmodMongoDb.Binding.LuaFunction.CastTo(System.Type)">
             <summary>
-            Map of Lua types to .NET types
+            Returns a delegate or an expression containing a delegate that will call this Lua function.
+            This way a Lua function (of unknown signature) can be used for any delegate in C#.
             </summary>
-        </member>
-        <member name="M:GmodMongoDb.Binding.LuaTable.Get(GmodNET.API.ILua,System.Int32)">
-            <summary>
-            Reads the Lua table at the top of the stack and returns it as a <see cref="T:GmodMongoDb.Binding.LuaTable"/>.
-            </summary>
-            <param name="lua"></param>
-            <param name="stackPos"></param>
+            <param name="expectedType"></param>
             <returns></returns>
-            <exception cref="T:System.NotImplementedException"></exception>
-        </member>
-        <member name="M:GmodMongoDb.Binding.LuaTable.Push(GmodNET.API.ILua)">
-            <summary>
-            Pushes this Lua table to the top of the stack.
-            </summary>
-            <param name="lua"></param>
-        </member>
-        <member name="P:GmodMongoDb.Binding.LuaTable.LuaTableElement.Value">
-            <summary>
-            Value of any type, can also be a LuaTableElement
-            </summary>
+            <exception cref="T:System.InvalidCastException"></exception>
         </member>
         <member name="T:GmodMongoDb.Binding.TypeTools">
             <summary>
@@ -240,10 +217,17 @@
         </member>
         <member name="M:GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua,System.Object)">
             <summary>
-            Push a value of a specific type to the Lua stack.
+            Push a value of to the Lua stack.
             </summary>
             <param name="lua"></param>
             <param name="value">The value to push</param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeTools.PushTypes(GmodNET.API.ILua,System.Object[])">
+            <summary>
+            Push multiple values to the Lua stack.
+            </summary>
+            <param name="lua"></param>
+            <param name="values">The value to push</param>
         </member>
         <member name="M:GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua,System.Type,System.Object)">
             <summary>
@@ -267,16 +251,6 @@
             <summary>
             Pop a value from the Lua stack and try convert it to an associated .NET type.
             </summary>
-            <param name="lua"></param>
-            <param name="stackPos">The position of the value</param>
-            <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
-            <returns>The .NET object</returns>
-        </member>
-        <member name="M:GmodMongoDb.Binding.TypeTools.PullType``1(GmodNET.API.ILua,System.Int32,System.Boolean)">
-            <summary>
-            Pop a value from the Lua stack and convert it to the specified .NET type.
-            </summary>
-            <typeparam name="T">The expected type of the value on the stack</typeparam>
             <param name="lua"></param>
             <param name="stackPos">The position of the value</param>
             <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
@@ -358,6 +332,31 @@
             </summary>
             <param name="type"></param>
             <param name="parameterTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Util.ReflectionExtensions.IsAssignableToGenericType(System.Type,System.Type)">
+            <summary>
+            Checks a generic type to see if it is assignable to another generic type.
+            https://stackoverflow.com/a/5461399
+            </summary>
+            <param name="thisGenericType"></param>
+            <param name="otherType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Util.ReflectionExtensions.IsAssignableFromGenericType(System.Type,System.Type)">
+            <summary>
+            Checks a generic type to see if it is assignable from another generic type.
+            </summary>
+            <param name="thisGenericType"></param>
+            <param name="otherType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Util.ReflectionExtensions.IsSubclassOfRawGeneric(System.Type,System.Type)">
+            <summary>
+            https://stackoverflow.com/a/457708
+            </summary>
+            <param name="rawGeneric"></param>
+            <param name="otherType"></param>
             <returns></returns>
         </member>
     </members>

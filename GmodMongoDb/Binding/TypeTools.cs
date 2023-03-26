@@ -43,13 +43,26 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Push a value of a specific type to the Lua stack.
+        /// Push a value of to the Lua stack.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="value">The value to push</param>
         public static void PushType(ILua lua, object value)
         {
             PushType(lua, value.GetType(), value);
+        }
+
+        /// <summary>
+        /// Push multiple values to the Lua stack.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="values">The value to push</param>
+        public static void PushTypes(ILua lua, object[] values)
+        {
+            foreach (object value in values)
+            {
+                PushType(lua, value);
+            }
         }
 
         /// <summary>
@@ -76,8 +89,6 @@ namespace GmodMongoDb.Binding
             {
                 lua.PushNumber(Convert.ToDouble(value));
             }
-            else if (type == typeof(LuaTable))
-                ((LuaTable)value).Push(lua);
             else if (type == typeof(IntPtr))
             {
                 lua.ReferencePush((int)value);
@@ -111,8 +122,6 @@ namespace GmodMongoDb.Binding
                 value = lua.GetBool(stackPos);
             else if (IsNumericType(type))
                 value = lua.GetNumber(stackPos);
-            else if (type == typeof(LuaTable))
-                value = LuaTable.Get(lua, stackPos);
             else if (type == typeof(LuaFunction))
                 value = LuaFunction.Get(lua, stackPos);
             else if (type == typeof(IntPtr))
@@ -122,8 +131,7 @@ namespace GmodMongoDb.Binding
             }
             else
             {
-                lua.Print($"Unsupported type: {type.FullName}");
-                lua.Print(lua.GetStack());
+                Console.WriteLine($"Unsupported type: {type.FullName}\r\n" + lua.GetStack());
                 throw new ArgumentException("Unsupported type: " + type.FullName);
             }
 
@@ -149,19 +157,6 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Pop a value from the Lua stack and convert it to the specified .NET type.
-        /// </summary>
-        /// <typeparam name="T">The expected type of the value on the stack</typeparam>
-        /// <param name="lua"></param>
-        /// <param name="stackPos">The position of the value</param>
-        /// <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
-        /// <returns>The .NET object</returns>
-        public static T PullType<T>(ILua lua, int stackPos = -1, bool forceKeepOnStack = false)
-        {
-            return (T) PullType(lua, typeof(T), stackPos, forceKeepOnStack);
-        }
-
-        /// <summary>
         /// Convert a specified Lua type to a .NET type.
         /// </summary>
         /// <param name="luaType">The Lua type to convert</param>
@@ -176,7 +171,6 @@ namespace GmodMongoDb.Binding
                 TYPES.NUMBER => typeof(double),
                 TYPES.STRING => typeof(string),
                 TYPES.BOOL => typeof(bool),
-                TYPES.TABLE => typeof(LuaTable),
                 TYPES.FUNCTION => typeof(LuaFunction),
                 TYPES.NIL => null,
                 _ => throw new NotImplementedException($"This type is not registered for conversion from Lua to .NET! Type is: {luaType}"),
@@ -218,7 +212,14 @@ namespace GmodMongoDb.Binding
                     }
                     else
                     {
-                        normalizedParameters[i] = Convert.ChangeType(parameters[i], expectedType);
+                        try
+                        {
+                            normalizedParameters[i] = Convert.ChangeType(parameters[i], expectedType);
+                        }
+                        catch (Exception e)
+                        {
+                            normalizedParameters[i] = parameters[i];
+                        }
                     }
                 }
                 else if (parameterInfos[i].HasDefaultValue)

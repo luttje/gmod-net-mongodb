@@ -3,6 +3,7 @@ using GmodNET.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -330,8 +331,6 @@ namespace GmodMongoDb.Binding
 
                         genericArguments[index] = (GenericType)parameterValue;
                     }
-                    else
-                        Console.WriteLine($"Upvalue {index}: {parameters[index]}");
                 }
 
                 // Remove the generic types from the parameters
@@ -343,7 +342,12 @@ namespace GmodMongoDb.Binding
                 var instance = !isStatic ? lua.PullInstance() : null;
 
                 var parameterTypes = parameters.Select(p => p.GetType()).ToList();
-                var method = type.GetAppropriateMethod(methodName, ref parameterTypes);
+                MethodInfo method;
+                
+                if(isStatic)
+                    method = type.GetAppropriateMethod(methodName, ref parameterTypes);
+                else
+                    method = instance.GetType().GetAppropriateMethod(methodName, ref parameterTypes);
 
                 if (method == null)
                 {
@@ -351,23 +355,26 @@ namespace GmodMongoDb.Binding
                     var types = string.Join(", ", parameterTypes);
                     throw new Exception($"Incorrect parameters passed to {type?.Namespace}.{type?.Name}.{methodName}! {parameters.Length} parameters were passed (of types {types}, but only the following overloads exist: \n{signatures}");
                 }
-
-                if (method.ContainsGenericParameters)
+                
+                if (method.IsGenericMethod)
                 {
-                    if (genericArguments == null)
-                        throw new Exception($"The method {type?.Namespace}.{type?.Name}.{method.Name} contains generic parameters, but no generic types were passed!");
+                    var genericArgumentCount = method.GetGenericArguments().Length;
+                    string intro = $"The method {type?.Namespace}.{type?.Name}.{method.Name} is generic and requires {genericArgumentCount} generic arguments";
 
-                    if (genericArguments.Length != method.GetGenericArguments().Length)
-                        throw new Exception($"The method {type?.Namespace}.{type?.Name}.{method.Name} contains {method.GetGenericArguments().Length} generic parameters, but only {genericArguments.Length} generic types were passed!");
+                    if (genericArguments == null)
+                        throw new Exception($"{intro}, but none were provided.");
+
+                    if (genericArguments.Length != genericArgumentCount)
+                        throw new Exception($"{intro}, but {genericArguments.Length} generic types were passed!");
 
                     var types = genericArguments.Select(g => g.Type).ToArray();
                     method = method.MakeGenericMethod(types);
                 }
 
+                parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
+                
                 try
                 {
-                    parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
-
                     var result = method.Invoke(instance, parameters);
 
                     if (result != null)

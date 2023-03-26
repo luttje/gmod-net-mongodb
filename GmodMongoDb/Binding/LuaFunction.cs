@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Numerics;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
@@ -46,30 +47,9 @@ namespace GmodMongoDb.Binding
         /// Pushes this Lua function to the top of the stack.
         /// </summary>
         /// <param name="lua"></param>
-        internal void Push(ILua lua)
+        public void Push(ILua lua)
         {
             lua.ReferencePush(reference);
-        }
-
-        /// <summary>
-        /// Calls the referenced function
-        /// </summary>
-        /// <param name="arguments"></param>
-        /// <returns></returns>
-        private TResult Invoke<TResult>(params object[] arguments)
-        {
-            const int returnAmount = 1; // TODO: Lua Supports multiple returns, we should too
-            
-            Push(lua);
-
-            for (int i = 0; i < arguments.Length; i++)
-            {
-                TypeTools.PushType(lua, arguments[i]);
-            }
-
-            lua.MCall(arguments.Length, returnAmount);
-
-            return TypeTools.PullType<TResult>(lua);
         }
 
         /// <summary>
@@ -89,214 +69,82 @@ namespace GmodMongoDb.Binding
                 return false;
 
             var genericArg = expectedType.GetGenericArguments()[0];
-            
+
             return GetCastsTo(genericArg);
         }
 
+        /// <summary>
+        /// Returns a delegate or an expression containing a delegate that will call this Lua function.
+        /// This way a Lua function (of unknown signature) can be used for any delegate in C#.
+        /// </summary>
+        /// <param name="expectedType"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidCastException"></exception>
         internal object CastTo(Type expectedType)
         {
+            if (!GetCastsTo(expectedType))
+                throw new InvalidCastException($"Cannot cast LuaFunction to {expectedType}");
+
             if (expectedType == typeof(LuaFunction))
-            {
                 return this;
-            }
-            else if (typeof(Expression<>).IsAssignableFrom(expectedType.GetGenericTypeDefinition()) 
-                && GetCastsTo(expectedType.GetGenericArguments()[0]))
+
+            Type delegateType = expectedType;
+
+            if (typeof(Expression<>).IsAssignableFrom(expectedType.GetGenericTypeDefinition()))
+                delegateType = expectedType.GetGenericArguments()[0];
+
+            var delegateInvokeMethod = delegateType.GetMethod("Invoke");
+            Type[] parameterTypes = delegateInvokeMethod.GetParameters().Select(p => p.ParameterType).ToArray();
+            Type returnType = delegateInvokeMethod.ReturnType;
+
+
+            // Prepares a variable amount of args, based on the number of parameters in the delegate
+            var allArguments = new ParameterExpression[parameterTypes.Length];
+
+            for (int i = 0; i < parameterTypes.Length; i++)
+                allArguments[i] = Expression.Parameter(parameterTypes[i], $"arg{i}");
+
+            // Call the `Push` method on the LuaFunction instance
+            var luaState = Expression.Constant(lua);
+            var pushMethod = typeof(LuaFunction).GetMethod(nameof(Push), new[] { typeof(ILua) });
+            var pushCall = Expression.Call(Expression.Constant(this), pushMethod, luaState);
+
+            // Call the `TypeTools.PushTypes` method with the this.lua instance and all arguments provided to the lambda expression
+            var pushTypesMethod = typeof(TypeTools).GetMethod(nameof(TypeTools.PushTypes), new[] { typeof(ILua), typeof(object[]) });
+            //var pushTypesCall = Expression.Call(pushTypesMethod, luaParam, argsParam); // works with only 1 arg
+            var pushTypesCall = Expression.Call(pushTypesMethod, luaState, Expression.NewArrayInit(typeof(object), allArguments));
+
+            // Create a local expression that gets the Length of the amount of arguments provided to the lambda expression
+            // var argsLength = Expression.ArrayLength(argsParam); // works when arg is vararg[]
+            var argsLength = Expression.Constant(parameterTypes.Length);
+
+            // Call the `lua.MCall` method with the amount of arguments provided to the lambda expression and for the 1 return value
+            var mcallMethod = typeof(ILua).GetMethod(nameof(ILua.MCall), new[] { typeof(int), typeof(int) });
+            var mcallCall = Expression.Call(luaState, mcallMethod, argsLength, Expression.Constant(1));
+
+            // Call the `TypeTools.PullType` method with the this.lua instance
+            var pullTypeMethod = typeof(TypeTools).GetMethod(nameof(TypeTools.PullType), new[] { typeof(ILua), typeof(Type), typeof(int), typeof(bool) });
+            var pullTypeCall = Expression.Call(pullTypeMethod, luaState, Expression.Constant(returnType), Expression.Constant(-1), Expression.Constant(false));
+
+            // Cast the return value of `TypeTools.PullType` to the expected return type
+            var castCall = Expression.Convert(pullTypeCall, returnType);
+
+            // Return the result of the `TypeTools.PullType` method
+            var returnLabel = Expression.Label(returnType);
+            var returnStatement = Expression.Return(returnLabel, castCall);
+            var returnTarget = Expression.Label(returnLabel, Expression.Default(returnType)); //
+
+            // If a delegate is expected, the lambda expression will be compiled and returned as a delegate.
+            if (expectedType.IsSubclassOf(typeof(Delegate)))
             {
-                var genericArgument = expectedType.GetGenericArguments()[0];
-                var casted = CastTo(genericArgument);
-
-                // Doesnt work:
-                var expressionType = typeof(Expression<>).MakeGenericType(genericArgument);
-                var expression = Activator.CreateInstance(expressionType, casted);
-                return expression;
-            }
-            else if (typeof(Delegate).IsAssignableFrom(expectedType))
-            {
-                Type[] typeArgs = expectedType.GetGenericArguments();
-                Delegate method;
-
-                var genericExpectedType = expectedType.GetGenericTypeDefinition();
-                if (typeof(Func<>).IsAssignableFrom(genericExpectedType))
-                {
-                    method = new Func<dynamic>(() => Invoke<dynamic>());
-                }
-                else if (typeof(Func<,>).IsAssignableFrom(genericExpectedType))
-                {
-                    method = new Func<dynamic, dynamic>((arg) => Invoke<dynamic>(arg));
-                }
-                else if (typeof(Func<,,>).IsAssignableFrom(genericExpectedType))
-                {
-                    method = new Func<dynamic, dynamic, dynamic>((a, b) => Invoke<dynamic>(a, b));
-                }
-                else
-                {
-                    throw new NotImplementedException($"Delegate {expectedType} (nor {genericExpectedType}) not yet implemented");
-                }
-
-                var methodInfo = expectedType.GetMethod("Invoke");
-                var parameters = methodInfo.GetParameters();
-                var parameterTypes = parameters.Select(p => p.ParameterType).ToArray();
-
-                // Create a dynamic method with the same signature as the delegate
-                //var dynamicMethod = new DynamicMethod(
-                //    "DynamicFindWrapper",
-                //    methodInfo.ReturnType,
-                //    parameterTypes,
-                //    typeof(LuaFunction).Module);
-                AssemblyName asmName = new AssemblyName("LuaFunction_DynamicMethod_Assembly");
-                AssemblyBuilder demoAssembly = AssemblyBuilder.DefineDynamicAssembly(
-                    asmName,
-                    AssemblyBuilderAccess.Run
-                );
-
-                ModuleBuilder demoModule = demoAssembly.DefineDynamicModule(asmName.Name);
-                TypeBuilder demoType = demoModule.DefineType(
-                    "LuaFunction_DynamicMethod_Type",
-                    TypeAttributes.Public
-                );
-
-                // Define a Shared, Public method with standard calling
-                // conventions. Do not specify the parameter types or the
-                // return type, because type parameters will be used for
-                // those types, and the type parameters have not been
-                // defined yet.
-                MethodBuilder dynamicMethod = demoType.DefineMethod(
-                    "LuaFunction_DynamicMethod",
-                    MethodAttributes.Public | MethodAttributes.Static
-                );
-                
-                // Defining generic parameters for the method makes it a
-                // generic method. By convention, type parameters are
-                // single alphabetic characters.
-                //
-                string[] typeParamNames = { "A", "R" };
-                GenericTypeParameterBuilder[] typeParameters =
-                    dynamicMethod.DefineGenericParameters(typeParamNames);
-
-                Type[] parms = { typeParameters[0] };
-                dynamicMethod.SetParameters(parms);
-
-                // Set the return type for the method. The return type is
-                // specified by the second type parameter, U.
-                dynamicMethod.SetReturnType(typeParameters[1]);
-
-                // Get an ILGenerator and emit the body of the dynamic method
-                var il = dynamicMethod.GetILGenerator();
-
-                // il.Emit(OpCodes.Ldnull); // instance
-
-                // Load the arguments onto the stack
-                for (int i = 0; i < parameters.Length; i++)
-                {
-                    il.Emit(OpCodes.Ldarg, i);
-                }
-
-                // Call the method
-                il.Emit(OpCodes.Call, method.Method);
-
-                // Return from the method
-                il.Emit(OpCodes.Ret);
-
-                // Complete the type.
-                Type dt = demoType.CreateType();
-
-                // To bind types to a dynamic generic method, you must
-                // first call the GetMethod method on the completed type.
-                // You can then define an array of types, and bind them
-                // to the method.
-                MethodInfo m = dt.GetMethod("LuaFunction_DynamicMethod");
-                MethodInfo bound = m.MakeGenericMethod(typeArgs);
-
-                Console.WriteLine(string.Join(", ", typeArgs.Select(t => t.FullName)));
-
-                // Display a string representing the bound method.
-                Console.WriteLine(bound);
-
-                //Console.WriteLine("Created dynamic method with signature: " + dynamicMethod.ReturnType + " " + dynamicMethod.Name + "(" + string.Join(", ", dynamicMethod.GetParameters().Select(p => p.ParameterType)) + ")");
-                Console.WriteLine("Expected signature: " + methodInfo.ReturnType + " " + methodInfo.Name + "(" + string.Join(", ", methodInfo.GetParameters().Select(p => p.ParameterType)) + ")");
-                Console.WriteLine("Bound signature: " + bound.ReturnType + " " + bound.Name + "(" + string.Join(", ", bound.GetParameters().Select(p => p.ParameterType)) + ")");
-
-                //var @delegate = dynamicMethod.CreateDelegate(expectedType);
-
-                //return @delegate;
-
-                return bound.CreateDelegate(expectedType);
+                var lambda = Expression.Lambda(delegateType, returnStatement, allArguments);
+                var compiled = lambda.Compile();
+                return compiled;
             }
 
-            throw new NotImplementedException("Cannot create lua function from " + expectedType.FullName);
+            // If an expression is expected, the lambda expression will be returned.
+            var lambdaExpression = Expression.Lambda(returnTarget, allArguments);
+            return lambdaExpression;
         }
     }
-
-    /*
-        if (typeof(Func<>).IsAssignableFrom(expectedType))
-            return new Func<object>(() => Invoke<object>());
-        else if (typeof(Func<,>).IsAssignableFrom(expectedType))
-            return new Func<object, object>((a) => Invoke<object>(a));
-        else if (typeof(Func<,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object>((a, b) => Invoke<object>(a, b));
-        else if (typeof(Func<,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object>((a, b, c) => Invoke<object>(a, b, c));
-        else if (typeof(Func<,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object>((a, b, c, d) => Invoke<object>(a, b, c, d));
-        else if (typeof(Func<,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object>((a, b, c, d, e) => Invoke<object>(a, b, c, d, e));
-        else if (typeof(Func<,,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object, object>((a, b, c, d, e, f) => Invoke<object>(a, b, c, d, e, f));
-        else if (typeof(Func<,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g) => Invoke<object>(a, b, c, d, e, f, g));
-        else if (typeof(Func<,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h) => Invoke<object>(a, b, c, d, e, f, g, h));
-        else if (typeof(Func<,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i) => Invoke<object>(a, b, c, d, e, f, g, h, i));
-        else if (typeof(Func<,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j) => Invoke<object>(a, b, c, d, e, f, g, h, i, j));
-        else if (typeof(Func<,,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k));
-        else if (typeof(Func<,,,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k, l) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k, l));
-        else if (typeof(Func<,,,,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k, l, m) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k, l, m));
-        else if (typeof(Func<,,,,,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k, l, m, n) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k, l, m, n));
-        else if (typeof(Func<,,,,,,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k, l, m, n, o) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o));
-        else if (typeof(Func<,,,,,,,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p));
-        else if (typeof(Action).IsAssignableFrom(expectedType))
-            return new Action(() => Invoke<object>());
-        else if (typeof(Action<>).IsAssignableFrom(expectedType))
-            return new Action<object>((a) => Invoke<object>(a));
-        else if (typeof(Action<,>).IsAssignableFrom(expectedType))
-            return new Action<object, object>((a, b) => Invoke<object>(a, b));
-        else if (typeof(Action<,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object>((a, b, c) => Invoke<object>(a, b, c));
-        else if (typeof(Action<,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object>((a, b, c, d) => Invoke<object>(a, b, c, d));
-        else if (typeof(Action<,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object>((a, b, c, d, e) => Invoke<object>(a, b, c, d, e));
-        else if (typeof(Action<,,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object, object>((a, b, c, d, e, f) => Invoke<object>(a, b, c, d, e, f));
-        else if (typeof(Action<,,,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object, object, object>((a, b, c, d, e, f, g) => Invoke<object>(a, b, c, d, e, f, g));
-        else if (typeof(Action<,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h) => Invoke<object>(a, b, c, d, e, f, g, h));
-        else if (typeof(Action<,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i) => Invoke<object>(a, b, c, d, e, f, g, h, i));
-        else if (typeof(Action<,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j) => Invoke<object>(a, b, c, d, e, f, g, h, i, j));
-        else if (typeof(Action<,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k));
-        else if (typeof(Action<,,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k, l) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k, l));
-        else if (typeof(Action<,,,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k, l, m) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k, l, m));
-        else if (typeof(Action<,,,,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k, l, m, n) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k, l, m, n));
-        else if (typeof(Action<,,,,,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k, l, m, n, o) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o));
-        else if (typeof(Action<,,,,,,,,,,,,,,,>).IsAssignableFrom(expectedType))
-            return new Action<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>((a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p) => Invoke<object>(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p));
-        else
-            throw new NotSupportedException("Cannot create lua function delegate for type " + expectedType.FullName);
-     */
 }

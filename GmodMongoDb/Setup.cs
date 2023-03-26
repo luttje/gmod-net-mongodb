@@ -39,8 +39,7 @@ namespace GmodMongoDb
                 }
             }
 
-            lua.Print("GmodMongoDb loaded!");
-            lua.Print(lua.GetStack());
+            Console.WriteLine("GmodMongoDb loaded!\r\n" + lua.GetStack());
         }
 
         /// <inheritdoc/>
@@ -48,8 +47,7 @@ namespace GmodMongoDb
         {
             wrapper.Dispose();
 
-            lua.Print("GmodMongoDb unloaded!");
-            lua.Print(lua.GetStack());
+            Console.WriteLine("GmodMongoDb unloaded!\r\n" + lua.GetStack());
         }
     }
 }
