@@ -14,10 +14,51 @@ namespace GmodMongoDb.Binding
     /// </summary>
     public static class LuaExtensions
     {
+        public const string CONSTANT_PREFIX = "GMOD_MONGODB_";
         public const string KEY_TYPE = "__GmodMongoDbType";
         public const string KEY_INSTANCE_ID = "__GmodMongoDbInstanceId";
         public const string KEY_INSTANCE_TYPE = "__GmodMongoDbInstanceType";
         public const string KEY_TYPE_META_TABLES = "__GmodMongoDbInstanceMetaTables";
+
+        /// <summary>
+        /// Registers helpful Lua functions and constants
+        /// </summary>
+        public static void RegisterHelpers(this ILua lua)
+        {
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB); // Global table
+
+            // Global constants
+            lua.PushString(KEY_TYPE);
+            lua.SetField(-2, $"{CONSTANT_PREFIX}KEY_TYPE");
+            lua.PushString(KEY_INSTANCE_ID);
+            lua.SetField(-2, $"{CONSTANT_PREFIX}KEY_INSTANCE_ID");
+            lua.PushString(KEY_INSTANCE_TYPE);
+            lua.SetField(-2, $"{CONSTANT_PREFIX}KEY_INSTANCE_TYPE");
+            lua.PushString(KEY_TYPE_META_TABLES);
+            lua.SetField(-2, $"{CONSTANT_PREFIX}KEY_TYPE_META_TABLES");
+
+            // Global GenericType function to help construct generic types
+            lua.PushManagedFunction(lua =>
+            {
+                if (!lua.IsTypeMetaTable())
+                {
+                    lua.Pop(); // Pop the parameter
+                    lua.PushNil();
+                    // TODO: Shouldn't we throw an invocation exception instead?
+                    return 1;
+                }
+
+                var type = lua.GetTypeMetaTableType();
+                lua.Pop(); // Pop the metatable parameter
+
+                lua.PushInstance(new GenericType(type));
+
+                return 1;
+            });
+            lua.SetField(-2, "GenericType");
+
+            lua.Pop(); // Global table
+        }
 
         public static string GetTypeRegistryKey(Type type)
         {

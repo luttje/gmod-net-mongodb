@@ -27,25 +27,7 @@ namespace GmodMongoDb.Binding
             this.lua = lua;
             this.baseName = baseName;
 
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.PushManagedFunction(lua =>
-            {
-                if (!lua.IsTypeMetaTable())
-                {
-                    lua.Pop(); // Pop the parameter
-                    lua.PushNil();
-                    return 1;
-                }
-
-                var type = lua.GetTypeMetaTableType();
-                lua.Pop(); // Pop the metatable parameter
-
-                lua.PushInstance(new GenericType(type));
-                
-                return 1;
-            });
-            lua.SetField(-2, "GenericType");
-            lua.Pop();
+            lua.RegisterHelpers();
 
             if (baseName == null)
                 return;

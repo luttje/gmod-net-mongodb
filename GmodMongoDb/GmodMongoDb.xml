@@ -67,6 +67,11 @@
             Helpful functions to debug or message in Lua
             </summary>
         </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.RegisterHelpers(GmodNET.API.ILua)">
+            <summary>
+            Registers helpful Lua functions and constants
+            </summary>
+        </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.Print(GmodNET.API.ILua,System.Object)">
             <summary>
             Prints a message in Lua
