@@ -1,4 +1,5 @@
-﻿using GmodMongoDb.Util;
+﻿using Amazon.Runtime;
+using GmodMongoDb.Util;
 using GmodNET.API;
 using System;
 using System.Collections.Generic;
@@ -200,23 +201,41 @@ namespace GmodMongoDb.Binding
             lua.CreateTypeMetaTable(type);
             lua.PushManagedFunction((lua) =>
             {
-                var upValueCount = lua.Top() - 1;
-                var parameters = new object[upValueCount];
+                var upValueCount = lua.Top();
+                var parameters = new object[upValueCount - 1];
+                GenericType[] genericArguments = null;
 
-                for (int i = 1; i <= upValueCount; i++)
+                for (int i = 1; i < upValueCount; i++)
                 {
-                    var index = upValueCount - i;
-                    parameters[index] = lua.PullType();
-                    Console.WriteLine($"Upvalue {index}: {parameters[index]}");
+                    var index = parameters.Length - i;
+                    lua.Print($"parameter count: {parameters.Length}, index: {index}, upValueCount: {upValueCount}, i: {i}");
+                    var parameterValue = parameters[index] = lua.PullType();
+
+                    if (parameterValue is GenericType)
+                    {
+                        if (genericArguments == null)
+                            genericArguments = new GenericType[upValueCount - parameters.Length];
+
+                        genericArguments[index] = (GenericType)parameterValue;
+                    }
+                    else
+                        Console.WriteLine($"Upvalue {index}: {parameters[index]}");
                 }
 
+                // Remove the generic types from the parameters
+                if (genericArguments != null)
+                {
+                    parameters = parameters.Where(p => !(p is GenericType)).ToArray();
+                }
+                
                 // Pop the table itself which is the first argument passed to __call (and thus lowest on the stack)
                 lua.Pop();
 
-                // TODO: Handle types that have generic parameters
+                // Handle types that have generic parameters
                 if (type.ContainsGenericParameters)
                 {
-                    //type = type.MakeGenericType();
+                    var genericTypes = genericArguments.Select(g => g.Type).ToArray();
+                    type = type.MakeGenericType(genericTypes);
                 }
 
                 var parameterTypes = parameters.Select(p => p.GetType()).ToList();

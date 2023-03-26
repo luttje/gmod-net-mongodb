@@ -105,7 +105,10 @@ namespace GmodMongoDb.Binding
                 var genericArgument = expectedType.GetGenericArguments()[0];
                 var casted = CastTo(genericArgument);
 
-                return casted;// Expression.Constant(casted, genericArgument);
+                // Doesnt work:
+                var expressionType = typeof(Expression<>).MakeGenericType(genericArgument);
+                var expression = Activator.CreateInstance(expressionType, casted);
+                return expression;
             }
             else if (typeof(Delegate).IsAssignableFrom(expectedType))
             {
