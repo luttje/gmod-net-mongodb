@@ -59,3 +59,6 @@ for _, test in ipairs(hexTests) do
   local actual = MongoDB.Shared.HexUtils.ParseInt32(hex)
   assert(actual == expected, "HexUtils.ParseInt32 failed for hex: " .. hex .. " expected: " .. expected .. " actual: " .. actual)
 end
+
+-- End of tests
+return true

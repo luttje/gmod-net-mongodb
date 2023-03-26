@@ -111,3 +111,7 @@ local findResult = findSyncResult:ToList()
 assert(findResult ~= nil, "MongoDB.Driver.List is nil")
 assert(type(findResult.Count) == "number", "MongoDB.Driver.List.Count is not a number")
 assert(findResult.Count == 1, "MongoDB.Driver.List.Count is not 1")
+
+
+-- End of tests
+return true

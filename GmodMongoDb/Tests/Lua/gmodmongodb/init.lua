@@ -20,10 +20,10 @@ require("dotnet")
 
 dotnet.load("GmodMongoDb")
 
-include("tests/base.lua")
-include("tests/client.lua")
-include("tests/database.lua")
-include("tests/collection.lua")
+assert(include("tests/base.lua"), "Failed tests in tests/base.lua")
+assert(include("tests/client.lua"), "Failed tests in tests/client.lua")
+assert(include("tests/database.lua"), "Failed tests in tests/database.lua")
+assert(include("tests/collection.lua"), "Failed tests in tests/collection.lua")
 
 -- If we encounter no errors during the test, we will write our success result to a file
 successfullyFinishTest()
