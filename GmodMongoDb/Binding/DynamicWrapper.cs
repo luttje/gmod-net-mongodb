@@ -127,7 +127,7 @@ namespace GmodMongoDb.Binding
                     case FieldInfo field:
                         // TODO: SetManagedField(field, type);
                     default:
-                        Console.WriteLine($"Member {member.Name} is currently not supported ({member.MemberType})");
+                        //Console.WriteLine($"Member {member.Name} is currently not supported ({member.MemberType})");
                         break;
                         //default:
                         //throw new NotImplementedException($"{member.GetType()} is not a supported member type yet for DynamicWrapper.");
