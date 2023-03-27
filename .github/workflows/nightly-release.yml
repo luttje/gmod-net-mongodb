@@ -2,59 +2,59 @@ name: Build, publish docs and publish nightly pre-release
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   windows-build:
     runs-on: windows-latest
 
     steps:
-    - name: Warmup Workflow
-      uses: actions/checkout@v2
+      - name: Warmup Workflow
+        uses: actions/checkout@v2
 
-    - name: Chocolatey install docfx
-      uses: crazy-max/ghaction-chocolatey@v1
-      with:
-        args: install docfx -y
+      - name: Chocolatey install docfx
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: install docfx -y
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 7.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore --configfile ./nuget.config
+      - name: Restore dependencies
+        run: dotnet restore --configfile ./nuget.config
 
-    - name: Clean
-      run: dotnet clean ./GmodMongoDb.sln --configuration Release && dotnet nuget locals all --clear
+      - name: Clean
+        run: dotnet clean ./GmodMongoDb.sln --configuration Release && dotnet nuget locals all --clear
 
-    - name: Build
-      run: dotnet build --no-cache --configuration Release
+      - name: Build
+        run: dotnet build --no-cache --configuration Release
 
-    - name: Zip Built Files
-      uses: vimtor/action-zip@5f1c4aa587ea41db1110df6a99981dbe19cee310
-      with:
-        files: GmodMongoDb/bin/Release/net5.0/
-        dest: GmodMongoDb.zip
+      - name: Zip Built Files
+        uses: vimtor/action-zip@5f1c4aa587ea41db1110df6a99981dbe19cee310
+        with:
+          files: GmodMongoDb/bin/Release/net7.0/
+          dest: GmodMongoDb.zip
 
-    - name: Build Documentation
-      run: docfx DocFx/docfx.json
+      - name: Build Documentation
+        run: docfx DocFx/docfx.json
 
-    - name: Publish to github pages()
-      uses: crazy-max/ghaction-github-pages@db4476a01402e1a7ce05f41832040eef16d14925
-      with:
-        target_branch: gh-pages
-        build_dir: docs/
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish to github pages()
+        uses: crazy-max/ghaction-github-pages@db4476a01402e1a7ce05f41832040eef16d14925
+        with:
+          target_branch: gh-pages
+          build_dir: docs/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Publish pre-release
-      uses: "marvinpinto/action-automatic-releases@919008cf3f741b179569b7a6fb4d8860689ab7f0"
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
-        prerelease: true
-        title: "Latest (automatic build)"
-        files: GmodMongoDb.zip
+      - name: Publish pre-release
+        uses: "marvinpinto/action-automatic-releases@919008cf3f741b179569b7a6fb4d8860689ab7f0"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Latest (automatic build)"
+          files: GmodMongoDb.zip
