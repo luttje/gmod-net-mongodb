@@ -28,12 +28,6 @@ jobs:
         name: Linux-Raw-Build
         path: ./build
 
-    - name: Upload nupkgs
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: nupkgs
-        path: nupkgs
-
     - name: Download Steam and Install Garry's Mod Dedicated Server
       run: |
            wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
