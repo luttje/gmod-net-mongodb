@@ -1,0 +1,85 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - '**' # matches every branch
+
+jobs:
+ linux-tests:
+   runs-on: ubuntu-22.04
+
+   steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Build GmodMongoDb
+      run: dotnet build ./GmodMongoDb.sln -c Release
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: Linux-Raw-Build
+        path: ./build
+
+    - name: Upload nupkgs
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: nupkgs
+        path: nupkgs
+
+    - name: Download Steam and Install Garry's Mod Dedicated Server
+      run: |
+           wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
+           tar -xvzf steamcmd_linux.tar.gz
+           rm -rfv steamcmd_linux.tar.gz
+           ./steamcmd.sh +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit
+
+    - name: Prepare test run
+      run: |
+           cp -a build/. gmod/garrysmod/lua/bin/Modules/GmodMongoDb
+           cp ./GmodMongoDb/Tests/Lua/autorun/gmodmongodb.lua gmod/garrysmod/lua/autorun
+           cp -R ./GmodMongoDb/Tests/Lua/gmodmongodb gmod/garrysmod/lua
+
+    - name: Run Garry's Mod
+      run: ./srcds_run_x64 -game garrysmod -systemtest -condebug +sv_hibernate_think 1 || true
+      working-directory: ./gmod/
+      timeout-minutes: 1
+      continue-on-error: true
+      env:
+        COREHOST_TRACE: 1
+        COREHOST_TRACE_VERBOSITY: 4
+        COREHOST_TRACEFILE: corehost_trace.txt
+
+    - name: Print Corehost trace
+      working-directory: ./gmod/
+      run: cat corehost_trace.txt
+
+    - name: Print console log
+      run: cat gmod/garrysmod/console.log
+
+#    - name: Print test log
+#      run: cat gmod/tests-log.txt
+
+    - name: Check if tests were successful
+      run: |
+           if [ ! -f gmod/garrysmod/data/gmod_mongo_db_test_success.txt ]; then
+             echo "gmod/garrysmod/data/gmod_mongo_db_test_success.txt does not exist"
+             exit 1
+           fi
+           if [ ! "$(cat gmod/garrysmod/data/gmod_mongo_db_test_success.txt)" = "1" ]; then
+             echo "gmod/garrysmod/data/gmod_mongo_db_test_success.txt does not contain 1"
+             exit 1
+           fi
+
+#    - name: Upload test log
+#      uses: actions/upload-artifact@v1.0.0
+#      with:
+#        name: Linux-Test-Log
+#        path: gmod/tests-log.txt
