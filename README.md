@@ -62,16 +62,16 @@ local filterDocument = MongoDB.Bson.BsonDocument.Parse(
     _id = "STEAM_0:1:123456"
   })
 )
-local filter = MongoDB.Driver["BsonDocumentFilterDefinition`1"](GenericType(MongoDB.Bson.BsonDocument), filterDocument)
-local amount = collection:Count(filter)
+local filter = MongoDB.Driver.BsonDocumentFilterDefinition(filterDocument)
+local amount = collection:CountDocuments(filter)
 print(amount)
 ```
 
 #### Using a JSON string to filter:
 ```lua
 local filterDocument = MongoDB.Bson.BsonDocument.Parse("{_id: 'STEAM_0:1:123456'}")
-local filter = MongoDB.Driver["BsonDocumentFilterDefinition`1"](GenericType(MongoDB.Bson.BsonDocument), filterDocument)
-local amount = collection:Count(filter)
+local filter = MongoDB.Driver.BsonDocumentFilterDefinition(filterDocument)
+local amount = collection:CountDocuments(filter)
 print(amount)
 ```
 
@@ -130,7 +130,14 @@ This means that besides our documentation you may find [the .NET MongoDB Driver 
 > ```lua
 > local collection = client:GetCollection(GenericType(MongoDB.Bson.BsonDocument), "collectionName")
 > ```
-> 
+>
+> When a generic type argument can be inferred from the type of a parameter, you can omit the `GenericType` call: 
+> ```lua
+> local filterDocument = MongoDB.Bson.BsonDocument.Parse("{_id: 'STEAM_0:1:123456'}")
+> -- These are both valid notations:
+> local a = MongoDB.Driver.BsonDocumentFilterDefinition(GenericType(MongoDB.Bson.BsonDocument), filterDocument)
+> local b = MongoDB.Driver.BsonDocumentFilterDefinition(filterDocument) -- can be inferred because filterDocument is of the type MongoDB.Bson.BsonDocument
+> ```
 
 ## Contributing
 
