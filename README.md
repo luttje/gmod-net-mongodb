@@ -25,7 +25,7 @@ This module is built using [Gmod.NET](https://github.com/GmodNET/GmodDotNet).
 ## Installation
 
 1. Download [a release](https://github.com/luttje/gmod-net-mongodb/releases)
-2. Unzip the downloaded release to your `garrysmod\lua\bin\Modules` directory (create the `bin` and/or `bin\Modules` directories if they dont exist)
+2. Unzip the downloaded release to your `garrysmod\lua\bin\Modules\GmodMongoDb` directory (create the `bin`, `bin\Modules` and/or `bin\Modules\GmodMongoDb` directories if they dont exist)
 
 ## Usage
 Check [the tests](./GmodMongoDb/Tests/Lua/gmodmongodb/) for more examples.
