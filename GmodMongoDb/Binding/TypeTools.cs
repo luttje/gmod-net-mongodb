@@ -1,9 +1,8 @@
-﻿using GmodMongoDb.Binding.Annotating;
-using GmodMongoDb.Binding.DataTransforming;
-using GmodNET.API;
+﻿using GmodNET.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -14,261 +13,92 @@ namespace GmodMongoDb.Binding
     /// </summary>
     public static class TypeTools
     {
-        private static readonly Dictionary<int, Type> MetaTableTypeIds = new();
-        private static readonly Dictionary<Type, Type> TransformerTypes = new();
-        private static string[] metaTableTypeNames = null;
-
-        /// <summary>
-        /// Iterates all Transformers and registers their Type for later use. In order to create a transformer you should inherit LuaValueTransformer
-        /// </summary>
-        internal static void DiscoverDataTransformers()
+        private static bool IsNumericType(Type type)
         {
-            var transformerBaseType = typeof(BaseLuaValueTransformer);
-            var discoveredTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(transformerBaseType));
-
-            foreach (var transformerType in discoveredTypes)
-            {
-                var genericArguments = transformerType.BaseType.GetGenericArguments();
-
-                TransformerTypes.Add(genericArguments[0], transformerType);
-            }
+            return type == typeof(byte) ||
+                   type == typeof(sbyte) ||
+                   type == typeof(short) ||
+                   type == typeof(ushort) ||
+                   type == typeof(int) ||
+                   type == typeof(uint) ||
+                   type == typeof(long) ||
+                   type == typeof(ulong) ||
+                   type == typeof(float) ||
+                   type == typeof(double) ||
+                   type == typeof(decimal);
         }
-
-        /// <summary>
-        /// Eagerly search for metatable definitions and create the metatables.
-        /// </summary>
-        /// <param name="lua"></param>
-        internal static void CreateDiscoveredMetaTableDefinitions(ILua lua)
-        {
-            var metaTableBaseType = typeof(LuaMetaObjectBinding);
-            var discoveredTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(metaTableBaseType));
-            metaTableTypeNames = new string[discoveredTypes.Count()];
-            var i = 0;
-
-            foreach (var metaTableType in discoveredTypes)
-            {
-                var metaTableName = GetMetaTableTypeName(metaTableType);
-                var typeId = lua.CreateMetaTable(metaTableName);
-
-                if (!MetaTableTypeIds.ContainsKey(typeId))
-                    MetaTableTypeIds.Add(typeId, metaTableType);
-
-                // Have a place for this type's static methods
-                lua.CreateTable();
-                lua.Push(-1);
-                lua.Insert(1); // Move mt._static to the bottom of the stack so we can fill it later
-                // Add the static method table currently at the top of the stack to the global table
-                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-                lua.Insert(-2);
-                lua.SetField(-2, metaTableName);
-                metaTableTypeNames[i] = metaTableName;
-                lua.Pop(1); // pop the global table
-
-                MethodInfo[] methods = metaTableType.GetMethods();
-
-                foreach (var method in methods)
-                {
-                    var attributes = method.GetCustomAttributes<LuaMethodAttribute>();
-
-                    foreach (var attribute in attributes)
-                    {
-                        var stackPos = -2; // Position of the metatable
-                        attribute.PushFunction(lua, method, typeId);
-
-                        if (method.IsStatic)
-                        {
-                            stackPos = 1; // Position of the static table
-
-                            if (attribute.IsConstructor)
-                            {
-                                // TODO: Test what happens with overloaded initializers
-                                // Create a metatable for the static table and add the __call metamethod to it
-                                lua.CreateTable();
-                                attribute.PushFunction(lua, method);
-                                lua.SetField(-2, "__call");
-                                lua.SetMetaTable(stackPos); // Pops the metatable for the static table
-                            }
-                        }
-
-                        var methodName = attribute.Name ?? method.Name;
-                        lua.SetField(stackPos, methodName);
-                    }
-                }
-
-                PropertyInfo[] properties = metaTableType.GetProperties();
-
-                foreach (var property in properties)
-                {
-                    var attributes = property.GetCustomAttributes<LuaPropertyAttribute>();
-
-                    foreach (var attribute in attributes)
-                    {
-                        LuaPropertyAttribute.RegisterAvailableProperty(metaTableType, attribute.Name ?? property.Name, property.GetGetMethod()?.Name, property.GetSetMethod()?.Name);
-                    }
-                }
-
-                lua.Pop(1); // Pop the metatable
-                lua.Pop(1); // Pop the static functions table
-            }
-        }
-
-        /// <summary>
-        /// Cleans up the static tables made with <see cref="CreateDiscoveredMetaTableDefinitions"/>
-        /// </summary>
-        /// <param name="lua"></param>
-        internal static void CleanUpStaticFunctionTables(ILua lua)
-        {
-            if (metaTableTypeNames == null)
-                return;
-
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-
-            foreach (var metaTableName in metaTableTypeNames)
-            {
-                if (metaTableName == null)
-                    continue;
-
-                lua.PushNil();
-                lua.SetField(-2, metaTableName);
-            }
-
-            lua.Pop(1); // pop the global table
-        }
-
-        private static string GetMetaTableTypeName(Type type)
-        {
-            var classAttribute = type.GetCustomAttribute<LuaMetaTableAttribute>();
-            return classAttribute?.Name ?? type.Name;
-        }
-
-        /// <summary>
-        /// Generates userdata with a metatable by looking at attributes on the given object. Pushes the userdata onto the stack.
-        /// </summary>
-        /// <param name="lua"></param>
-        /// <param name="instance">The object to generate into userdata</param>
-        /// <returns>The metatable type id that was created for this userdata</returns>
-        public static int GenerateUserDataFromObject(ILua lua, LuaMetaObjectBinding instance)
-        {
-            int instanceTypeId = PushManagedObject(lua, instance);
-            
-            return instanceTypeId;
-        }
-
-        /// <summary>
-        /// Pushes a .NET managed object onto the stack as userdata.
-        /// 
-        /// Consider using <see cref="GenerateUserDataFromObject"/> if you want to interact with the userdata from Lua.
-        /// </summary>
-        /// <param name="lua"></param>
-        /// <param name="managed">The object to convert to userdata and push</param>
-        /// <returns>Returns the metatable type id which was applied to the userdata</returns>
-        public static int PushManagedObject(ILua lua, object managed)
-        {
-            var handle = GCHandle.Alloc(managed, GCHandleType.Weak);
-            ReferenceManager.Add(handle);
-
-            // CreateMetaTable will automatically find an existing metatable with this type name, so no need to look in MetaTableTypeIds for it. 
-            string typeName = GetMetaTableTypeName(managed.GetType());
-            var typeId = lua.CreateMetaTable(typeName);
-            lua.Pop(1);
-
-            if(managed is LuaMetaObjectBinding objectBinding)
-                objectBinding.MetaTableTypeId = typeId;
-
-            lua.PushUserType((IntPtr)handle, typeId);
-
-            return typeId;
-        }
-
-#nullable enable
-        /// <summary>
-        /// Pull userdata from the stack at the given position that has the given type id. Converts it to a .NET object.
-        /// </summary>
-        /// <param name="lua"></param>
-        /// <param name="typeId">The metatable type id of the userdata as returned by <see cref="PushManagedObject"/> or <see cref="GenerateUserDataFromObject"/></param>
-        /// <param name="stackPos">The position of the managed object</param>
-        /// <param name="forceKeepOnStack">Keep the object on the stack, false to remove it</param>
-        /// <returns>The .NET object converted from Lua</returns>
-        /// <exception cref="NullReferenceException">Thrown when a null pointer is found or the userdata is no longer valid</exception>
-        public static object PullManagedObject(ILua lua, int typeId, int stackPos = -1, bool forceKeepOnStack = false)
-        {
-            var handle = lua.GetUserType(stackPos, typeId);
-
-            if(!forceKeepOnStack)
-                lua.Remove(stackPos); // Remove the object
-
-            if (handle == IntPtr.Zero)
-                throw new NullReferenceException("Invalid instance pointer!");
-
-            object? reference = GCHandle.FromIntPtr(handle).Target;
-
-            if (reference == null)
-                throw new NullReferenceException("Userdata reference has gone away!");
-
-            return reference;
-        }
-#nullable disable
         
         /// <summary>
-        /// Push a value of a specific type to the Lua stack. Applies a transformer where possible.
+        /// Returns whether the given type is a primitive type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsLuaType(Type type)
+        {
+            return type == null
+                || type == typeof(string)
+                || type == typeof(bool)
+                || type == typeof(IntPtr)
+                || IsNumericType(type);
+        }
+
+        /// <summary>
+        /// Push a value of to the Lua stack.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="value">The value to push</param>
+        public static void PushType(ILua lua, object value)
+        {
+            PushType(lua, value.GetType(), value);
+        }
+
+        /// <summary>
+        /// Push multiple values to the Lua stack.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="values">The value to push</param>
+        public static void PushTypes(ILua lua, object[] values)
+        {
+            foreach (object value in values)
+            {
+                PushType(lua, value);
+            }
+        }
+
+        /// <summary>
+        /// Push a value of a specific type to the Lua stack.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="type">The type of the value to push</param>
         /// <param name="value">The value to push</param>
-        public static int PushType(ILua lua, Type type, object value)
+        public static void PushType(ILua lua, Type type, object value)
         {
             if (type == null || value == null)
             {
                 lua.PushNil();
-
-                return 1;
             }
             else if (type == typeof(string))
             {
                 lua.PushString((string)value);
-
-                return 1;
             }
             else if (type == typeof(bool))
             {
                 lua.PushBool((bool)value);
-
-                return 1;
             }
-            else if (type == typeof(int)
-                || type == typeof(float)
-                || type == typeof(double))
+            else if (IsNumericType(type))
             {
                 lua.PushNumber(Convert.ToDouble(value));
-
-                return 1;
             }
             else if (type == typeof(IntPtr))
             {
                 lua.ReferencePush((int)value);
-
-                return 1;
             }
-            else if (type == typeof(LuaFunctionReference) || type == typeof(LuaReference))
-            {
-                var reference = value as LuaReference;
-                reference.Push();
-
-                return 1;
-            }
-            else if (TransformerTypes.ContainsKey(type))
-                return lua.ApplyTransformerConvert(TransformerTypes[type], value);
             else
-                // TODO
-                throw new NotImplementedException($"This type is not registered for conversion to Lua from .NET! Consider building a Transformer. Type is: {type.FullName}");
-
-            return 0;
+            {
+                throw new ArgumentException("Unsupported type: " + type.FullName);
+            }
         }
-
+        
         /// <summary>
         /// Pop a value from the Lua stack and convert it to the specified .NET type.
         /// </summary>
@@ -282,46 +112,28 @@ namespace GmodMongoDb.Binding
             bool pop = true;
             object value;
 
-            if (type == typeof(string))
+            if (type == null)
+            {
+                value = null;
+            }
+            else if (type == typeof(string))
                 value = lua.GetString(stackPos);
             else if (type == typeof(bool))
                 value = lua.GetBool(stackPos);
-            else if (type == typeof(int)
-                || type == typeof(float)
-                || type == typeof(double))
+            else if (IsNumericType(type))
                 value = lua.GetNumber(stackPos);
-            else if (type == typeof(LuaFunctionReference))
+            else if (type == typeof(LuaFunction))
+                value = LuaFunction.Get(lua, stackPos);
+            else if (type == typeof(IntPtr))
             {
-                value = new LuaFunctionReference(lua, stackPos, forceKeepOnStack);
-                pop = false;
-            }
-            else if (type == typeof(LuaTableReference))
-            {
-                value = new LuaTableReference(lua, stackPos, forceKeepOnStack);
-                pop = false;
-            }
-            else if (type == typeof(LuaReference))
-            {
-                value = new LuaReference(lua, stackPos, forceKeepOnStack);
-                pop = false;
-            }
-            // Handle managed objects before trying the transformers
-            else if (TryGetMetaTableType(lua.GetType(stackPos), out Type metaTableType) && metaTableType == type)
-            {
-                value = PullManagedObject(lua, lua.GetType(stackPos), stackPos, forceKeepOnStack);
-                pop = false;
-            }
-            // Find a transformer to do the work
-            else if (TransformerTypes.ContainsKey(type))
-            {
-                var transformerType = TransformerTypes[type];
-                if (!lua.ApplyTransformerParse(transformerType, out value, stackPos, forceKeepOnStack))
-                    throw new InvalidCastException($"Could not apply transformer {transformerType} to get value from Lua stack at stackpos {stackPos}");
+                value = (IntPtr)lua.ReferenceCreate();
                 pop = false;
             }
             else
-                // TODO
-                throw new NotImplementedException($"This type is not registered for conversion from Lua to .NET! Consider building a Transformer. Type is: {type.FullName}");
+            {
+                Console.WriteLine($"Unsupported type: {type.FullName}\r\n" + lua.GetStack());
+                throw new ArgumentException("Unsupported type: " + type.FullName);
+            }
 
             if (pop && !forceKeepOnStack)
                 lua.Remove(stackPos);
@@ -345,55 +157,23 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Pop a value from the Lua stack and convert it to the specified .NET type.
-        /// </summary>
-        /// <typeparam name="T">The expected type of the value on the stack</typeparam>
-        /// <param name="lua"></param>
-        /// <param name="stackPos">The position of the value</param>
-        /// <param name="forceKeepOnStack">Order the function not to pop after getting the value</param>
-        /// <returns>The .NET object</returns>
-        public static T PullType<T>(ILua lua, int stackPos = -1, bool forceKeepOnStack = false)
-        {
-            return (T) PullType(lua, typeof(T), stackPos, forceKeepOnStack);
-        }
-
-        /// <summary>
-        /// Try to convert a Lua type to a metatable.
-        /// </summary>
-        /// <param name="luaType">The type id that's suspected to be a metatable type</param>
-        /// <param name="result">The converted .NET type on success. Null otherwise.</param>
-        /// <returns>If the type is succesfully converted to a metatable type.</returns>
-        public static bool TryGetMetaTableType(int luaType, out Type result)
-        {
-            if (MetaTableTypeIds.ContainsKey((int)luaType))
-            {
-                result = MetaTableTypeIds[(int)luaType];
-                return true;
-            }
-
-            result = null;
-            return false;
-        }
-
-        /// <summary>
         /// Convert a specified Lua type to a .NET type.
         /// </summary>
         /// <param name="luaType">The Lua type to convert</param>
         /// <returns>The converted .NET type</returns>
         public static Type LuaTypeToDotNetType(TYPES luaType)
         {
-            if (TryGetMetaTableType((int) luaType, out Type result))
-                return result;
+            //if (TryGetMetaTableType((int) luaType, out Type result))
+            //    return result;
 
             return luaType switch
             {
                 TYPES.NUMBER => typeof(double),
                 TYPES.STRING => typeof(string),
                 TYPES.BOOL => typeof(bool),
-                TYPES.FUNCTION => typeof(LuaFunctionReference),
-                TYPES.TABLE => typeof(LuaTableReference),
+                TYPES.FUNCTION => typeof(LuaFunction),
                 TYPES.NIL => null,
-                _ => typeof(LuaReference),
+                _ => throw new NotImplementedException($"This type is not registered for conversion from Lua to .NET! Type is: {luaType}"),
             };
         }
 
@@ -404,5 +184,95 @@ namespace GmodMongoDb.Binding
         /// <returns>The converted .NET type</returns>
         public static Type LuaTypeToDotNetType(int luaType)
             => LuaTypeToDotNetType((TYPES)luaType);
+
+        /// <summary>
+        /// Converts the parameters to the types specified in the <paramref name="parameterInfos"/> array.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="parameterInfos"></param>
+        /// <returns></returns>
+        public static object[] NormalizeParameters(object[] parameters, ParameterInfo[] parameterInfos)
+        {
+            object[] normalizedParameters = new object[parameterInfos.Length];
+
+            for (int i = 0; i < parameterInfos.Length; i++)
+            {
+                if (i < parameters.Length)
+                {
+                    // Cast the parameter to the expected type
+                    var expectedType = parameterInfos[i].ParameterType;
+
+                    if (parameters[i] is LuaFunction luaFunction && LuaFunction.GetCastsTo(expectedType))
+                    {
+                        normalizedParameters[i] = luaFunction.CastTo(expectedType);
+                    }
+                    else if (expectedType.IsEnum)
+                    {
+                        normalizedParameters[i] = Enum.ToObject(expectedType, parameters[i]);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            normalizedParameters[i] = Convert.ChangeType(parameters[i], expectedType);
+                        }
+                        catch (Exception e)
+                        {
+                            normalizedParameters[i] = parameters[i];
+                        }
+                    }
+                }
+                else if (parameterInfos[i].HasDefaultValue)
+                {
+                    normalizedParameters[i] = parameterInfos[i].DefaultValue;
+                }
+                else
+                {
+                    normalizedParameters[i] = null;
+                }
+            }
+
+            return normalizedParameters;
+        }
+
+        /// <summary>
+        /// Converts the parameter types to the types specified in the <paramref name="parameterInfos"/> array.
+        /// </summary>
+        /// <param name="parameterTypes"></param>
+        /// <param name="constructorParameters"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        internal static List<object> NormalizeParameterTypes(List<Type> parameterTypes, ParameterInfo[] constructorParameters)
+        {
+            var normalizedParameterTypes = new object[constructorParameters.Length];
+
+            for (int i = 0; i < constructorParameters.Length; i++)
+            {
+                if (i < parameterTypes.Count)
+                {
+                    // Cast the parameter to the expected type
+                    var expectedType = constructorParameters[i].ParameterType;
+
+                    if (parameterTypes[i] == typeof(LuaFunction) && LuaFunction.GetCastsTo(expectedType))
+                    {
+                        normalizedParameterTypes[i] = expectedType;
+                    }
+                    else
+                    {
+                        normalizedParameterTypes[i] = parameterTypes[i];
+                    }
+                }
+                else if (constructorParameters[i].HasDefaultValue)
+                {
+                    normalizedParameterTypes[i] = Type.Missing;
+                }
+                else
+                {
+                    normalizedParameterTypes[i] = null;
+                }
+            }
+
+            return new List<object>(normalizedParameterTypes);
+        }
     }
 }

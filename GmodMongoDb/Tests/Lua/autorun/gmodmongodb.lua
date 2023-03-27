@@ -1,0 +1,1 @@
+include("gmodmongodb/init.lua")
