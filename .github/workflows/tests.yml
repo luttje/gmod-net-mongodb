@@ -37,6 +37,7 @@ jobs:
 
     - name: Prepare test run
       run: |
+           mkdir -p gmod/garrysmod/lua/bin/Modules
            cp -a build/. gmod/garrysmod/lua/bin/Modules/GmodMongoDb
            cp ./GmodMongoDb/Tests/Lua/autorun/gmodmongodb.lua gmod/garrysmod/lua/autorun
            cp -R ./GmodMongoDb/Tests/Lua/gmodmongodb gmod/garrysmod/lua
