@@ -4,6 +4,17 @@ local TEST_LOG_RESULT_PATH = "gmod_mongo_db_test_success.txt"
 
 file.Delete(TEST_LOG_RESULT_PATH)
 
+local closeServer = function()
+	if(game.SinglePlayer()) then
+		return
+	end
+
+	-- If our tests finish too early, the engine.CloseServer() function will not work. Therefore we will spam it until it works
+	hook.Add("Think", "GmodMongoDb.FinishAfterTests", function()
+		engine.CloseServer()
+	end)
+end
+
 TEST.assert = function(expression, errorMessage, ...)
 	local args = {...}
 	local result, err = pcall(function()
@@ -13,19 +24,19 @@ TEST.assert = function(expression, errorMessage, ...)
 	if(not result) then
 		ErrorNoHalt(err .. "\n")
 		
-		engine.CloseServer()
+		closeServer()
 	end
 end
 
 local successfullyFinishTest = function()
 	file.Write(TEST_LOG_RESULT_PATH, "1")
 
-	MsgC(Color(0, 255, 0), "Successfully finished test\n")
+	MsgC(Color(0, 255, 0), "[GmodMongoDb] Successfully finished test\n")
 
-	engine.CloseServer()
+	closeServer()
 end
 
-MsgC(Color(255, 255, 0), "Starting test...\n")
+MsgC(Color(255, 255, 0), "[GmodMongoDb] Starting tests...\n")
 
 --[[
 	Test start
