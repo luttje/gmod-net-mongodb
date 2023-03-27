@@ -13,7 +13,7 @@ namespace GmodMongoDb
         public string ModuleName => "GmodMongoDb";
 
         /// <inheritdoc/>
-        public string ModuleVersion => "0.9";
+        public string ModuleVersion => "0.9.1";
 
         private DynamicWrapper wrapper = null;
 

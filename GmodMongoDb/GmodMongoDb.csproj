@@ -8,7 +8,24 @@
   <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>$(MSBuildProjectDirectory)\GmodMongoDb.xml</DocumentationFile>
+    <Version>$(VersionPrefix)0.9.1</Version>
+    <Company>luttje</Company>
+    <PackageProjectUrl>https://github.com/luttje/gmod-net-mongodb</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/luttje/gmod-net-mongodb</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="GmodNET.API" Version="1.0.0" />
