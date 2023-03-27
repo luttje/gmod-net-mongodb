@@ -39,8 +39,17 @@ jobs:
       run: |
            mkdir -p gmod/garrysmod/lua/bin/Modules
            cp -a build/. gmod/garrysmod/lua/bin/Modules/GmodMongoDb
-           cp ./GmodMongoDb/Tests/Lua/autorun/gmodmongodb.lua gmod/garrysmod/lua/autorun
-           cp -R ./GmodMongoDb/Tests/Lua/gmodmongodb gmod/garrysmod/lua
+           cp ./GmodMongoDb/Tests/Lua/autorun/gmodmongodb.lua gmod/garrysmod/lua/autorun/gmodmongodb.lua
+           cp -R ./GmodMongoDb/Tests/Lua/gmodmongodb gmod/garrysmod/lua/gmodmongodb
+
+    - name: Debug
+      run: |
+           ls -la ./GmodMongoDb/Tests/Lua/autorun
+           ls -la ./GmodMongoDb/Tests/Lua/gmodmongodb
+           ls -la gmod/garrysmod/lua/bin/Modules
+           ls -la gmod/garrysmod/lua/bin/Modules/GmodMongoDb
+           ls -la gmod/garrysmod/lua/autorun
+           ls -la gmod/garrysmod/lua/gmodmongodb
 
     - name: Run Garry's Mod
       run: ./srcds_run_x64 -game garrysmod -systemtest -condebug +sv_hibernate_think 1 || true
