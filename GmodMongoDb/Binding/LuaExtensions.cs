@@ -454,6 +454,8 @@ namespace GmodMongoDb.Binding
                 {
                     parameterValues = TypeTools.NormalizeParameters(parameterValues, method.GetParameters());
 
+                    type.WarnIfObsolete(lua);
+                    method.WarnIfObsolete(lua);
                     var result = method.Invoke(instance, parameterValues);
 
                     if (result != null)

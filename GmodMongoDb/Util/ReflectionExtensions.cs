@@ -11,6 +11,41 @@ namespace GmodMongoDb.Util
 {
     internal static class ReflectionExtensions
     {
+        /// <summary>
+        /// Gives a warning if the ObsoleteAttribute is found on the member.
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="lua"></param>
+        public static void WarnIfObsolete(this MemberInfo member, ILua lua)
+        {
+            var obsoleteAttribute = member.GetCustomAttribute<ObsoleteAttribute>();
+
+            if (obsoleteAttribute == null)
+                return;
+
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.GetField(-1, $"{LuaExtensions.CONSTANT_PREFIX}SUPPRESS_OBSOLETE_WARNINGS");
+            if(lua.IsType(-1, TYPES.BOOL))
+            {
+                var isSuppressed = lua.GetBool(-1);
+
+                if (isSuppressed)
+                {
+                    lua.Pop(2); // pop bool and global table
+                    return;
+                }
+            }
+            lua.Pop(2); // pop nil(or false) and global table
+
+            Console.WriteLine($"Warning: {member.Name} Constructor is marked as obsolete: {obsoleteAttribute.Message}");
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static MethodInfo[] GetMethodsWithBase(this Type type, string name)
         {
             var ownMethods = type.GetMethods().Where(m => m.Name == name);

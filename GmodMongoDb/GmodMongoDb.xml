@@ -308,6 +308,21 @@
         <member name="M:GmodMongoDb.Setup.Unload(GmodNET.API.ILua)">
             <inheritdoc/>
         </member>
+        <member name="M:GmodMongoDb.Util.ReflectionExtensions.WarnIfObsolete(System.Reflection.MemberInfo,GmodNET.API.ILua)">
+            <summary>
+            Gives a warning if the ObsoleteAttribute is found on the member.
+            </summary>
+            <param name="member"></param>
+            <param name="lua"></param>
+        </member>
+        <member name="M:GmodMongoDb.Util.ReflectionExtensions.GetMethodsWithBase(System.Type,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
         <member name="M:GmodMongoDb.Util.ReflectionExtensions.GetMethodSignatures(System.Type,System.String)">
             <summary>
             Returns a string describing all available method signatures

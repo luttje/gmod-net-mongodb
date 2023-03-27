@@ -242,7 +242,9 @@ namespace GmodMongoDb.Binding
                 try
                 {
                     parameters = TypeTools.NormalizeParameters(parameters, constructor.GetParameters());
-
+                    
+                    type.WarnIfObsolete(lua);
+                    constructor.WarnIfObsolete(lua);
                     var instance = constructor.Invoke(parameters);
                     lua.PushInstance(instance);
 
@@ -273,6 +275,9 @@ namespace GmodMongoDb.Binding
             {
                 var instance = lua.PullInstance();
                 var instanceProperty = instance.GetType().GetProperty(property.Name);
+
+                type.WarnIfObsolete(lua);
+                instanceProperty.WarnIfObsolete(lua);
                 var value = instanceProperty.GetValue(instance);
                 lua.PushType(value);
 
@@ -294,6 +299,9 @@ namespace GmodMongoDb.Binding
             {
                 var instance = lua.PullInstance();
                 var instanceField = instance.GetType().GetField(field.Name);
+
+                type.WarnIfObsolete(lua);
+                instanceField.WarnIfObsolete(lua);
                 var value = instanceField.GetValue(instance);
                 lua.PushType(value);
 
