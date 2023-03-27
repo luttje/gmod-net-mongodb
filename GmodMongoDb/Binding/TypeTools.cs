@@ -216,7 +216,7 @@ namespace GmodMongoDb.Binding
                         {
                             normalizedParameters[i] = Convert.ChangeType(parameters[i], expectedType);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             normalizedParameters[i] = parameters[i];
                         }
@@ -273,6 +273,37 @@ namespace GmodMongoDb.Binding
             }
 
             return new List<object>(normalizedParameterTypes);
+        }
+
+        internal static Type[] NormalizePossibleGenericTypeArguments(int genericTypeArgumentsAmount, GenericType[] genericTypeArgumentValues, List<Type> parameterTypes)
+        {
+            var normalizedGenericTypeValues = new GenericType?[genericTypeArgumentsAmount];
+            var valueCount = genericTypeArgumentValues?.Length ?? 0;
+
+            if (genericTypeArgumentValues != null)
+            {
+                for (int i = 0; i < valueCount && i < genericTypeArgumentsAmount; i++)
+                    normalizedGenericTypeValues[i] = genericTypeArgumentValues[i];
+            }
+
+            // If no, or not enough generic types were passed, try to infer them from the parameter value types
+            if (normalizedGenericTypeValues == null || valueCount != genericTypeArgumentsAmount)
+            {
+                // If some generic types were passed, start checking after the passed parameters.
+                int parameterIndex = valueCount;
+
+                for (int genericTypeIndex = parameterIndex; genericTypeIndex < genericTypeArgumentsAmount && parameterIndex < parameterTypes.Count; genericTypeIndex++)
+                {
+                    normalizedGenericTypeValues[genericTypeIndex] = new GenericType(parameterTypes[parameterIndex]);
+
+                    parameterIndex++;
+                }
+
+                if (normalizedGenericTypeValues.Any(g => g == null))
+                    throw new TargetInvocationException(new Exception($"The method requires {genericTypeArgumentsAmount} generic arguments"));
+            }
+
+            return normalizedGenericTypeValues.Select(g => g?.Type).ToArray();
         }
     }
 }

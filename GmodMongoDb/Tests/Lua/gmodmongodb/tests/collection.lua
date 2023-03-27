@@ -2,7 +2,7 @@ TEST.collection = TEST.database:GetCollection(GenericType(MongoDB.Bson.BsonDocum
 
 TEST.assert(TEST.collection ~= nil, "MongoDB.Driver.MongoCollection is nil")
 
-local filterMatchAll = MongoDB.Driver["EmptyFilterDefinition`1"](GenericType(MongoDB.Bson.BsonDocument))
+local filterMatchAll = MongoDB.Driver.EmptyFilterDefinition(GenericType(MongoDB.Bson.BsonDocument))
 
 TEST.assert(filterMatchAll ~= nil, "MongoDB.Driver.EmptyFilterDefinition is nil")
 
@@ -78,7 +78,7 @@ local filterMatchVipDocument = MongoDB.Bson.BsonDocument.Parse(
     name = vip.name
   })
 )
-local filterMatchVip = MongoDB.Driver["BsonDocumentFilterDefinition`1"](GenericType(MongoDB.Bson.BsonDocument), filterMatchVipDocument)
+local filterMatchVip = MongoDB.Driver.BsonDocumentFilterDefinition(filterMatchVipDocument)
 
 TEST.assert(filterMatchVip ~= nil, "MongoDB.Driver.BsonDocumentFilterDefinition is nil")
 
@@ -87,7 +87,7 @@ TEST.assert(count == 1, "MongoDB.Driver.MongoCollection:CountDocuments() did not
 
 -- Providing a function to a filter (or in any place an Expression is expected) is not yet supported. This is because MongoDB will attempt
 -- to convert the function to an expression tree. 
--- local filterMatchAll = MongoDB.Driver["ExpressionFilterDefinition`1"](GenericType(MongoDB.Bson.BsonDocument), function(document)
+-- local filterMatchAll = MongoDB.Driver.ExpressionFilterDefinition(GenericType(MongoDB.Bson.BsonDocument), function(document)
 --   return true 
 -- end)
 
@@ -104,7 +104,7 @@ local updateDocument = MongoDB.Bson.BsonDocument.Parse(
     }
   })
 )
-local update = MongoDB.Driver["BsonDocumentUpdateDefinition`1"](GenericType(MongoDB.Bson.BsonDocument), updateDocument)
+local update = MongoDB.Driver.BsonDocumentUpdateDefinition(updateDocument)
 
 TEST.assert(update ~= nil, "MongoDB.Driver.BsonDocumentUpdateDefinition is nil")
 
@@ -115,7 +115,8 @@ TEST.assert(type(updateResult.IsAcknowledged) == "boolean", "MongoDB.Driver.Upda
 TEST.assert(type(updateResult.MatchedCount) == "number", "MongoDB.Driver.UpdateResult.MatchedCount is not a number")
 TEST.assert(type(updateResult.ModifiedCount) == "number", "MongoDB.Driver.UpdateResult.ModifiedCount is not a number")
 
-local update = MongoDB.Driver["JsonUpdateDefinition`1"](GenericType(MongoDB.Bson.BsonDocument),
+local update = MongoDB.Driver.JsonUpdateDefinition(
+  GenericType(MongoDB.Bson.BsonDocument),
   util.TableToJSON({
     ["$set"] = {
       age = 35

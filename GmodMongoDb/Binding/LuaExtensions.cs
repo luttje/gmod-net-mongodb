@@ -407,32 +407,29 @@ namespace GmodMongoDb.Binding
             {
                 var upValueCount = lua.Top();
                 var offset = isStatic ? 0 : 1;
-                var parameters = new object[upValueCount - offset];
-                GenericType[] genericArguments = null;
+                var parameterValues = new object[upValueCount - offset];
+                GenericType[] genericTypeArgumentValues = null;
 
                 for (int i = offset; i < upValueCount; i++)
                 {
-                    var index = parameters.Length - i - (1 - offset);
-                    var parameterValue = parameters[index] = lua.PullType();
+                    var index = parameterValues.Length - i - (1 - offset);
+                    var parameterValue = parameterValues[index] = lua.PullType();
 
                     if (parameterValue is GenericType)
                     {
-                        if (genericArguments == null)
-                            genericArguments = new GenericType[upValueCount - parameters.Length];
+                        if (genericTypeArgumentValues == null)
+                            genericTypeArgumentValues = new GenericType[upValueCount - parameterValues.Length];
 
-                        genericArguments[index] = (GenericType)parameterValue;
+                        genericTypeArgumentValues[index] = (GenericType)parameterValue;
                     }
                 }
 
                 // Remove the generic types from the parameters
-                if (genericArguments != null)
-                {
-                    parameters = parameters.Where(p => !(p is GenericType)).ToArray();
-                }
+                if (genericTypeArgumentValues != null)
+                    parameterValues = parameterValues.Where(p => !(p is GenericType)).ToArray();
 
                 var instance = !isStatic ? lua.PullInstance() : null;
-
-                var parameterTypes = parameters.Select(p => p.GetType()).ToList();
+                var parameterTypes = parameterValues.Select(p => p.GetType()).ToList();
                 MethodInfo method;
                 
                 if(isStatic)
@@ -444,29 +441,20 @@ namespace GmodMongoDb.Binding
                 {
                     var signatures = type.GetMethodSignatures(methodName);
                     var types = string.Join(", ", parameterTypes);
-                    throw new Exception($"Incorrect parameters passed to {type?.Namespace}.{type?.Name}.{methodName}! {parameters.Length} parameters were passed (of types {types}, but only the following overloads exist: \n{signatures}");
+                    throw new Exception($"Incorrect parameters passed to {type?.Namespace}.{type?.Name}.{methodName}! {parameterValues.Length} parameters were passed (of types {types}, but only the following overloads exist: \n{signatures}");
                 }
                 
                 if (method.IsGenericMethod)
                 {
-                    var genericArgumentCount = method.GetGenericArguments().Length;
-                    string intro = $"The method {type?.Namespace}.{type?.Name}.{method.Name} is generic and requires {genericArgumentCount} generic arguments";
-
-                    if (genericArguments == null)
-                        throw new Exception($"{intro}, but none were provided.");
-
-                    if (genericArguments.Length != genericArgumentCount)
-                        throw new Exception($"{intro}, but {genericArguments.Length} generic types were passed!");
-
-                    var types = genericArguments.Select(g => g.Type).ToArray();
+                    var types = TypeTools.NormalizePossibleGenericTypeArguments(method.GetGenericArguments().Length, genericTypeArgumentValues, parameterTypes);
                     method = method.MakeGenericMethod(types);
                 }
 
                 try
                 {
-                    parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
+                    parameterValues = TypeTools.NormalizeParameters(parameterValues, method.GetParameters());
 
-                    var result = method.Invoke(instance, parameters);
+                    var result = method.Invoke(instance, parameterValues);
 
                     if (result != null)
                     {
