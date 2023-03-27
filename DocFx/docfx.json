@@ -22,9 +22,9 @@
       },
       {
         "files": [
-          "Articles/toc.yml",
-          "Articles/**.md",
-          "Articles/**/toc.yml",
+          "articles/toc.yml",
+          "articles/**.md",
+          "articles/**/toc.yml",
           "toc.yml",
           "*.md"
         ]
@@ -33,8 +33,8 @@
     "resource": [
       {
         "files": [
-          "Articles/**/images/**",
-          "Images/**"
+          "articles/**/images/**",
+          "images/**"
         ]
       }
     ],
