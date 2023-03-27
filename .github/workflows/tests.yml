@@ -35,6 +35,13 @@ jobs:
            rm -rfv steamcmd_linux.tar.gz
            ./steamcmd.sh +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit
 
+    - name: Download GmodDotNET
+      run: |
+           wget https://github.com/GmodNET/GmodDotNet/releases/download/1.0.0/gmod-dot-net-linux.1.0.0.tar.gz
+           mkdir -p gmod/garrysmod/lua/bin/
+           tar -xvzf gmod-dot-net-linux.1.0.0.tar.gz -C gmod/garrysmod/lua/bin/
+           rm -rfv gmod-dot-net-linux.1.0.0.tar.gz
+
     - name: Prepare test run
       run: |
            mkdir -p gmod/garrysmod/lua/bin/Modules
@@ -44,12 +51,10 @@ jobs:
 
     - name: Debug
       run: |
-           ls -la ./GmodMongoDb/Tests/Lua/autorun
-           ls -la ./GmodMongoDb/Tests/Lua/gmodmongodb
-           ls -la gmod/garrysmod/lua/bin/Modules
-           ls -la gmod/garrysmod/lua/bin/Modules/GmodMongoDb
            ls -la gmod/garrysmod/lua/autorun
            ls -la gmod/garrysmod/lua/gmodmongodb
+           cat gmod/garrysmod/lua/autorun/gmodmongodb.lua
+           cat gmod/garrysmod/lua/gmodmongodb/init.lua
 
     - name: Run Garry's Mod
       run: ./srcds_run_x64 -game garrysmod -systemtest -condebug +sv_hibernate_think 1 || true
