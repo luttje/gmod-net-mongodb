@@ -1,10 +1,10 @@
 TEST.collection = TEST.database:GetCollection(GenericType(MongoDB.Bson.BsonDocument), "collection_test")
 
-assert(TEST.collection ~= nil, "MongoDB.Driver.MongoCollection is nil")
+TEST.assert(TEST.collection ~= nil, "MongoDB.Driver.MongoCollection is nil")
 
 local filterMatchAll = MongoDB.Driver["EmptyFilterDefinition`1"](GenericType(MongoDB.Bson.BsonDocument))
 
-assert(filterMatchAll ~= nil, "MongoDB.Driver.EmptyFilterDefinition is nil")
+TEST.assert(filterMatchAll ~= nil, "MongoDB.Driver.EmptyFilterDefinition is nil")
 
 --[[
   Deletes
@@ -12,15 +12,15 @@ assert(filterMatchAll ~= nil, "MongoDB.Driver.EmptyFilterDefinition is nil")
 
 local deleteResult = TEST.collection:DeleteMany(filterMatchAll)
 
-assert(deleteResult ~= nil, "MongoDB.Driver.DeleteResult is nil")
-assert(type(deleteResult.DeletedCount) == "number", "MongoDB.Driver.DeleteResult.DeletedCount is not a number")
-assert(type(deleteResult.IsAcknowledged) == "boolean", "MongoDB.Driver.DeleteResult.IsAcknowledged is not a boolean")
+TEST.assert(deleteResult ~= nil, "MongoDB.Driver.DeleteResult is nil")
+TEST.assert(type(deleteResult.DeletedCount) == "number", "MongoDB.Driver.DeleteResult.DeletedCount is not a number")
+TEST.assert(type(deleteResult.IsAcknowledged) == "boolean", "MongoDB.Driver.DeleteResult.IsAcknowledged is not a boolean")
 
 local deleteResult = TEST.collection:DeleteMany(filterMatchAll)
 
-assert(deleteResult ~= nil, "MongoDB.Driver.DeleteResult is nil")
-assert(type(deleteResult.DeletedCount) == "number", "MongoDB.Driver.DeleteResult.DeletedCount is not a number")
-assert(type(deleteResult.IsAcknowledged) == "boolean", "MongoDB.Driver.DeleteResult.IsAcknowledged is not a boolean")
+TEST.assert(deleteResult ~= nil, "MongoDB.Driver.DeleteResult is nil")
+TEST.assert(type(deleteResult.DeletedCount) == "number", "MongoDB.Driver.DeleteResult.DeletedCount is not a number")
+TEST.assert(type(deleteResult.IsAcknowledged) == "boolean", "MongoDB.Driver.DeleteResult.IsAcknowledged is not a boolean")
 
 --[[
   Scalar operations
@@ -28,13 +28,13 @@ assert(type(deleteResult.IsAcknowledged) == "boolean", "MongoDB.Driver.DeleteRes
 
 local count = TEST.collection:CountDocuments(filterMatchAll)
 
-assert(type(count) == "number", "MongoDB.Driver.MongoCollection:CountDocuments() did not return a number")
-assert(count == 0, "MongoDB.Driver.MongoCollection:CountDocuments() did not return 0, but " .. count)
+TEST.assert(type(count) == "number", "MongoDB.Driver.MongoCollection:CountDocuments() did not return a number")
+TEST.assert(count == 0, "MongoDB.Driver.MongoCollection:CountDocuments() did not return 0, but " .. count)
 
 local estimatedDocumentCount = TEST.collection:EstimatedDocumentCount()
 
-assert(type(estimatedDocumentCount) == "number", "MongoDB.Driver.MongoCollection:EstimatedDocumentCount() did not return a number")
-assert(estimatedDocumentCount == 0, "MongoDB.Driver.MongoCollection:EstimatedDocumentCount() did not return 0, but " .. estimatedDocumentCount)
+TEST.assert(type(estimatedDocumentCount) == "number", "MongoDB.Driver.MongoCollection:EstimatedDocumentCount() did not return a number")
+TEST.assert(estimatedDocumentCount == 0, "MongoDB.Driver.MongoCollection:EstimatedDocumentCount() did not return 0, but " .. estimatedDocumentCount)
 
 --[[
   Inserts
@@ -49,7 +49,7 @@ local newDocument = MongoDB.Bson.BsonDocument.Parse(util.TableToJSON(vip))
 
 local insertResult = TEST.collection:InsertOne(newDocument)
 
-assert(insertResult == nil, "MongoDB.Driver.InsertOneResult is not nil")
+TEST.assert(insertResult == nil, "MongoDB.Driver.InsertOneResult is not nil")
 
 -- Fails because we have not yet implemented handling table to List conversion
 -- local newDocuments = {
@@ -67,7 +67,7 @@ assert(insertResult == nil, "MongoDB.Driver.InsertOneResult is not nil")
 
 -- local insertManyResult = TEST.collection:InsertMany(newDocuments)
 
--- assert(insertManyResult == nil, "MongoDB.Driver.InsertManyResult is not nil")
+-- TEST.assert(insertManyResult == nil, "MongoDB.Driver.InsertManyResult is not nil")
 
 --[[
   Filters
@@ -80,10 +80,10 @@ local filterMatchVipDocument = MongoDB.Bson.BsonDocument.Parse(
 )
 local filterMatchVip = MongoDB.Driver["BsonDocumentFilterDefinition`1"](GenericType(MongoDB.Bson.BsonDocument), filterMatchVipDocument)
 
-assert(filterMatchVip ~= nil, "MongoDB.Driver.BsonDocumentFilterDefinition is nil")
+TEST.assert(filterMatchVip ~= nil, "MongoDB.Driver.BsonDocumentFilterDefinition is nil")
 
 local count = TEST.collection:CountDocuments(filterMatchVip)
-assert(count == 1, "MongoDB.Driver.MongoCollection:CountDocuments() did not return 1, but " .. count)
+TEST.assert(count == 1, "MongoDB.Driver.MongoCollection:CountDocuments() did not return 1, but " .. count)
 
 -- Providing a function to a filter (or in any place an Expression is expected) is not yet supported. This is because MongoDB will attempt
 -- to convert the function to an expression tree. 
@@ -91,7 +91,7 @@ assert(count == 1, "MongoDB.Driver.MongoCollection:CountDocuments() did not retu
 --   return true 
 -- end)
 
--- assert(filterMatchAll ~= nil, "MongoDB.Driver.ExpressionFilterDefinition is nil")
+-- TEST.assert(filterMatchAll ~= nil, "MongoDB.Driver.ExpressionFilterDefinition is nil")
 
 --[[
   Updates
@@ -106,14 +106,14 @@ local updateDocument = MongoDB.Bson.BsonDocument.Parse(
 )
 local update = MongoDB.Driver["BsonDocumentUpdateDefinition`1"](GenericType(MongoDB.Bson.BsonDocument), updateDocument)
 
-assert(update ~= nil, "MongoDB.Driver.BsonDocumentUpdateDefinition is nil")
+TEST.assert(update ~= nil, "MongoDB.Driver.BsonDocumentUpdateDefinition is nil")
 
 local updateResult = TEST.collection:UpdateOne(filterMatchVip, update)
 
-assert(updateResult ~= nil, "MongoDB.Driver.UpdateResult is nil")
-assert(type(updateResult.IsAcknowledged) == "boolean", "MongoDB.Driver.UpdateResult.IsAcknowledged is not a boolean")
-assert(type(updateResult.MatchedCount) == "number", "MongoDB.Driver.UpdateResult.MatchedCount is not a number")
-assert(type(updateResult.ModifiedCount) == "number", "MongoDB.Driver.UpdateResult.ModifiedCount is not a number")
+TEST.assert(updateResult ~= nil, "MongoDB.Driver.UpdateResult is nil")
+TEST.assert(type(updateResult.IsAcknowledged) == "boolean", "MongoDB.Driver.UpdateResult.IsAcknowledged is not a boolean")
+TEST.assert(type(updateResult.MatchedCount) == "number", "MongoDB.Driver.UpdateResult.MatchedCount is not a number")
+TEST.assert(type(updateResult.ModifiedCount) == "number", "MongoDB.Driver.UpdateResult.ModifiedCount is not a number")
 
 local update = MongoDB.Driver["JsonUpdateDefinition`1"](GenericType(MongoDB.Bson.BsonDocument),
   util.TableToJSON({
@@ -123,14 +123,14 @@ local update = MongoDB.Driver["JsonUpdateDefinition`1"](GenericType(MongoDB.Bson
   })
 )
 
-assert(update ~= nil, "MongoDB.Driver.JsonUpdateDefinition is nil")
+TEST.assert(update ~= nil, "MongoDB.Driver.JsonUpdateDefinition is nil")
 
 local updateResult = TEST.collection:UpdateOne(filterMatchVip, update)
 
-assert(updateResult ~= nil, "MongoDB.Driver.UpdateResult is nil")
-assert(type(updateResult.IsAcknowledged) == "boolean", "MongoDB.Driver.UpdateResult.IsAcknowledged is not a boolean")
-assert(type(updateResult.MatchedCount) == "number", "MongoDB.Driver.UpdateResult.MatchedCount is not a number")
-assert(type(updateResult.ModifiedCount) == "number", "MongoDB.Driver.UpdateResult.ModifiedCount is not a number")
+TEST.assert(updateResult ~= nil, "MongoDB.Driver.UpdateResult is nil")
+TEST.assert(type(updateResult.IsAcknowledged) == "boolean", "MongoDB.Driver.UpdateResult.IsAcknowledged is not a boolean")
+TEST.assert(type(updateResult.MatchedCount) == "number", "MongoDB.Driver.UpdateResult.MatchedCount is not a number")
+TEST.assert(type(updateResult.ModifiedCount) == "number", "MongoDB.Driver.UpdateResult.ModifiedCount is not a number")
 
 --[[
   Finds
@@ -138,15 +138,15 @@ assert(type(updateResult.ModifiedCount) == "number", "MongoDB.Driver.UpdateResul
 
 local findSyncResult = TEST.collection:FindSync(GenericType(MongoDB.Bson.BsonDocument), filterMatchVip)
 
-assert(findSyncResult ~= nil, "MongoDB.Driver.IAsyncCursor is nil")
+TEST.assert(findSyncResult ~= nil, "MongoDB.Driver.IAsyncCursor is nil")
 
 while findSyncResult.Current ~= nil do
   local currentDocument = findSyncResult.Current:ToBsonDocument()
 
-  assert(currentDocument ~= nil, "MongoDB.Driver.IAsyncCursor.Current.ToBsonDocument is nil")
-  assert(currentDocument["name"]:AsString() == vip.name, "MongoDB.Driver.IAsyncCursor.Current.ToBsonDocument.name is not " .. vip.name .. ", but " .. currentDocument["name"]:AsString())
-  assert(currentDocument["age"]:AsInt32() == vip.age, "MongoDB.Driver.IAsyncCursor.Current.ToBsonDocument.age is not " .. vip.age .. ", but " .. currentDocument["age"]:AsInt32())
-  assert(currentDocument["alive"]:AsBoolean() == vip.alive, "MongoDB.Driver.IAsyncCursor.Current.ToBsonDocument.alive is not " .. tostring(vip.alive) .. ", but " .. tostring(currentDocument["alive"]:AsBoolean()))
+  TEST.assert(currentDocument ~= nil, "MongoDB.Driver.IAsyncCursor.Current.ToBsonDocument is nil")
+  TEST.assert(currentDocument["name"]:AsString() == vip.name, "MongoDB.Driver.IAsyncCursor.Current.ToBsonDocument.name is not " .. vip.name .. ", but " .. currentDocument["name"]:AsString())
+  TEST.assert(currentDocument["age"]:AsInt32() == vip.age, "MongoDB.Driver.IAsyncCursor.Current.ToBsonDocument.age is not " .. vip.age .. ", but " .. currentDocument["age"]:AsInt32())
+  TEST.assert(currentDocument["alive"]:AsBoolean() == vip.alive, "MongoDB.Driver.IAsyncCursor.Current.ToBsonDocument.alive is not " .. tostring(vip.alive) .. ", but " .. tostring(currentDocument["alive"]:AsBoolean()))
 
   findSyncResult:MoveNext()
 end

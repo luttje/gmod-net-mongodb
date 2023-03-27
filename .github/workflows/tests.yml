@@ -59,9 +59,6 @@ jobs:
     - name: Print console log
       run: cat gmod/garrysmod/console.log
 
-#    - name: Print test log
-#      run: cat gmod/tests-log.txt
-
     - name: Check if tests were successful
       run: |
            if [ ! -f gmod/garrysmod/data/gmod_mongo_db_test_success.txt ]; then
@@ -72,9 +69,3 @@ jobs:
              echo "gmod/garrysmod/data/gmod_mongo_db_test_success.txt does not contain 1"
              exit 1
            fi
-
-#    - name: Upload test log
-#      uses: actions/upload-artifact@v1.0.0
-#      with:
-#        name: Linux-Test-Log
-#        path: gmod/tests-log.txt

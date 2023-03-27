@@ -2,30 +2,30 @@
   Common
 ]]--
 
-assert(type(MongoDB) == "table", "MongoDB is not a table")
+TEST.assert(type(MongoDB) == "table", "MongoDB is not a table")
 
 --[[
   Constants
 ]]--
-assert(type(GMOD_MONGODB_KEY_TYPE) == "string", "GMOD_MONGODB_KEY_TYPE is not a string")
-assert(type(GMOD_MONGODB_KEY_INSTANCE_ID) == "string", "GMOD_MONGODB_KEY_INSTANCE_ID is not a string")
-assert(type(GMOD_MONGODB_KEY_INSTANCE_TYPE) == "string", "GMOD_MONGODB_KEY_INSTANCE_TYPE is not a string")
-assert(type(GMOD_MONGODB_KEY_TYPE_META_TABLES) == "string", "GMOD_MONGODB_KEY_TYPE_META_TABLES is not a string")
+TEST.assert(type(GMOD_MONGODB_KEY_TYPE) == "string", "GMOD_MONGODB_KEY_TYPE is not a string")
+TEST.assert(type(GMOD_MONGODB_KEY_INSTANCE_ID) == "string", "GMOD_MONGODB_KEY_INSTANCE_ID is not a string")
+TEST.assert(type(GMOD_MONGODB_KEY_INSTANCE_TYPE) == "string", "GMOD_MONGODB_KEY_INSTANCE_TYPE is not a string")
+TEST.assert(type(GMOD_MONGODB_KEY_TYPE_META_TABLES) == "string", "GMOD_MONGODB_KEY_TYPE_META_TABLES is not a string")
 
 --[[
   GenericType
 ]]--
 
-assert(type(GenericType) == "function", "GenericType is not a function")
+TEST.assert(type(GenericType) == "function", "GenericType is not a function")
 
 local genericType0 = GenericType(MongoDB.Bson.BsonDocument)
 
-assert(type(genericType0[GMOD_MONGODB_KEY_INSTANCE_ID]) == "string", "GenericType does not have KEY_INSTANCE_ID")
-assert(type(genericType0[GMOD_MONGODB_KEY_INSTANCE_TYPE]) == "string", "GenericType does not have KEY_INSTANCE_TYPE")
+TEST.assert(type(genericType0[GMOD_MONGODB_KEY_INSTANCE_ID]) == "string", "GenericType does not have KEY_INSTANCE_ID")
+TEST.assert(type(genericType0[GMOD_MONGODB_KEY_INSTANCE_TYPE]) == "string", "GenericType does not have KEY_INSTANCE_TYPE")
 
 local genericType1 = GenericType(MongoDB.Bson.BsonDouble)
 
-assert(genericType0[GMOD_MONGODB_KEY_INSTANCE_ID] ~= genericType1[GMOD_MONGODB_KEY_INSTANCE_ID], "GenericType KEY_INSTANCE_ID is not unique")
+TEST.assert(genericType0[GMOD_MONGODB_KEY_INSTANCE_ID] ~= genericType1[GMOD_MONGODB_KEY_INSTANCE_ID], "GenericType KEY_INSTANCE_ID is not unique")
 
 --[[
   MongoDB.Shared.HexUtils.ParseInt32
@@ -57,7 +57,7 @@ for _, test in ipairs(hexTests) do
   local hex = test[1]
   local expected = test[2]
   local actual = MongoDB.Shared.HexUtils.ParseInt32(hex)
-  assert(actual == expected, "HexUtils.ParseInt32 failed for hex: " .. hex .. " expected: " .. expected .. " actual: " .. actual)
+  TEST.assert(actual == expected, "HexUtils.ParseInt32 failed for hex: " .. hex .. " expected: " .. expected .. " actual: " .. actual)
 end
 
 -- End of tests
