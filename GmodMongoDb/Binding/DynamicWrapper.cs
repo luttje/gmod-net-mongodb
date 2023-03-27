@@ -46,6 +46,7 @@ namespace GmodMongoDb.Binding
         /// <param name="lastPartName"></param>
         private void GetTypeTable(Type type, out string lastPartName)
         {
+            var typeIsGeneric = type.IsGenericType;
             var typeFullName = type.FullName;
             
             if (baseName != null)
@@ -61,13 +62,20 @@ namespace GmodMongoDb.Binding
 
             for (int i = 0; i < parts.Length; i++)
             {
-                lua.GetField(-1, parts[i]);
+                var part = parts[i];
+
+                if(typeIsGeneric && i == parts.Length - 1)
+                {
+                    part = part.Substring(0, part.IndexOf('`'));
+                }
+                
+                lua.GetField(-1, part);
                 if (lua.IsType(-1, TYPES.NIL))
                 {
                     lua.Pop();
                     lua.CreateTable();
-                    lua.SetField(-2, parts[i]);
-                    lua.GetField(-1, parts[i]);
+                    lua.SetField(-2, part);
+                    lua.GetField(-1, part);
                 }
 
                 // Remove all except the last
