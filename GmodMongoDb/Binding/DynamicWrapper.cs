@@ -213,7 +213,11 @@ namespace GmodMongoDb.Binding
                 // Handle types that have generic parameters
                 if (type.ContainsGenericParameters)
                 {
-                    var genericTypes = genericArguments.Select(g => g.Type).ToArray();
+                    var genericTypes = TypeTools.NormalizePossibleGenericTypeArguments(
+                        type.GetGenericArguments().Length, 
+                        genericArguments,
+                        parameters.Select(p => p.GetType()).ToList()
+                    );
                     type = type.MakeGenericType(genericTypes);
                 }
 
