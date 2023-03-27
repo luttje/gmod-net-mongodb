@@ -148,18 +148,18 @@ namespace GmodMongoDb.Binding
         /// Creates a metatable for the given type. Puts it on top of the stack.
         /// </summary>
         /// <param name="lua"></param>
-        /// <param name="instance"></param>
-        public static void PushType(this ILua lua, object instance)
+        /// <param name="value"></param>
+        public static void PushType(this ILua lua, object value)
         {
-            var type = instance.GetType();
+            var type = value?.GetType();
 
             if (TypeTools.IsLuaType(type))
             {
-                TypeTools.PushType(lua, type, instance);
+                TypeTools.PushType(lua, type, value);
                 return;
             }
 
-            lua.PushInstance(instance);
+            lua.PushInstance(value);
         }
 
         /// <summary>
@@ -462,10 +462,10 @@ namespace GmodMongoDb.Binding
                     method = method.MakeGenericMethod(types);
                 }
 
-                parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
-                
                 try
                 {
+                    parameters = TypeTools.NormalizeParameters(parameters, method.GetParameters());
+
                     var result = method.Invoke(instance, parameters);
 
                     if (result != null)
@@ -473,6 +473,10 @@ namespace GmodMongoDb.Binding
                         lua.PushType(result);
                         return 1;
                     }
+                }
+                catch (NotSupportedException e)
+                {
+                    throw new Exception($"The method for {type.Namespace}.{type.Name}.{method.Name} cannot be called this way!", e);
                 }
                 catch (Exception e)
                 {

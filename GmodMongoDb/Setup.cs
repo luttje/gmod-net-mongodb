@@ -20,10 +20,11 @@ namespace GmodMongoDb
         /// <inheritdoc/>
         public void Load(ILua lua, bool is_serverside, ModuleAssemblyLoadContext assembly_context)
         {
-            // Two random types we only use to get relevant assemblies.
+            // Some types we only use to get relevant assemblies.
             var mongoDbAssemblies = new[] {
                 typeof(MongoDB.Driver.MongoClient).Assembly,
                 typeof(MongoDB.Bson.BsonDocument).Assembly,
+                typeof(MongoDB.Driver.Core.Operations.AsyncCursor<>).Assembly,
             };
 
             wrapper = new DynamicWrapper(lua, "MongoDB");

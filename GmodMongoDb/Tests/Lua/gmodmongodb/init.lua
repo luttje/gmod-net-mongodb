@@ -1,16 +1,16 @@
 ﻿TEST = {}
 
-local TEST_LOG_RESULT_PATH = "gmod_mongo_db_test_result.txt"
+local TEST_LOG_RESULT_PATH = "gmod_mongo_db_test_success.txt"
 
-file.Write(TEST_LOG_RESULT_PATH, "0")
+file.Delete(TEST_LOG_RESULT_PATH)
 
 local successfullyFinishTest = function()
 	file.Write(TEST_LOG_RESULT_PATH, "1")
 
-	MsgC(Color(0, 255, 0), "Successfully finished test")
+	MsgC(Color(0, 255, 0), "Successfully finished test\n")
 end
 
-MsgC(Color(255, 255, 0), "Starting test...")
+MsgC(Color(255, 255, 0), "Starting test...\n")
 
 --[[
 	Test start

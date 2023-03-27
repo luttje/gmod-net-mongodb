@@ -22,12 +22,13 @@ This module is built using [Gmod.NET](https://github.com/GmodNET/GmodDotNet).
 
     *Tip: Install **MongoDB Compass** when the Community Server Installer recommends it to you.*
 
-## Getting started
-
-### Installation
+## Installation
 
 1. Download [a release](https://github.com/luttje/gmod-net-mongodb/releases)
 2. Unzip the downloaded release to your `garrysmod\lua\bin\Modules` directory (create the `bin` and/or `bin\Modules` directories if they dont exist)
+
+## Usage
+Check [the tests](./GmodMongoDb/Tests/Lua/gmodmongodb/) for more examples.
 
 ### Connecting
 First load this module using the Gmod&period;NET function `dotnet.load`:
@@ -54,27 +55,27 @@ Since we are binding to C# methods and classes, some of those may be [generic](h
 
 You can filter using a BSON Document or function. 
 
-#### Using a JSON string to filter:
+#### Using a Lua table to filter:
 ```lua
-local filter = MongoDB.Bson.BsonDocument(
+local filterDocument = MongoDB.Bson.BsonDocument.Parse(
   util.TableToJSON({
     _id = "STEAM_0:1:123456"
   })
 )
+local filter = MongoDB.Driver["BsonDocumentFilterDefinition`1"](GenericType(MongoDB.Bson.BsonDocument), filterDocument)
 local amount = collection:Count(filter)
 print(amount)
 ```
 
-#### Using a function to filter:
+#### Using a JSON string to filter:
 ```lua
-local filter = MongoDB.Driver["ExpressionFilterDefinition`1"](
-  GenericType(MongoDB.Bson.BsonDocument),
-  function(document)
-    return true -- Match all documents
-  end
-)
-print(collection:Count(filter))
+local filterDocument = MongoDB.Bson.BsonDocument.Parse("{_id: 'STEAM_0:1:123456'}")
+local filter = MongoDB.Driver["BsonDocumentFilterDefinition`1"](GenericType(MongoDB.Bson.BsonDocument), filterDocument)
+local amount = collection:Count(filter)
+print(amount)
 ```
+
+**Using a function to filter is not supported.**
 
 ### Inserting data
 

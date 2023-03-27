@@ -52,6 +52,20 @@ namespace GmodMongoDb.Binding
             lua.ReferencePush(reference);
         }
 
+        public object InvokeInLua(object[] args)
+        {
+            Push(lua);
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                lua.PushType(args[i]);
+            }
+
+            lua.MCall(args.Length, 1);
+
+            return TypeTools.PullType(lua);
+        }
+
         /// <summary>
         /// Gets whether LuaFunction can cast to the specified type.
         /// </summary>
@@ -97,53 +111,34 @@ namespace GmodMongoDb.Binding
             Type[] parameterTypes = delegateInvokeMethod.GetParameters().Select(p => p.ParameterType).ToArray();
             Type returnType = delegateInvokeMethod.ReturnType;
 
-
             // Prepares a variable amount of args, based on the number of parameters in the delegate
             var allArguments = new ParameterExpression[parameterTypes.Length];
 
             for (int i = 0; i < parameterTypes.Length; i++)
                 allArguments[i] = Expression.Parameter(parameterTypes[i], $"arg{i}");
 
-            // Call the `Push` method on the LuaFunction instance
-            var luaState = Expression.Constant(lua);
-            var pushMethod = typeof(LuaFunction).GetMethod(nameof(Push), new[] { typeof(ILua) });
-            var pushCall = Expression.Call(Expression.Constant(this), pushMethod, luaState);
+            var allArgumentsAsObject = allArguments.Select(a => Expression.Convert(a, typeof(object))).ToArray();
 
-            // Call the `TypeTools.PushTypes` method with the this.lua instance and all arguments provided to the lambda expression
-            var pushTypesMethod = typeof(TypeTools).GetMethod(nameof(TypeTools.PushTypes), new[] { typeof(ILua), typeof(object[]) });
-            //var pushTypesCall = Expression.Call(pushTypesMethod, luaParam, argsParam); // works with only 1 arg
-            var pushTypesCall = Expression.Call(pushTypesMethod, luaState, Expression.NewArrayInit(typeof(object), allArguments));
+            var invokeInLuaCall = Expression.Call(
+                Expression.Constant(this),
+                typeof(LuaFunction).GetMethod(nameof(InvokeInLua)),
+                Expression.NewArrayInit(typeof(object), allArgumentsAsObject)
+            );
 
-            // Create a local expression that gets the Length of the amount of arguments provided to the lambda expression
-            // var argsLength = Expression.ArrayLength(argsParam); // works when arg is vararg[]
-            var argsLength = Expression.Constant(parameterTypes.Length);
+            var convertedResult = Expression.Convert(invokeInLuaCall, returnType);
 
-            // Call the `lua.MCall` method with the amount of arguments provided to the lambda expression and for the 1 return value
-            var mcallMethod = typeof(ILua).GetMethod(nameof(ILua.MCall), new[] { typeof(int), typeof(int) });
-            var mcallCall = Expression.Call(luaState, mcallMethod, argsLength, Expression.Constant(1));
-
-            // Call the `TypeTools.PullType` method with the this.lua instance
-            var pullTypeMethod = typeof(TypeTools).GetMethod(nameof(TypeTools.PullType), new[] { typeof(ILua), typeof(Type), typeof(int), typeof(bool) });
-            var pullTypeCall = Expression.Call(pullTypeMethod, luaState, Expression.Constant(returnType), Expression.Constant(-1), Expression.Constant(false));
-
-            // Cast the return value of `TypeTools.PullType` to the expected return type
-            var castCall = Expression.Convert(pullTypeCall, returnType);
-
-            // Return the result of the `TypeTools.PullType` method
-            var returnLabel = Expression.Label(returnType);
-            var returnStatement = Expression.Return(returnLabel, castCall);
-            var returnTarget = Expression.Label(returnLabel, Expression.Default(returnType)); //
+            var block = Expression.Block(convertedResult);
 
             // If a delegate is expected, the lambda expression will be compiled and returned as a delegate.
             if (expectedType.IsSubclassOf(typeof(Delegate)))
             {
-                var lambda = Expression.Lambda(delegateType, returnStatement, allArguments);
+                var lambda = Expression.Lambda(delegateType, block, allArguments);
                 var compiled = lambda.Compile();
                 return compiled;
             }
 
             // If an expression is expected, the lambda expression will be returned.
-            var lambdaExpression = Expression.Lambda(returnTarget, allArguments);
+            var lambdaExpression = Expression.Lambda(block, allArguments);
             return lambdaExpression;
         }
     }

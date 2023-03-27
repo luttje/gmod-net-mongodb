@@ -227,14 +227,18 @@ namespace GmodMongoDb.Binding
                     throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name} Constructor! {parameters.Length} parameters were passed (of types {types}), but only the following overloads exist: \n{signatures}");
                 }
 
-                parameters = TypeTools.NormalizeParameters(parameters, constructor.GetParameters());
-                
                 try
                 {
+                    parameters = TypeTools.NormalizeParameters(parameters, constructor.GetParameters());
+
                     var instance = constructor.Invoke(parameters);
                     lua.PushInstance(instance);
 
                     return 1;
+                }
+                catch (NotSupportedException e)
+                {
+                    throw new Exception($"The constructor for {type.Namespace}.{type.Name} cannot be called this way!", e);
                 }
                 catch (Exception e)
                 {
@@ -256,7 +260,8 @@ namespace GmodMongoDb.Binding
             lua.PushManagedFunction((lua) =>
             {
                 var instance = lua.PullInstance();
-                var value = property.GetValue(instance);
+                var instanceProperty = instance.GetType().GetProperty(property.Name);
+                var value = instanceProperty.GetValue(instance);
                 lua.PushType(value);
 
                 return 1;
@@ -276,7 +281,8 @@ namespace GmodMongoDb.Binding
             lua.PushManagedFunction((lua) =>
             {
                 var instance = lua.PullInstance();
-                var value = field.GetValue(instance);
+                var instanceField = instance.GetType().GetField(field.Name);
+                var value = instanceField.GetValue(instance);
                 lua.PushType(value);
 
                 return 1;

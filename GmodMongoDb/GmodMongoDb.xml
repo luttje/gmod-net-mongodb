@@ -104,7 +104,7 @@
             Creates a metatable for the given type. Puts it on top of the stack.
             </summary>
             <param name="lua"></param>
-            <param name="instance"></param>
+            <param name="value"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.PullType(GmodNET.API.ILua,System.Int32)">
             <summary>
