@@ -4,79 +4,72 @@ on:
   pull_request:
   push:
     branches:
-      - '**' # matches every branch
+      - "**" # matches every branch
 
 jobs:
- linux-tests:
-   runs-on: ubuntu-22.04
+  linux-tests:
+    runs-on: ubuntu-22.04
 
-   steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.8.0
-      with:
-        mongodb-version: '6.0'
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: "6.0"
 
-    - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
 
-    - name: Build GmodMongoDb
-      run: dotnet build ./GmodMongoDb.sln -c Release -o ./build
+      - name: Build GmodMongoDb
+        run: dotnet build ./GmodMongoDb.sln -c Release -o ./build
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: Linux-Raw-Build
-        path: ./build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: Linux-Raw-Build
+          path: ./build
 
-    - name: Download Steam and Install Garry's Mod Dedicated Server
-      run: |
-           wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
-           tar -xvzf steamcmd_linux.tar.gz
-           rm -rfv steamcmd_linux.tar.gz
-           ./steamcmd.sh +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit
+      - name: Download Steam and Install Garry's Mod Dedicated Server
+        run: |
+          wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
+          tar -xvzf steamcmd_linux.tar.gz
+          rm -rfv steamcmd_linux.tar.gz
+          ./steamcmd.sh +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit
 
-    - name: Download GmodDotNET
-      run: |
-           wget https://github.com/GmodNET/GmodDotNet/releases/download/1.0.0/gmod-dot-net-linux.1.0.0.tar.gz
-           mkdir -p gmod/garrysmod/lua/bin/
-           tar -xvzf gmod-dot-net-linux.1.0.0.tar.gz -C gmod/garrysmod/lua/bin/
-           rm -rfv gmod-dot-net-linux.1.0.0.tar.gz
+      - name: Download GmodDotNET
+        run: |
+          wget https://github.com/GmodNET/GmodDotNet/releases/download/1.0.0/gmod-dot-net-linux.1.0.0.tar.gz
+          mkdir -p gmod/garrysmod/lua/bin/
+          tar -xvzf gmod-dot-net-linux.1.0.0.tar.gz -C gmod/garrysmod/lua/bin/
+          rm -rfv gmod-dot-net-linux.1.0.0.tar.gz
 
-    - name: Prepare test run
-      run: |
-           mkdir -p gmod/garrysmod/lua/bin/Modules
-           cp -a build/. gmod/garrysmod/lua/bin/Modules/GmodMongoDb
-           cp ./GmodMongoDb/Tests/Lua/autorun/gmodmongodb.lua gmod/garrysmod/lua/autorun/gmodmongodb.lua
-           cp -R ./GmodMongoDb/Tests/Lua/gmodmongodb gmod/garrysmod/lua/gmodmongodb
+      - name: Prepare test run
+        run: |
+          mkdir -p gmod/garrysmod/lua/bin/Modules
+          cp -a build/. gmod/garrysmod/lua/bin/Modules/GmodMongoDb
+          cp ./GmodMongoDb/Tests/Lua/autorun/gmodmongodb.lua gmod/garrysmod/lua/autorun/gmodmongodb.lua
+          cp -R ./GmodMongoDb/Tests/Lua/gmodmongodb gmod/garrysmod/lua/gmodmongodb
 
-    - name: Debug
-      run: |
-           ls -la gmod/garrysmod/lua/autorun
-           ls -la gmod/garrysmod/lua/gmodmongodb
-           cat gmod/garrysmod/lua/autorun/gmodmongodb.lua
-           cat gmod/garrysmod/lua/gmodmongodb/init.lua
+      - name: Run Garry's Mod
+        run: ./srcds_run_x64 -game garrysmod -systemtest -condebug +sv_hibernate_think 1 || true
+        working-directory: ./gmod/
+        timeout-minutes: 1
+        continue-on-error: true
+        env:
+          COREHOST_TRACE: 1
+          COREHOST_TRACE_VERBOSITY: 4
+          COREHOST_TRACEFILE: corehost_trace.txt
 
-    - name: Run Garry's Mod
-      run: ./srcds_run_x64 -game garrysmod -systemtest -condebug +sv_hibernate_think 1 || true
-      working-directory: ./gmod/
-      timeout-minutes: 1
-      continue-on-error: true
-      env:
-        COREHOST_TRACE: 1
-        COREHOST_TRACE_VERBOSITY: 4
-        COREHOST_TRACEFILE: corehost_trace.txt
+      - name: Print Corehost trace
+        working-directory: ./gmod/
+        run: cat corehost_trace.txt
 
-    - name: Print Corehost trace
-      working-directory: ./gmod/
-      run: cat corehost_trace.txt
+      - name: Print console log
+        run: cat gmod/garrysmod/console.log
 
-    - name: Print console log
-      run: cat gmod/garrysmod/console.log
-
-    - name: Check if tests were successful
-      run: mv gmod/garrysmod/data/gmod_mongo_db_test_success.txt gmod/garrysmod/data/test_success.txt
+      - name: Check if tests were successful
+        run: mv gmod/garrysmod/data/gmod_mongo_db_test_success.txt gmod/garrysmod/data/test_success.txt
