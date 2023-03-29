@@ -1,8 +1,6 @@
 ﻿using GmodMongoDb.Binding;
 using GmodNET.API;
 using System;
-using System.Linq;
-using System.Reflection;
 
 namespace GmodMongoDb
 {
