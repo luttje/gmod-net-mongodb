@@ -5,12 +5,21 @@ local TEST_LOG_RESULT_PATH = "gmod_mongo_db_test_success.txt"
 file.Delete(TEST_LOG_RESULT_PATH)
 
 local closeServer = function()
+	TEST.client.Cluster:Dispose() -- Disconnect
+	TEST = nil -- Free resources like the MongoClient Cluster
+
 	if(game.SinglePlayer()) then
 		return
 	end
 
-	-- If our tests finish too early, the engine.CloseServer() function will not work. Therefore we will spam it until it works
-	hook.Add("Think", "GmodMongoDb.FinishAfterTests", function()
+	-- The cluster needs a bit of time to fully dispose
+	timer.Simple(2, function()
+		if(GMOD_MONGODB_DEV_PATH ~= nil) then
+			dotnet.unload(GMOD_MONGODB_DEV_PATH)
+		else
+			dotnet.unload("GmodMongoDb")
+		end
+		
 		engine.CloseServer()
 	end)
 end
@@ -22,9 +31,11 @@ TEST.assert = function(expression, errorMessage, ...)
 	end)
 
 	if(not result) then
+		ErrorNoHalt(err .. "\n")
+
 		closeServer()
 
-		error(err .. "\n", 2)
+		error("\n", 2)
 	end
 end
 
