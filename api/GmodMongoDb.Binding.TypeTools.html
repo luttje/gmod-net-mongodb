@@ -1,0 +1,668 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TypeTools
+   | Gmod MongoDB Wrapper Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TypeTools
+   | Gmod MongoDB Wrapper Docs ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="GmodMongoDb.Binding.TypeTools">
+  
+  
+  <h1 id="GmodMongoDb_Binding_TypeTools" data-uid="GmodMongoDb.Binding.TypeTools" class="text-break">Class TypeTools
+  </h1>
+  <div class="markdown level0 summary"><p>Helps converting between simple .NET and Lua types</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">TypeTools</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="GmodMongoDb.Binding.html">GmodMongoDb.Binding</a></h6>
+  <h6><strong>Assembly</strong>: GmodMongoDb.dll</h6>
+  <h5 id="GmodMongoDb_Binding_TypeTools_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class TypeTools</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_TypeTools_IsLuaType_System_Object_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.TypeTools.IsLuaType(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/TypeTools.cs/#L53">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_TypeTools_IsLuaType_" data-uid="GmodMongoDb.Binding.TypeTools.IsLuaType*"></a>
+  <h4 id="GmodMongoDb_Binding_TypeTools_IsLuaType_System_Object_" data-uid="GmodMongoDb.Binding.TypeTools.IsLuaType(System.Object)">IsLuaType(Object)</h4>
+  <div class="markdown level1 summary"><p>Returns whether the given object is a primitive type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsLuaType(object instance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">instance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_TypeTools_IsLuaType_System_Type_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.TypeTools.IsLuaType(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/TypeTools.cs/#L39">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_TypeTools_IsLuaType_" data-uid="GmodMongoDb.Binding.TypeTools.IsLuaType*"></a>
+  <h4 id="GmodMongoDb_Binding_TypeTools_IsLuaType_System_Type_" data-uid="GmodMongoDb.Binding.TypeTools.IsLuaType(System.Type)">IsLuaType(Type)</h4>
+  <div class="markdown level1 summary"><p>Returns whether the given type is a primitive type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsLuaType(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_TypeTools_LuaTypeToDotNetType_GmodNET_API_TYPES_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType(GmodNET.API.TYPES)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/TypeTools.cs/#L177">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_TypeTools_LuaTypeToDotNetType_" data-uid="GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType*"></a>
+  <h4 id="GmodMongoDb_Binding_TypeTools_LuaTypeToDotNetType_GmodNET_API_TYPES_" data-uid="GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType(GmodNET.API.TYPES)">LuaTypeToDotNetType(TYPES)</h4>
+  <div class="markdown level1 summary"><p>Convert a specified Lua type to a .NET type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type LuaTypeToDotNetType(TYPES luaType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.TYPES</span></td>
+        <td><span class="parametername">luaType</span></td>
+        <td><p>The Lua type to convert</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><p>The converted .NET type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_TypeTools_LuaTypeToDotNetType_System_Int32_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/TypeTools.cs/#L198">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_TypeTools_LuaTypeToDotNetType_" data-uid="GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType*"></a>
+  <h4 id="GmodMongoDb_Binding_TypeTools_LuaTypeToDotNetType_System_Int32_" data-uid="GmodMongoDb.Binding.TypeTools.LuaTypeToDotNetType(System.Int32)">LuaTypeToDotNetType(Int32)</h4>
+  <div class="markdown level1 summary"><p>Convert a specified Lua type to a .NET type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type LuaTypeToDotNetType(int luaType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">luaType</span></td>
+        <td><p>The Lua type to convert (must be castable to <span class="xref">GmodNET.API.TYPES</span>)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><p>The converted .NET type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_TypeTools_NormalizeParameters_System_Object___System_Reflection_ParameterInfo___.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.TypeTools.NormalizeParameters(System.Object%5B%5D%2CSystem.Reflection.ParameterInfo%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/TypeTools.cs/#L207">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_TypeTools_NormalizeParameters_" data-uid="GmodMongoDb.Binding.TypeTools.NormalizeParameters*"></a>
+  <h4 id="GmodMongoDb_Binding_TypeTools_NormalizeParameters_System_Object___System_Reflection_ParameterInfo___" data-uid="GmodMongoDb.Binding.TypeTools.NormalizeParameters(System.Object[],System.Reflection.ParameterInfo[])">NormalizeParameters(Object[], ParameterInfo[])</h4>
+  <div class="markdown level1 summary"><p>Converts the parameters to the types specified in the <code data-dev-comment-type="paramref" class="paramref">parameterInfos</code> array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object[] NormalizeParameters(object[] parameters, ParameterInfo[] parameterInfos)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>[]</td>
+        <td><span class="parametername">parameters</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a>[]</td>
+        <td><span class="parametername">parameterInfos</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_TypeTools_PullType_GmodNET_API_ILua_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.TypeTools.PullType(GmodNET.API.ILua%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/TypeTools.cs/#L164">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_TypeTools_PullType_" data-uid="GmodMongoDb.Binding.TypeTools.PullType*"></a>
+  <h4 id="GmodMongoDb_Binding_TypeTools_PullType_GmodNET_API_ILua_System_Int32_System_Boolean_" data-uid="GmodMongoDb.Binding.TypeTools.PullType(GmodNET.API.ILua,System.Int32,System.Boolean)">PullType(ILua, Int32, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Pop a value from the Lua stack and try convert it to an associated .NET type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object PullType(ILua lua, int stackPos = -1, bool forceKeepOnStack = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">stackPos</span></td>
+        <td><p>The position of the value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">forceKeepOnStack</span></td>
+        <td><p>Order the function not to pop after getting the value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><p>The .NET object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_TypeTools_PullType_GmodNET_API_ILua_System_Type_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.TypeTools.PullType(GmodNET.API.ILua%2CSystem.Type%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/TypeTools.cs/#L123">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_TypeTools_PullType_" data-uid="GmodMongoDb.Binding.TypeTools.PullType*"></a>
+  <h4 id="GmodMongoDb_Binding_TypeTools_PullType_GmodNET_API_ILua_System_Type_System_Int32_System_Boolean_" data-uid="GmodMongoDb.Binding.TypeTools.PullType(GmodNET.API.ILua,System.Type,System.Int32,System.Boolean)">PullType(ILua, Type, Int32, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Pop a value from the Lua stack and convert it to the specified .NET type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object PullType(ILua lua, Type type, int stackPos = -1, bool forceKeepOnStack = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The expected type of the value on the stack</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">stackPos</span></td>
+        <td><p>The position of the value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">forceKeepOnStack</span></td>
+        <td><p>Order the function not to pop after getting the value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><p>The .NET object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_TypeTools_PushType_GmodNET_API_ILua_System_Object_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/TypeTools.cs/#L63">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_TypeTools_PushType_" data-uid="GmodMongoDb.Binding.TypeTools.PushType*"></a>
+  <h4 id="GmodMongoDb_Binding_TypeTools_PushType_GmodNET_API_ILua_System_Object_" data-uid="GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua,System.Object)">PushType(ILua, Object)</h4>
+  <div class="markdown level1 summary"><p>Push a value of to the Lua stack.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PushType(ILua lua, object value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to push</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_TypeTools_PushType_GmodNET_API_ILua_System_Type_System_Object_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua%2CSystem.Type%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/TypeTools.cs/#L87">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_TypeTools_PushType_" data-uid="GmodMongoDb.Binding.TypeTools.PushType*"></a>
+  <h4 id="GmodMongoDb_Binding_TypeTools_PushType_GmodNET_API_ILua_System_Type_System_Object_" data-uid="GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua,System.Type,System.Object)">PushType(ILua, Type, Object)</h4>
+  <div class="markdown level1 summary"><p>Push a value of a specific type to the Lua stack.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PushType(ILua lua, Type type, object value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type of the value to push</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to push</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_TypeTools_PushTypes_GmodNET_API_ILua_System_Object___.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.TypeTools.PushTypes(GmodNET.API.ILua%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/TypeTools.cs/#L73">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_TypeTools_PushTypes_" data-uid="GmodMongoDb.Binding.TypeTools.PushTypes*"></a>
+  <h4 id="GmodMongoDb_Binding_TypeTools_PushTypes_GmodNET_API_ILua_System_Object___" data-uid="GmodMongoDb.Binding.TypeTools.PushTypes(GmodNET.API.ILua,System.Object[])">PushTypes(ILua, Object[])</h4>
+  <div class="markdown level1 summary"><p>Push multiple values to the Lua stack.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PushTypes(ILua lua, object[] values)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>[]</td>
+        <td><span class="parametername">values</span></td>
+        <td><p>The value to push</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_TypeTools.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.TypeTools%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/TypeTools.cs/#L12" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

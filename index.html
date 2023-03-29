@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Gmod MongoDB Wrapper | Gmod MongoDB Wrapper Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Gmod MongoDB Wrapper | Gmod MongoDB Wrapper Docs ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="gmod-mongodb-wrapper">Gmod MongoDB Wrapper</h1>
+
+<p>GmodMongoDb is a Garry's Mod module that provides a wrapper around the <a href="https://mongodb.github.io/mongo-csharp-driver/2.19">MongoDB C# Driver</a>.</p>
+<h2 id="usage">Usage</h2>
+<h3 id="connecting">Connecting</h3>
+<p>First load this module using the Gmod.NET function <code>dotnet.load</code>:</p>
+<pre><code class="lang-lua">dotnet.load(&quot;GmodMongoDb&quot;)
+</code></pre>
+<p>Instantiate a client using a valid MongoDB connection string:</p>
+<pre><code class="lang-lua">client = MongoDB.Driver.MongoClient(&quot;mongodb://myusername:superdupersecretpassword@127.0.0.1:27017/myappname?retryWrites=true&amp;w=majority&quot;)
+</code></pre>
+<p><em>You should only have a single client. You can re-use that for multiple different databases.</em></p>
+<h3 id="fetching-data">Fetching data</h3>
+<p>Get a database object, then get a collection object from it:</p>
+<pre><code class="lang-lua">local database = client:GetDatabase(&quot;myappname&quot;)
+local collection = database:GetCollection(
+  GenericType(MongoDB.Bson.BsonDocument), 
+  &quot;players&quot;
+)
+</code></pre>
+<p>Since we are binding to C# methods and classes, some of those may be <a href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/generics">generic</a>. For that reason you may need to supply a generic type using the <code>GenericType</code> function. Any class that has a constructor can be used as a generic type.</p>
+<p>You can filter using a BSON Document or function.</p>
+<h4 id="using-a-lua-table-to-filter">Using a Lua table to filter:</h4>
+<pre><code class="lang-lua">local filterDocument = MongoDB.Bson.BsonDocument.Parse(
+  util.TableToJSON({
+    _id = &quot;STEAM_0:1:123456&quot;
+  })
+)
+local filter = MongoDB.Driver.BsonDocumentFilterDefinition(filterDocument)
+local amount = collection:CountDocuments(filter)
+print(amount)
+</code></pre>
+<h4 id="using-a-json-string-to-filter">Using a JSON string to filter:</h4>
+<pre><code class="lang-lua">local filterDocument = MongoDB.Bson.BsonDocument.Parse(&quot;{_id: 'STEAM_0:1:123456'}&quot;)
+local filter = MongoDB.Driver.BsonDocumentFilterDefinition(filterDocument)
+local amount = collection:CountDocuments(filter)
+print(amount)
+</code></pre>
+<p><strong>Using a function to filter is not supported.</strong></p>
+<h3 id="inserting-data">Inserting data</h3>
+<h4 id="using-a-json-string-to-insert-data">Using a JSON string to insert data:</h4>
+<pre><code class="lang-lua">local newDocument = MongoDB.Bson.BsonDocument.Parse(
+  util.TableToJSON({
+    name = &quot;Jane Doe&quot;,
+    age = 28,
+    alive = true,
+  })
+)
+collection:InsertOne(newDocument)
+</code></pre>
+<h2 id="differences-with-the-mongodb-net-driver">Differences with the MongoDB .NET Driver</h2>
+<p>This module automatically binds to version <code>2.19</code> of the MongoDB .NET Driver. You can find <a href="https://mongodb.github.io/mongo-csharp-driver/2.19/apidocs/">it's API documentation here</a>.</p>
+<p>Most of the functionality and usage in Lua should be identical to it's C# variant. The only differences are caused by Lua missing some features that C# has (like generics, classes and constructors).</p>
+<p>This means that besides our documentation you may find <a href="https://mongodb.github.io/mongo-csharp-driver/2.19/apidocs/">the .NET MongoDB Driver API Reference</a> helpful.</p>
+<blockquote>
+<h3 id="some-examples-of-differences">Some examples of differences</h3>
+<h4 id="constructors">Constructors</h4>
+<p><em>In C#: <code>var client = new MongoClient(connectionString)</code></em></p>
+<p>In GmodMongoDb Lua objects are instantiated by calling the type as a function:</p>
+<pre><code class="lang-lua">local client = MongoDB.Driver.MongoClient(connectionString)
+</code></pre>
+<h4 id="getting-a-database-from-a-client">Getting a database from a client</h4>
+<p><em>In C#: <code>var database = client.GetDatabase(&quot;dbName&quot;)</code></em></p>
+<p>In GmodMongoDb Lua:</p>
+<pre><code class="lang-lua">local database = client:GetDatabase(&quot;dbName&quot;)
+</code></pre>
+<h4 id="generics">Generics</h4>
+<p><em>In C#: <code>var collection = client.GetCollection&lt;MongoDB.Bson.BsonDocument&gt;(&quot;collectionName&quot;)</code></em></p>
+<p>In GmodMongoDb Lua generics are passed as the first arguments to a function, using the <code>GenericType</code> helper function:</p>
+<pre><code class="lang-lua">local collection = client:GetCollection(GenericType(MongoDB.Bson.BsonDocument), &quot;collectionName&quot;)
+</code></pre>
+<p>When a generic type argument can be inferred from the type of a parameter, you can omit the <code>GenericType</code> call:</p>
+<pre><code class="lang-lua">local filterDocument = MongoDB.Bson.BsonDocument.Parse(&quot;{_id: 'STEAM_0:1:123456'}&quot;)
+-- These are both valid notations:
+local a = MongoDB.Driver.BsonDocumentFilterDefinition(GenericType(MongoDB.Bson.BsonDocument), filterDocument)
+local b = MongoDB.Driver.BsonDocumentFilterDefinition(filterDocument) -- can be inferred because filterDocument is of the type MongoDB.Bson.BsonDocument
+</code></pre>
+</blockquote>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/DocFx/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

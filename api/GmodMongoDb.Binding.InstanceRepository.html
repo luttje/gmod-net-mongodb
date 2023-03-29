@@ -1,0 +1,967 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class InstanceRepository
+   | Gmod MongoDB Wrapper Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class InstanceRepository
+   | Gmod MongoDB Wrapper Docs ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="GmodMongoDb.Binding.InstanceRepository">
+  
+  
+  <h1 id="GmodMongoDb_Binding_InstanceRepository" data-uid="GmodMongoDb.Binding.InstanceRepository" class="text-break">Class InstanceRepository
+  </h1>
+  <div class="markdown level0 summary"><p>Stores references to instances/objects that can't live in Lua. Can later be retrieved by their ID.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">InstanceRepository</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="GmodMongoDb.Binding.html">GmodMongoDb.Binding</a></h6>
+  <h6><strong>Assembly</strong>: GmodMongoDb.dll</h6>
+  <h5 id="GmodMongoDb_Binding_InstanceRepository_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class InstanceRepository</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository__ctor.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L97">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository__ctor_" data-uid="GmodMongoDb.Binding.InstanceRepository.#ctor*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository__ctor" data-uid="GmodMongoDb.Binding.InstanceRepository.#ctor">InstanceRepository()</h4>
+  <div class="markdown level1 summary"><p>Constructors a new instance repository.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InstanceRepository()</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_KEY_CLASS_TYPE.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.KEY_CLASS_TYPE%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L17">View Source</a>
+  </span>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_KEY_CLASS_TYPE" data-uid="GmodMongoDb.Binding.InstanceRepository.KEY_CLASS_TYPE">KEY_CLASS_TYPE</h4>
+  <div class="markdown level1 summary"><p>Name of the key in the class table where the type name (string) of a class is stored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const string KEY_CLASS_TYPE = &quot;__GmodMongoDbType&quot;</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_KEY_INSTANCE_ID.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.KEY_INSTANCE_ID%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L22">View Source</a>
+  </span>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_KEY_INSTANCE_ID" data-uid="GmodMongoDb.Binding.InstanceRepository.KEY_INSTANCE_ID">KEY_INSTANCE_ID</h4>
+  <div class="markdown level1 summary"><p>Name of the key in the instance metatable where the id (string) of the instance is stored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const string KEY_INSTANCE_ID = &quot;__GmodMongoDbInstanceId&quot;</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_KEY_INSTANCE_TYPE.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.KEY_INSTANCE_TYPE%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L27">View Source</a>
+  </span>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_KEY_INSTANCE_TYPE" data-uid="GmodMongoDb.Binding.InstanceRepository.KEY_INSTANCE_TYPE">KEY_INSTANCE_TYPE</h4>
+  <div class="markdown level1 summary"><p>Name of the key in the instance table where the type name (string) of an instance is stored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const string KEY_INSTANCE_TYPE = &quot;__GmodMongoDbInstanceType&quot;</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_KEY_TYPE_META_TABLES.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.KEY_TYPE_META_TABLES%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L32">View Source</a>
+  </span>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_KEY_TYPE_META_TABLES" data-uid="GmodMongoDb.Binding.InstanceRepository.KEY_TYPE_META_TABLES">KEY_TYPE_META_TABLES</h4>
+  <div class="markdown level1 summary"><p>Name of the key in the registry table where the metatables for instances are stored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const string KEY_TYPE_META_TABLES = &quot;__GmodMongoDbInstanceMetaTables&quot;</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_CleanTypeMetaTables_GmodNET_API_ILua_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.CleanTypeMetaTables(GmodNET.API.ILua)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L85">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_CleanTypeMetaTables_" data-uid="GmodMongoDb.Binding.InstanceRepository.CleanTypeMetaTables*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_CleanTypeMetaTables_GmodNET_API_ILua_" data-uid="GmodMongoDb.Binding.InstanceRepository.CleanTypeMetaTables(GmodNET.API.ILua)">CleanTypeMetaTables(ILua)</h4>
+  <div class="markdown level1 summary"><p>Removes all type metatables in the Lua environment to clear references.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void CleanTypeMetaTables(ILua lua)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_Cleanup_GmodNET_API_ILua_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.Cleanup(GmodNET.API.ILua)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L110">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_Cleanup_" data-uid="GmodMongoDb.Binding.InstanceRepository.Cleanup*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_Cleanup_GmodNET_API_ILua_" data-uid="GmodMongoDb.Binding.InstanceRepository.Cleanup(GmodNET.API.ILua)">Cleanup(ILua)</h4>
+  <div class="markdown level1 summary"><p>Removes all added helper functions, metatables and lingering references.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async void Cleanup(ILua lua)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="GmodMongoDb_Binding_InstanceRepository_Cleanup_GmodNET_API_ILua__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that a MongoCLient must have it's cluster closed manually and well before cleanup.
+If it's still connected it may keep a reference incorrectly and cause the module to fail to unload.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_CreateTypeMetaTable_GmodNET_API_ILua_System_Type_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.CreateTypeMetaTable(GmodNET.API.ILua%2CSystem.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L290">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_CreateTypeMetaTable_" data-uid="GmodMongoDb.Binding.InstanceRepository.CreateTypeMetaTable*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_CreateTypeMetaTable_GmodNET_API_ILua_System_Type_" data-uid="GmodMongoDb.Binding.InstanceRepository.CreateTypeMetaTable(GmodNET.API.ILua,System.Type)">CreateTypeMetaTable(ILua, Type)</h4>
+  <div class="markdown level1 summary"><p>Creates a metatable for the given type and puts it on top of the stack.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateTypeMetaTable(ILua lua, Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_GetInstanceById_System_String_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.GetInstanceById(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L160">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_GetInstanceById_" data-uid="GmodMongoDb.Binding.InstanceRepository.GetInstanceById*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_GetInstanceById_System_String_" data-uid="GmodMongoDb.Binding.InstanceRepository.GetInstanceById(System.String)">GetInstanceById(String)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the instance of an object by it's ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object GetInstanceById(string instanceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">instanceId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><p>The instance or null if it could not be found in the registry.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_GetInstanceId_GmodNET_API_ILua_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.GetInstanceId(GmodNET.API.ILua)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L44">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_GetInstanceId_" data-uid="GmodMongoDb.Binding.InstanceRepository.GetInstanceId*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_GetInstanceId_GmodNET_API_ILua_" data-uid="GmodMongoDb.Binding.InstanceRepository.GetInstanceId(GmodNET.API.ILua)">GetInstanceId(ILua)</h4>
+  <div class="markdown level1 summary"><p>Gets the instance ID of the instance on the stack in the Lua environment.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetInstanceId(ILua lua)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_GetTypeMetaTableType_GmodNET_API_ILua_System_Int32_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.GetTypeMetaTableType(GmodNET.API.ILua%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L325">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_GetTypeMetaTableType_" data-uid="GmodMongoDb.Binding.InstanceRepository.GetTypeMetaTableType*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_GetTypeMetaTableType_GmodNET_API_ILua_System_Int32_" data-uid="GmodMongoDb.Binding.InstanceRepository.GetTypeMetaTableType(GmodNET.API.ILua,System.Int32)">GetTypeMetaTableType(ILua, Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets the type stored with the metatable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type GetTypeMetaTableType(ILua lua, int stackPos = -1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">stackPos</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_GetTypeRegistryKey_System_Type_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.GetTypeRegistryKey(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L67">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_GetTypeRegistryKey_" data-uid="GmodMongoDb.Binding.InstanceRepository.GetTypeRegistryKey*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_GetTypeRegistryKey_System_Type_" data-uid="GmodMongoDb.Binding.InstanceRepository.GetTypeRegistryKey(System.Type)">GetTypeRegistryKey(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets the registry key for a type where the metatable will be stored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetTypeRegistryKey(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_IsInstance_GmodNET_API_ILua_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.IsInstance(GmodNET.API.ILua)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L173">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_IsInstance_" data-uid="GmodMongoDb.Binding.InstanceRepository.IsInstance*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_IsInstance_GmodNET_API_ILua_" data-uid="GmodMongoDb.Binding.InstanceRepository.IsInstance(GmodNET.API.ILua)">IsInstance(ILua)</h4>
+  <div class="markdown level1 summary"><p>Checks if the table on top of the stack is an instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsInstance(ILua lua)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_IsTypeMetaTable_GmodNET_API_ILua_System_Int32_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.IsTypeMetaTable(GmodNET.API.ILua%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L305">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_IsTypeMetaTable_" data-uid="GmodMongoDb.Binding.InstanceRepository.IsTypeMetaTable*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_IsTypeMetaTable_GmodNET_API_ILua_System_Int32_" data-uid="GmodMongoDb.Binding.InstanceRepository.IsTypeMetaTable(GmodNET.API.ILua,System.Int32)">IsTypeMetaTable(ILua, Int32)</h4>
+  <div class="markdown level1 summary"><p>Checks if the table on top of the stack is a type metatable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsTypeMetaTable(ILua lua, int stackPos = -1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">stackPos</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_PullInstance_GmodNET_API_ILua_System_Int32_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.PullInstance(GmodNET.API.ILua%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L254">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_PullInstance_" data-uid="GmodMongoDb.Binding.InstanceRepository.PullInstance*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_PullInstance_GmodNET_API_ILua_System_Int32_" data-uid="GmodMongoDb.Binding.InstanceRepository.PullInstance(GmodNET.API.ILua,System.Int32)">PullInstance(ILua, Int32)</h4>
+  <div class="markdown level1 summary"><p>Pulls the instance from the Lua stack and returns it to C#.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object PullInstance(ILua lua, int stackPos = -1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">stackPos</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_PushInstance_GmodNET_API_ILua_System_Object_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.PushInstance(GmodNET.API.ILua%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L271">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_PushInstance_" data-uid="GmodMongoDb.Binding.InstanceRepository.PushInstance*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_PushInstance_GmodNET_API_ILua_System_Object_" data-uid="GmodMongoDb.Binding.InstanceRepository.PushInstance(GmodNET.API.ILua,System.Object)">PushInstance(ILua, Object)</h4>
+  <div class="markdown level1 summary"><p>Pushes an instance to Lua.</p>
+<p>This creates a table for the object, assigning the appropriate type metatable and keeping a reference to the object pointer.
+Leaves the instance table on top of the stack.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PushInstance(ILua lua, object instance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">instance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_PushTypeMetatable_GmodNET_API_ILua_System_Type_System_Nullable_GmodMongoDb_Binding_TypeMetaSubTables__.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.PushTypeMetatable(GmodNET.API.ILua%2CSystem.Type%2CSystem.Nullable%7BGmodMongoDb.Binding.TypeMetaSubTables%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L346">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_PushTypeMetatable_" data-uid="GmodMongoDb.Binding.InstanceRepository.PushTypeMetatable*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_PushTypeMetatable_GmodNET_API_ILua_System_Type_System_Nullable_GmodMongoDb_Binding_TypeMetaSubTables__" data-uid="GmodMongoDb.Binding.InstanceRepository.PushTypeMetatable(GmodNET.API.ILua,System.Type,System.Nullable{GmodMongoDb.Binding.TypeMetaSubTables})">PushTypeMetatable(ILua, Type, Nullable&lt;TypeMetaSubTables&gt;)</h4>
+  <div class="markdown level1 summary"><p>Pushes a metatable onto the stack for this type (fetching it from the registry).
+It creates a new metatable if it doesn't exist yet.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PushTypeMetatable(ILua lua, Type type, TypeMetaSubTables? subTableToPush = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="GmodMongoDb.Binding.TypeMetaSubTables.html">TypeMetaSubTables</a>&gt;</td>
+        <td><span class="parametername">subTableToPush</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_RegisterInstance_System_Object_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.RegisterInstance(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L146">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_RegisterInstance_" data-uid="GmodMongoDb.Binding.InstanceRepository.RegisterInstance*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_RegisterInstance_System_Object_" data-uid="GmodMongoDb.Binding.InstanceRepository.RegisterInstance(System.Object)">RegisterInstance(Object)</h4>
+  <div class="markdown level1 summary"><p>Stores an instance in the registry for later retrieval, returns a unique id by which it can be retrieved.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string RegisterInstance(object instance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">instance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>Unique id by which it can be retrieved</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_Setup_GmodNET_API_ILua_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.Setup(GmodNET.API.ILua)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L184">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_Setup_" data-uid="GmodMongoDb.Binding.InstanceRepository.Setup*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_Setup_GmodNET_API_ILua_" data-uid="GmodMongoDb.Binding.InstanceRepository.Setup(GmodNET.API.ILua)">Setup(ILua)</h4>
+  <div class="markdown level1 summary"><p>Registers helpful Lua functions and constants into the Lua environment.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Setup(ILua lua)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository_UnregisterHelpers_GmodNET_API_ILua_.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository.UnregisterHelpers(GmodNET.API.ILua)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L227">View Source</a>
+  </span>
+  <a id="GmodMongoDb_Binding_InstanceRepository_UnregisterHelpers_" data-uid="GmodMongoDb.Binding.InstanceRepository.UnregisterHelpers*"></a>
+  <h4 id="GmodMongoDb_Binding_InstanceRepository_UnregisterHelpers_GmodNET_API_ILua_" data-uid="GmodMongoDb.Binding.InstanceRepository.UnregisterHelpers(GmodNET.API.ILua)">UnregisterHelpers(ILua)</h4>
+  <div class="markdown level1 summary"><p>Unregisters the helpers from the Lua environment.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnregisterHelpers(ILua lua)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GmodNET.API.ILua</span></td>
+        <td><span class="parametername">lua</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/luttje/gmod-net-mongodb/new/ff3e4f9e4560810425459f6068221c1ce082f744/apiSpec/new?filename=GmodMongoDb_Binding_InstanceRepository.md&amp;value=---%0Auid%3A%20GmodMongoDb.Binding.InstanceRepository%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/luttje/gmod-net-mongodb/blob/ff3e4f9e4560810425459f6068221c1ce082f744/GmodMongoDb/Binding/InstanceRepository.cs/#L12" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
