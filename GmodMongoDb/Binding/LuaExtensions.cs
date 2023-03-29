@@ -32,12 +32,12 @@ namespace GmodMongoDb.Binding
         /// Prints a table in Lua
         /// </summary>
         /// <param name="lua"></param>
-        /// <param name="index"></param>
-        public static void PrintTable(this ILua lua, int index)
+        /// <param name="stackPos"></param>
+        public static void PrintTable(this ILua lua, int stackPos = -1)
         {
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "PrintTable");
-            lua.Push(index - 2); // -2 to skip the PrintTable function and the global table
+            lua.Push(stackPos - 2); // -2 to skip the PrintTable function and the global table
             lua.MCall(1, 0);
             lua.Pop(1); // Pop the global table
         }

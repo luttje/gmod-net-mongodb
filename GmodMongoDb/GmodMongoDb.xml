@@ -116,7 +116,7 @@
             Gets the type stored with the metatable.
             </summary>
             <param name="lua"></param>
-            <param name="index"></param>
+            <param name="stackPos"></param>
             <returns></returns>
         </member>
         <member name="M:GmodMongoDb.Binding.InstanceRepository.PushTypeMetatable(GmodNET.API.ILua,System.Type,System.Nullable{GmodMongoDb.Binding.TypeMetaSubTables})">
@@ -144,7 +144,7 @@
             Prints a table in Lua
             </summary>
             <param name="lua"></param>
-            <param name="index"></param>
+            <param name="stackPos"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.GetStack(GmodNET.API.ILua)">
             <summary>

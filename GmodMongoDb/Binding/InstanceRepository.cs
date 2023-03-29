@@ -265,14 +265,14 @@ namespace GmodMongoDb.Binding
         /// Gets the type stored with the metatable.
         /// </summary>
         /// <param name="lua"></param>
-        /// <param name="index"></param>
+        /// <param name="stackPos"></param>
         /// <returns></returns>
-        public Type GetTypeMetaTableType(ILua lua, int index = -1)
+        public Type GetTypeMetaTableType(ILua lua, int stackPos = -1)
         {
-            if (!IsTypeMetaTable(lua, index))
+            if (!IsTypeMetaTable(lua, stackPos))
                 return null;
 
-            lua.GetField(index, KEY_TYPE);
+            lua.GetField(stackPos, KEY_TYPE);
             var instanceId = lua.GetString(-1);
             lua.Pop(); // Pop the instance id
 
