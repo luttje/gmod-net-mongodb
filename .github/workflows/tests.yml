@@ -2,9 +2,11 @@ name: Tests
 
 on:
   pull_request:
-  push:
     branches:
       - "**" # matches every branch
+  push:
+    branches:
+      - "main"
 
 jobs:
   linux-tests:
