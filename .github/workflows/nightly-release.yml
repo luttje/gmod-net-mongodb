@@ -2,9 +2,8 @@ name: Build, publish docs and publish nightly pre-release
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches:
+      - "main"
 
 jobs:
   windows-build:
