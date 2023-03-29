@@ -43,6 +43,16 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
+        /// Returns whether the given object is a primitive type.
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public static bool IsLuaType(object instance)
+        {
+            return IsLuaType(instance?.GetType());
+        }
+
+        /// <summary>
         /// Push a value of to the Lua stack.
         /// </summary>
         /// <param name="lua"></param>

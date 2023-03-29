@@ -62,6 +62,13 @@
             <param name="field"></param>
             <param name="type"></param>
         </member>
+        <member name="M:GmodMongoDb.Binding.InstanceRepository.GetInstanceId(GmodNET.API.ILua)">
+            <summary>
+            Gets the instance ID from the instance on the stack
+            </summary>
+            <param name="lua"></param>
+            <returns></returns>
+        </member>
         <member name="M:GmodMongoDb.Binding.InstanceRepository.CleanTypeMetaTables(GmodNET.API.ILua)">
             <summary>
             Removes all type metatables to clear references.
@@ -89,21 +96,6 @@
             <param name="lua"></param>
             <param name="instance"></param>
         </member>
-        <member name="M:GmodMongoDb.Binding.InstanceRepository.PullInstance(GmodNET.API.ILua)">
-            <summary>
-            Pulls the instance that is on top of the stack as an object
-            </summary>
-            <param name="lua"></param>
-            <returns></returns>
-        </member>
-        <member name="M:GmodMongoDb.Binding.InstanceRepository.GetInstance(GmodNET.API.ILua)">
-            <summary>
-            Gets the instance that is on top of the stack as an object.
-            Leaves the instance table on top of the stack.
-            </summary>
-            <param name="lua"></param>
-            <returns></returns>
-        </member>
         <member name="M:GmodMongoDb.Binding.InstanceRepository.CreateTypeMetaTable(GmodNET.API.ILua,System.Type)">
             <summary>
             Creates a table for the type and puts it on top of the stack. Should be used as a metatable.
@@ -116,7 +108,7 @@
             Checks if the table on top of the stack is a type metatable.
             </summary>
             <param name="lua"></param>
-            <param name="index"></param>
+            <param name="stackPos"></param>
             <returns></returns>
         </member>
         <member name="M:GmodMongoDb.Binding.InstanceRepository.GetTypeMetaTableType(GmodNET.API.ILua,System.Int32)">
@@ -173,6 +165,7 @@
             Pushes a function onto the stack that redirects calls to the specified method on the specified type.
             </summary>
             <param name="lua"></param>
+            <param name="instanceRepository"></param>
             <param name="type"></param>
             <param name="methodName"></param>
             <param name="isStatic"></param>
@@ -219,6 +212,13 @@
             Returns whether the given type is a primitive type.
             </summary>
             <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeTools.IsLuaType(System.Object)">
+            <summary>
+            Returns whether the given object is a primitive type.
+            </summary>
+            <param name="instance"></param>
             <returns></returns>
         </member>
         <member name="M:GmodMongoDb.Binding.TypeTools.PushType(GmodNET.API.ILua,System.Object)">

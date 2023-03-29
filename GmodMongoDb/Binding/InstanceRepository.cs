@@ -1,10 +1,8 @@
 ﻿using GmodNET.API;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace GmodMongoDb.Binding
 {
@@ -40,6 +38,30 @@ namespace GmodMongoDb.Binding
         {
             CleanTypeMetaTables(lua);
             UnregisterHelpers(lua);
+
+            foreach (var instance in instanceIds.Values)
+            {
+
+                if (instance is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
+                else if (instance is IAsyncDisposable asyncDisposable)
+                {
+                    asyncDisposable.DisposeAsync().GetAwaiter().GetResult();
+                }
+                else
+                {
+                    if (instance is MongoClient client) 
+                    {
+                        client.Cluster.Dispose();
+
+                        // Wait a bit for the cluster to dispose
+                        Thread.Sleep(2000); // Additionally the user should manually dispose the cluster
+                    }
+                }
+            }
+
             instanceIds.Clear();
         }
         
@@ -52,7 +74,7 @@ namespace GmodMongoDb.Binding
             return instanceId;
         }
 
-        public object GetInstance(string instanceId)
+        public object GetInstanceById(string instanceId)
         {
             if (!instanceIds.TryGetValue(instanceId, out var instance))
                 return null;
@@ -60,12 +82,24 @@ namespace GmodMongoDb.Binding
             return instance;
         }
 
-        public string? GetInstanceId(ILua lua, int stackPos)
+        public bool IsInstance(ILua lua)
         {
-            if (!lua.IsType(stackPos, TYPES.TABLE))
+            var id = GetInstanceId(lua);
+
+            return id != null && GetInstanceById(id) != null;
+        }
+
+        /// <summary>
+        /// Gets the instance ID from the instance on the stack
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <returns></returns>
+        public string GetInstanceId(ILua lua)
+        {
+            if (!lua.IsType(-1, TYPES.TABLE))
                 return null;
 
-            lua.GetField(stackPos, KEY_INSTANCE_ID);
+            lua.GetField(-1, KEY_INSTANCE_ID);
 
             if (!lua.IsType(-1, TYPES.STRING))
             {
@@ -162,13 +196,15 @@ namespace GmodMongoDb.Binding
         /// <returns></returns>
         public object PullInstance(ILua lua, int stackPos = -1)
         {
-            var instanceId = GetInstanceId(lua, stackPos);
+            lua.Push(stackPos); // copy the instance to the top
+            var instanceId = GetInstanceId(lua);
 
             if (instanceId == null)
                 throw new Exception("Cannot pull instance! Expected a table with an instance id");
 
-            lua.Pop(); // Pop the table
-            return GetInstance(instanceId);
+            lua.Pop(); // Pop the copy
+            lua.Remove(stackPos); // remove the original
+            return GetInstanceById(instanceId);
         }
 
         /// <summary>
@@ -192,40 +228,6 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Pulls the instance that is on top of the stack as an object
-        /// </summary>
-        /// <param name="lua"></param>
-        /// <returns></returns>
-        public object PullInstance(ILua lua)
-        {
-            var instance = GetInstance(lua);
-            lua.Pop();
-
-            return instance;
-        }
-
-        /// <summary>
-        /// Gets the instance that is on top of the stack as an object.
-        /// Leaves the instance table on top of the stack.
-        /// </summary>
-        /// <param name="lua"></param>
-        /// <returns></returns>
-        public object GetInstance(ILua lua)
-        {
-            // The instance table is the lowest upvalue on the stack, it's the only remaining value on the stack
-            lua.GetField(-1, KEY_INSTANCE_ID);
-            var instanceId = lua.GetString(-1);
-            lua.Pop(); // Pop the instance id
-
-            var instance = GetInstance(instanceId);
-
-            if (instance == null)
-                throw new Exception($"Instance ({instanceId}) was not found!");
-
-            return instance;
-        }
-
-        /// <summary>
         /// Creates a table for the type and puts it on top of the stack. Should be used as a metatable.
         /// </summary>
         /// <param name="lua"></param>
@@ -243,18 +245,18 @@ namespace GmodMongoDb.Binding
         /// Checks if the table on top of the stack is a type metatable.
         /// </summary>
         /// <param name="lua"></param>
-        /// <param name="index"></param>
+        /// <param name="stackPos"></param>
         /// <returns></returns>
-        public bool IsTypeMetaTable(ILua lua, int index = -1)
+        public bool IsTypeMetaTable(ILua lua, int stackPos = -1)
         {
-            if (!lua.IsType(index, TYPES.TABLE))
+            if (!lua.IsType(stackPos, TYPES.TABLE))
                 return false;
 
-            lua.GetField(index, KEY_TYPE);
+            lua.GetField(stackPos, KEY_TYPE);
             var instanceId = lua.GetString(-1);
             lua.Pop(); // Pop the instance id
 
-            var instance = GetInstance(instanceId);
+            var instance = GetInstanceById(instanceId);
 
             return instance != null;
         }
@@ -274,7 +276,7 @@ namespace GmodMongoDb.Binding
             var instanceId = lua.GetString(-1);
             lua.Pop(); // Pop the instance id
 
-            var instance = GetInstance(instanceId);
+            var instance = GetInstanceById(instanceId);
 
             return instance as Type;
         }

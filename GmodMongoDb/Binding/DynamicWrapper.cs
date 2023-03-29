@@ -1,12 +1,9 @@
-﻿using Amazon.Runtime;
-using GmodMongoDb.Util;
+﻿using GmodMongoDb.Util;
 using GmodNET.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace GmodMongoDb.Binding
 {
@@ -194,18 +191,25 @@ namespace GmodMongoDb.Binding
             lua.PushManagedFunction((lua) =>
             {
                 var upValueCount = lua.Top();
-                var parameters = new object[upValueCount - 1];
+                var parameterValues = new object[upValueCount - 1];
                 GenericType[] genericArguments = null;
 
                 for (int i = 1; i < upValueCount; i++)
                 {
-                    var index = parameters.Length - i;
-                    var parameterValue = parameters[index] = TypeTools.PullType(lua);
+                    var index = parameterValues.Length - i;
+                    object parameterValue;
+
+                    if (instanceRepository.IsInstance(lua))
+                        parameterValue = instanceRepository.PullInstance(lua);
+                    else
+                        parameterValue = TypeTools.PullType(lua);
+
+                    parameterValues[index] = parameterValue;
 
                     if (parameterValue is GenericType)
                     {
                         if (genericArguments == null)
-                            genericArguments = new GenericType[upValueCount - parameters.Length];
+                            genericArguments = new GenericType[upValueCount - parameterValues.Length];
 
                         genericArguments[index] = (GenericType)parameterValue;
                     }
@@ -214,7 +218,7 @@ namespace GmodMongoDb.Binding
                 // Remove the generic types from the parameters
                 if (genericArguments != null)
                 {
-                    parameters = parameters.Where(p => !(p is GenericType)).ToArray();
+                    parameterValues = parameterValues.Where(p => !(p is GenericType)).ToArray();
                 }
                 
                 // Pop the table itself which is the first argument passed to __call (and thus lowest on the stack)
@@ -226,28 +230,28 @@ namespace GmodMongoDb.Binding
                     var genericTypes = TypeTools.NormalizePossibleGenericTypeArguments(
                         type.GetGenericArguments().Length, 
                         genericArguments,
-                        parameters.Select(p => p.GetType()).ToList()
+                        parameterValues.Select(p => p.GetType()).ToList()
                     );
                     type = type.MakeGenericType(genericTypes);
                 }
 
-                var parameterTypes = parameters.Select(p => p.GetType()).ToList();
+                var parameterTypes = parameterValues.Select(p => p.GetType()).ToList();
                 var constructor = type.GetAppropriateConstructor(ref parameterTypes);
 
                 if (constructor == null)
                 {
                     var signatures = type.GetConstructorSignatures();
                     var types = string.Join(", ", parameterTypes);
-                    throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name} Constructor! {parameters.Length} parameters were passed (of types {types}), but only the following overloads exist: \n{signatures}");
+                    throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name} Constructor! {parameterValues.Length} parameters were passed (of types {types}), but only the following overloads exist: \n{signatures}");
                 }
 
                 try
                 {
-                    parameters = TypeTools.NormalizeParameters(parameters, constructor.GetParameters());
+                    parameterValues = TypeTools.NormalizeParameters(parameterValues, constructor.GetParameters());
                     
                     type.WarnIfObsolete(lua);
                     constructor.WarnIfObsolete(lua);
-                    var instance = constructor.Invoke(parameters);
+                    var instance = constructor.Invoke(parameterValues);
                     instanceRepository.PushInstance(lua, instance);
 
                     return 1;
@@ -281,7 +285,11 @@ namespace GmodMongoDb.Binding
                 type.WarnIfObsolete(lua);
                 instanceProperty.WarnIfObsolete(lua);
                 var value = instanceProperty.GetValue(instance);
-                lua.PushType(value);
+
+                if (TypeTools.IsLuaType(value))
+                    lua.PushType(value);
+                else
+                    instanceRepository.PushInstance(lua, value);
 
                 return 1;
             });
@@ -305,7 +313,11 @@ namespace GmodMongoDb.Binding
                 type.WarnIfObsolete(lua);
                 instanceField.WarnIfObsolete(lua);
                 var value = instanceField.GetValue(instance);
-                lua.PushType(value);
+
+                if (TypeTools.IsLuaType(value))
+                    lua.PushType(value);
+                else
+                    instanceRepository.PushInstance(lua, value);
 
                 return 1;
             });

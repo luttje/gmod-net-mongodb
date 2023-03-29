@@ -64,11 +64,35 @@ namespace GmodMongoDb.Binding
                     TYPES.STRING => $"STRING: {lua.GetString(i)}\n",
                     TYPES.BOOL => $"BOOLEAN: {(lua.GetBool(i) ? "true" : "false")}\n",
                     TYPES.NIL => "NIL\n",
+                    TYPES.TABLE => $"{lua.GetTableJson(i)}\n",
                     _ => "POINTER\n",
                 };
             }
 
             return $"{stack}\n";
+        }
+
+        public static string GetTableJson(this ILua lua, int stackPos = -1)
+        {
+            // call util.TableToJSON and return the string
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.GetField(-1, "util");
+            lua.GetField(-1, "TableToJSON");
+            lua.Push(stackPos - 3); // copy the table
+            lua.MCall(1, 1);
+            var json = lua.GetString(-1);
+            lua.Pop(2); // Pop the util and global table
+            lua.Pop(); // Pop the json string
+
+            // Get the metatable, if it is not nil, get the string to append to the json with |
+            if (lua.GetMetaTable(-1))
+            {
+                // metatable is on top of the stack
+                json += "|" + GetTableJson(lua);
+                lua.Pop(); // Pop the metatable
+            }
+
+            return json;
         }
 
         /// <summary>
@@ -85,11 +109,12 @@ namespace GmodMongoDb.Binding
 
             TypeTools.PushType(lua, type, value);
         }
-        
+
         /// <summary>
         /// Pushes a function onto the stack that redirects calls to the specified method on the specified type.
         /// </summary>
         /// <param name="lua"></param>
+        /// <param name="instanceRepository"></param>
         /// <param name="type"></param>
         /// <param name="methodName"></param>
         /// <param name="isStatic"></param>
@@ -106,7 +131,14 @@ namespace GmodMongoDb.Binding
                 for (int i = offset; i < upValueCount; i++)
                 {
                     var index = parameterValues.Length - i - (1 - offset);
-                    var parameterValue = parameterValues[index] = TypeTools.PullType(lua);
+                    object parameterValue;
+
+                    if (instanceRepository.IsInstance(lua))
+                        parameterValue = instanceRepository.PullInstance(lua);
+                    else
+                        parameterValue = TypeTools.PullType(lua);
+
+                    parameterValues[index] = parameterValue;
 
                     if (parameterValue is GenericType)
                     {
@@ -153,7 +185,11 @@ namespace GmodMongoDb.Binding
 
                     if (result != null)
                     {
-                        lua.PushType(result);
+                        if (TypeTools.IsLuaType(result))
+                            lua.PushType(result);
+                        else
+                            instanceRepository.PushInstance(lua, result);
+                        
                         return 1;
                     }
                 }
