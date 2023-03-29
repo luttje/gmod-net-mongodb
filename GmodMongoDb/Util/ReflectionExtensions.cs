@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace GmodMongoDb.Util
 {
+    /// <summary>
+    /// Extension methods for types and members for use with reflection.
+    /// </summary>
     internal static class ReflectionExtensions
     {
         /// <summary>
@@ -39,16 +42,20 @@ namespace GmodMongoDb.Util
 
             Console.WriteLine($"Warning: {member.Name} Constructor is marked as obsolete: {obsoleteAttribute.Message}");
         }
-        
+
         /// <summary>
-        /// 
+        /// Returns all methods of a type, including inherited methods. Can optionally filter by name.
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="name"></param>
+        /// <param name="name">Name to filter by</param>
         /// <returns></returns>
-        public static MethodInfo[] GetMethodsWithBase(this Type type, string name)
+        public static MethodInfo[] GetMethodsWithBase(this Type type, string name = null)
         {
-            var ownMethods = type.GetMethods().Where(m => m.Name == name);
+            IEnumerable<MethodInfo> ownMethods = type.GetMethods();
+            
+            if(name != null)
+                ownMethods = ownMethods.Where(m => m.Name == name);
+            
             var methods = new List<MethodInfo>();
 
             // Get the base methods (if we override it)
@@ -59,6 +66,7 @@ namespace GmodMongoDb.Util
             {
                 var method = ownMethod;
                 Type lastDeclaringType;
+                
                 do
                 {
                     lastDeclaringType = method.DeclaringType;
@@ -88,20 +96,20 @@ namespace GmodMongoDb.Util
             {
                 signatures.Append("\t- ");
                 signatures.Append(validMethod.ReturnType.Name);
-                signatures.Append(" ");
+                signatures.Append(' ');
                 signatures.Append(validMethod.Name);
 
                 if (!validMethod.DeclaringType.Equals(type))
-                    signatures.Append("*");
+                    signatures.Append('*');
 
-                signatures.Append("(");
+                signatures.Append('(');
 
                 var methodParameters = validMethod.GetParameters();
 
                 for (int i = 0; i < methodParameters.Length; i++)
                 {
                     signatures.Append(methodParameters[i].ParameterType.Name);
-                    signatures.Append(" ");
+                    signatures.Append(' ');
                     signatures.Append(methodParameters[i].Name);
 
                     if (methodParameters[i].HasDefaultValue)
@@ -136,14 +144,14 @@ namespace GmodMongoDb.Util
             {
                 signatures.Append("\t- ");
                 signatures.Append(type.Name);
-                signatures.Append("(");
+                signatures.Append('(');
 
                 var constructorParameters = constructor.GetParameters();
 
                 for (int i = 0; i < constructorParameters.Length; i++)
                 {
                     signatures.Append(constructorParameters[i].ParameterType.Name);
-                    signatures.Append(" ");
+                    signatures.Append(' ');
                     signatures.Append(constructorParameters[i].Name);
 
                     if (constructorParameters[i].HasDefaultValue)
@@ -231,7 +239,7 @@ namespace GmodMongoDb.Util
                 if (constructorParameters.Length < parameterTypes.Count)
                     continue;
 
-                var normalizedParameterTypes = TypeTools.NormalizeParameterTypes(parameterTypes, constructorParameters);
+                var normalizedParameterTypes = TypeTools.NormalizeParameterTypes(parameterTypes.ToArray(), constructorParameters);
 
                 bool isAppropriate = true;
 
@@ -276,9 +284,6 @@ namespace GmodMongoDb.Util
         /// <returns></returns>
         public static bool IsAssignableToGenericType(this Type thisGenericType, Type otherType)
         {
-            var equals = thisGenericType.Equals(otherType);
-            var equiv = thisGenericType.IsEquivalentTo(otherType);
-
             if (thisGenericType.IsAssignableTo(otherType))
                 return true;
 

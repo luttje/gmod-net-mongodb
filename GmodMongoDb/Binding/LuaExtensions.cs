@@ -10,7 +10,7 @@ using System.Text;
 namespace GmodMongoDb.Binding
 {
     /// <summary>
-    /// Helpful functions to debug or message in Lua
+    /// Helpful functions to debug or message in Lua.
     /// </summary>
     public static class LuaExtensions
     {
@@ -72,6 +72,12 @@ namespace GmodMongoDb.Binding
             return $"{stack}\n";
         }
 
+        /// <summary>
+        /// Builds a string representation of a table (and its metatable) in the stack by calling the util.TableToJSON function.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <param name="stackPos"></param>
+        /// <returns></returns>
         public static string GetTableJson(this ILua lua, int stackPos = -1)
         {
             // call util.TableToJSON and return the string
@@ -87,8 +93,8 @@ namespace GmodMongoDb.Binding
             // Get the metatable, if it is not nil, get the string to append to the json with |
             if (lua.GetMetaTable(-1))
             {
-                // metatable is on top of the stack
-                json += "|" + GetTableJson(lua);
+                // The metatable is on top of the stack
+                json += $" (metatable: {GetTableJson(lua)})";
                 lua.Pop(); // Pop the metatable
             }
 
@@ -140,18 +146,17 @@ namespace GmodMongoDb.Binding
 
                     parameterValues[index] = parameterValue;
 
-                    if (parameterValue is GenericType)
+                    if (parameterValue is GenericType genericType)
                     {
-                        if (genericTypeArgumentValues == null)
-                            genericTypeArgumentValues = new GenericType[upValueCount - parameterValues.Length];
+                        genericTypeArgumentValues ??= new GenericType[upValueCount - parameterValues.Length];
 
-                        genericTypeArgumentValues[index] = (GenericType)parameterValue;
+                        genericTypeArgumentValues[index] = genericType;
                     }
                 }
 
                 // Remove the generic types from the parameters
                 if (genericTypeArgumentValues != null)
-                    parameterValues = parameterValues.Where(p => !(p is GenericType)).ToArray();
+                    parameterValues = parameterValues.Where(p => p is not GenericType).ToArray();
 
                 var instance = !isStatic ? instanceRepository.PullInstance(lua) : null;
                 var parameterTypes = parameterValues.Select(p => p.GetType()).ToList();

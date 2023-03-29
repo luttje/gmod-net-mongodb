@@ -31,9 +31,11 @@ TEST.assert = function(expression, errorMessage, ...)
 	end)
 
 	if(not result) then
+		ErrorNoHalt(err .. "\n")
+
 		closeServer()
 
-		error(err .. "\n", 2)
+		error("\n", 2)
 	end
 end
 

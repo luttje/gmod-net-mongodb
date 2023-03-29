@@ -2,17 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace GmodMongoDb.Binding
 {
     /// <summary>
-    /// Helps converting between .NET objects/types and Lua types
+    /// Helps converting between simple .NET and Lua types
     /// </summary>
     public static class TypeTools
     {
+        /// <summary>
+        /// Whether the given type is a numeric type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         private static bool IsNumericType(Type type)
         {
             return type == typeof(byte) ||
@@ -249,19 +252,19 @@ namespace GmodMongoDb.Binding
         /// Converts the parameter types to the types specified in the <paramref name="parameterInfos"/> array.
         /// </summary>
         /// <param name="parameterTypes"></param>
-        /// <param name="constructorParameters"></param>
+        /// <param name="parameterInfos"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        internal static List<object> NormalizeParameterTypes(List<Type> parameterTypes, ParameterInfo[] constructorParameters)
+        internal static List<object> NormalizeParameterTypes(Type[] parameterTypes, ParameterInfo[] parameterInfos)
         {
-            var normalizedParameterTypes = new object[constructorParameters.Length];
+            var normalizedParameterTypes = new object[parameterInfos.Length];
 
-            for (int i = 0; i < constructorParameters.Length; i++)
+            for (int i = 0; i < parameterInfos.Length; i++)
             {
-                if (i < parameterTypes.Count)
+                if (i < parameterTypes.Length)
                 {
                     // Cast the parameter to the expected type
-                    var expectedType = constructorParameters[i].ParameterType;
+                    var expectedType = parameterInfos[i].ParameterType;
 
                     if (parameterTypes[i] == typeof(LuaFunction) && LuaFunction.GetCastsTo(expectedType))
                     {
@@ -272,7 +275,7 @@ namespace GmodMongoDb.Binding
                         normalizedParameterTypes[i] = parameterTypes[i];
                     }
                 }
-                else if (constructorParameters[i].HasDefaultValue)
+                else if (parameterInfos[i].HasDefaultValue)
                 {
                     normalizedParameterTypes[i] = Type.Missing;
                 }
@@ -285,13 +288,28 @@ namespace GmodMongoDb.Binding
             return new List<object>(normalizedParameterTypes);
         }
 
-        internal static Type[] NormalizePossibleGenericTypeArguments(int genericTypeArgumentsAmount, GenericType[] genericTypeArgumentValues, List<Type> parameterTypes)
+        /// <summary>
+        /// Uses the provided parameter types to supplement the generic type arguments, until the desired number of generic type arguments is reached.
+        /// </summary>
+        /// <param name="genericTypeArgumentsAmount">Desired number of generic type arguments</param>
+        /// <param name="genericTypeArgumentValues">Already provided type arguments</param>
+        /// <param name="parameterTypes">Types of the parameters provided, used to suplement the generic type arguments.</param>
+        /// <returns>The correct amount of types for the generic type arguments</returns>
+        /// <exception cref="TargetInvocationException">Fails if not enough parameters were given to supplement the generic type arugments.</exception>
+        internal static Type[] NormalizePossibleGenericTypeArguments(
+            int genericTypeArgumentsAmount, 
+            GenericType[] genericTypeArgumentValues, 
+            List<Type> parameterTypes)
         {
             var normalizedGenericTypeValues = new GenericType?[genericTypeArgumentsAmount];
             var valueCount = genericTypeArgumentValues?.Length ?? 0;
 
             if (genericTypeArgumentValues != null)
             {
+                // Early exit if the amount of provided generic type arguments is already enough
+                if (genericTypeArgumentValues.Length == genericTypeArgumentsAmount)
+                    return genericTypeArgumentValues.Select(x => x.Type).ToArray();
+
                 for (int i = 0; i < valueCount && i < genericTypeArgumentsAmount; i++)
                     normalizedGenericTypeValues[i] = genericTypeArgumentValues[i];
             }

@@ -6,95 +6,42 @@ using System.Threading;
 
 namespace GmodMongoDb.Binding
 {
+    /// <summary>
+    /// Stores references to instances/objects that can't live in Lua. Can later be retrieved by their ID.
+    /// </summary>
     public class InstanceRepository
     {
-        public const string KEY_TYPE = "__GmodMongoDbType";
-        public const string KEY_INSTANCE_ID = "__GmodMongoDbInstanceId";
-        public const string KEY_INSTANCE_TYPE = "__GmodMongoDbInstanceType";
-        public const string KEY_TYPE_META_TABLES = "__GmodMongoDbInstanceMetaTables";
-
-        private Dictionary<string, object> instanceIds;
-
-        public static string GetTypeRegistryKey(Type type)
-        {
-            var key = type.FullName;
-
-            var genericInfoIndex = key.IndexOf('[');
-
-            if (genericInfoIndex > -1)
-            {
-                key = key.Substring(0, genericInfoIndex);
-            }
-
-            return key;
-        }
-
-        public InstanceRepository() 
-        {
-            instanceIds = new();
-        }
-
-        public void Cleanup(ILua lua)
-        {
-            CleanTypeMetaTables(lua);
-            UnregisterHelpers(lua);
-
-            foreach (var instance in instanceIds.Values)
-            {
-
-                if (instance is IDisposable disposable)
-                {
-                    disposable.Dispose();
-                }
-                else if (instance is IAsyncDisposable asyncDisposable)
-                {
-                    asyncDisposable.DisposeAsync().GetAwaiter().GetResult();
-                }
-                else
-                {
-                    if (instance is MongoClient client) 
-                    {
-                        client.Cluster.Dispose();
-
-                        // Wait a bit for the cluster to dispose
-                        Thread.Sleep(2000); // Additionally the user should manually dispose the cluster
-                    }
-                }
-            }
-
-            instanceIds.Clear();
-        }
-        
-        public string RegisterInstance(object instance)
-        {
-            var instanceId = Guid.NewGuid().ToString();
-
-            instanceIds.Add(instanceId, instance);
-
-            return instanceId;
-        }
-
-        public object GetInstanceById(string instanceId)
-        {
-            if (!instanceIds.TryGetValue(instanceId, out var instance))
-                return null;
-
-            return instance;
-        }
-
-        public bool IsInstance(ILua lua)
-        {
-            var id = GetInstanceId(lua);
-
-            return id != null && GetInstanceById(id) != null;
-        }
+        /// <summary>
+        /// Name of the key in the class table where the type name (string) of a class is stored.
+        /// </summary>
+        public const string KEY_CLASS_TYPE = "__GmodMongoDbType";
 
         /// <summary>
-        /// Gets the instance ID from the instance on the stack
+        /// Name of the key in the instance metatable where the id (string) of the instance is stored.
+        /// </summary>
+        public const string KEY_INSTANCE_ID = "__GmodMongoDbInstanceId";
+
+        /// <summary>
+        /// Name of the key in the instance table where the type name (string) of an instance is stored.
+        /// </summary>
+        public const string KEY_INSTANCE_TYPE = "__GmodMongoDbInstanceType";
+
+        /// <summary>
+        /// Name of the key in the registry table where the metatables for instances are stored.
+        /// </summary>
+        public const string KEY_TYPE_META_TABLES = "__GmodMongoDbInstanceMetaTables";
+
+        /// <summary>
+        /// Map of instance id's to the referenced instances.
+        /// </summary>
+        private readonly Dictionary<string, object> instanceIds;
+
+        /// <summary>
+        /// Gets the instance ID of the instance on the stack in the Lua environment.
         /// </summary>
         /// <param name="lua"></param>
         /// <returns></returns>
-        public string GetInstanceId(ILua lua)
+        public static string GetInstanceId(ILua lua)
         {
             if (!lua.IsType(-1, TYPES.TABLE))
                 return null;
@@ -113,10 +60,29 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Removes all type metatables to clear references.
+        /// Gets the registry key for a type where the metatable will be stored.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static string GetTypeRegistryKey(Type type)
+        {
+            var key = type.FullName;
+
+            var genericInfoIndex = key.IndexOf('[');
+
+            if (genericInfoIndex > -1)
+            {
+                key = key.Substring(0, genericInfoIndex);
+            }
+
+            return key;
+        }
+
+        /// <summary>
+        /// Removes all type metatables in the Lua environment to clear references.
         /// </summary>
         /// <param name="lua"></param>
-        public void CleanTypeMetaTables(ILua lua)
+        public static void CleanTypeMetaTables(ILua lua)
         {
             // Clean up the instance repository
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_REG);
@@ -126,21 +92,108 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Registers helpful Lua functions and constants
+        /// Constructors a new instance repository.
         /// </summary>
+        public InstanceRepository() 
+        {
+            instanceIds = new();
+        }
+
+        /// <summary>
+        /// Removes all added helper functions, metatables and lingering references.
+        /// </summary>
+        /// <remarks>
+        /// Note that a MongoCLient must have it's cluster closed manually and well before cleanup. 
+        /// If it's still connected it may keep a reference incorrectly and cause the module to fail to unload.
+        /// </remarks>
+        /// <param name="lua"></param>
+        public async void Cleanup(ILua lua)
+        {
+            CleanTypeMetaTables(lua);
+            UnregisterHelpers(lua);
+
+            foreach (var instance in instanceIds.Values)
+            {
+
+                if (instance is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
+                else if (instance is IAsyncDisposable asyncDisposable)
+                {
+                    await asyncDisposable.DisposeAsync();
+                }
+                else
+                {
+                    if (instance is MongoClient client) 
+                    {
+                        client.Cluster.Dispose();
+
+                        // Wait a bit for the cluster to dispose
+                        Thread.Sleep(2000); // Additionally the user should manually dispose the cluster
+                    }
+                }
+            }
+
+            instanceIds.Clear();
+        }
+
+        /// <summary>
+        /// Stores an instance in the registry for later retrieval, returns a unique id by which it can be retrieved.
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <returns>Unique id by which it can be retrieved</returns>
+        public string RegisterInstance(object instance)
+        {
+            var instanceId = Guid.NewGuid().ToString();
+
+            instanceIds.Add(instanceId, instance);
+
+            return instanceId;
+        }
+
+        /// <summary>
+        /// Retrieves the instance of an object by it's ID.
+        /// </summary>
+        /// <param name="instanceId"></param>
+        /// <returns>The instance or null if it could not be found in the registry.</returns>
+        public object GetInstanceById(string instanceId)
+        {
+            if (!instanceIds.TryGetValue(instanceId, out var instance))
+                return null;
+
+            return instance;
+        }
+
+        /// <summary>
+        /// Checks if the table on top of the stack is an instance.
+        /// </summary>
+        /// <param name="lua"></param>
+        /// <returns></returns>
+        public bool IsInstance(ILua lua)
+        {
+            var id = GetInstanceId(lua);
+
+            return id != null && GetInstanceById(id) != null;
+        }
+
+        /// <summary>
+        /// Registers helpful Lua functions and constants into the Lua environment.
+        /// </summary>
+        /// <param name="lua"></param>
         public void Setup(ILua lua)
         {
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB); // Global table
 
             // Global constants
-            lua.PushString(KEY_TYPE);
-            lua.SetField(-2, $"{GmodMongoDb.Setup.CONSTANT_PREFIX}KEY_TYPE");
+            lua.PushString(KEY_CLASS_TYPE);
+            lua.SetField(-2, $"{GmodMongoDb.Setup.CONSTANT_PREFIX}{nameof(KEY_CLASS_TYPE)}");
             lua.PushString(KEY_INSTANCE_ID);
-            lua.SetField(-2, $"{GmodMongoDb.Setup.CONSTANT_PREFIX}KEY_INSTANCE_ID");
+            lua.SetField(-2, $"{GmodMongoDb.Setup.CONSTANT_PREFIX}{nameof(KEY_INSTANCE_ID)}");
             lua.PushString(KEY_INSTANCE_TYPE);
-            lua.SetField(-2, $"{GmodMongoDb.Setup.CONSTANT_PREFIX}KEY_INSTANCE_TYPE");
+            lua.SetField(-2, $"{GmodMongoDb.Setup.CONSTANT_PREFIX}{nameof(KEY_INSTANCE_TYPE)}");
             lua.PushString(KEY_TYPE_META_TABLES);
-            lua.SetField(-2, $"{GmodMongoDb.Setup.CONSTANT_PREFIX}KEY_TYPE_META_TABLES");
+            lua.SetField(-2, $"{GmodMongoDb.Setup.CONSTANT_PREFIX}{nameof(KEY_TYPE_META_TABLES)}");
 
             // Global GenericType function to help construct generic types
             lua.PushManagedFunction(lua =>
@@ -167,6 +220,10 @@ namespace GmodMongoDb.Binding
             lua.Pop(); // Global table
         }
 
+        /// <summary>
+        /// Unregisters the helpers from the Lua environment.
+        /// </summary>
+        /// <param name="lua"></param>
         public void UnregisterHelpers(ILua lua)
         {
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB); // Global table
@@ -189,7 +246,7 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Creates a metatable for the given type. Puts it on top of the stack.
+        /// Pulls the instance from the Lua stack and returns it to C#.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="stackPos"></param>
@@ -197,18 +254,16 @@ namespace GmodMongoDb.Binding
         public object PullInstance(ILua lua, int stackPos = -1)
         {
             lua.Push(stackPos); // copy the instance to the top
-            var instanceId = GetInstanceId(lua);
-
-            if (instanceId == null)
-                throw new Exception("Cannot pull instance! Expected a table with an instance id");
-
+            var instanceId = GetInstanceId(lua) ?? throw new Exception("Cannot pull instance! Expected a table with an instance id");
             lua.Pop(); // Pop the copy
             lua.Remove(stackPos); // remove the original
             return GetInstanceById(instanceId);
         }
 
         /// <summary>
-        /// Creates a table for the object, assigning the appropriate type metatable and keeping a reference to the object pointer.
+        /// Pushes an instance to Lua.
+        /// 
+        /// This creates a table for the object, assigning the appropriate type metatable and keeping a reference to the object pointer.
         /// Leaves the instance table on top of the stack.
         /// </summary>
         /// <param name="lua"></param>
@@ -228,7 +283,7 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Creates a table for the type and puts it on top of the stack. Should be used as a metatable.
+        /// Creates a metatable for the given type and puts it on top of the stack.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="type"></param>
@@ -236,7 +291,7 @@ namespace GmodMongoDb.Binding
         {
             lua.CreateTable();
             lua.PushString(RegisterInstance(type));
-            lua.SetField(-2, KEY_TYPE);
+            lua.SetField(-2, KEY_CLASS_TYPE);
             lua.Push(-1);
             lua.SetField(-2, "__index");
         }
@@ -252,7 +307,7 @@ namespace GmodMongoDb.Binding
             if (!lua.IsType(stackPos, TYPES.TABLE))
                 return false;
 
-            lua.GetField(stackPos, KEY_TYPE);
+            lua.GetField(stackPos, KEY_CLASS_TYPE);
             var instanceId = lua.GetString(-1);
             lua.Pop(); // Pop the instance id
 
@@ -272,7 +327,7 @@ namespace GmodMongoDb.Binding
             if (!IsTypeMetaTable(lua, stackPos))
                 return null;
 
-            lua.GetField(stackPos, KEY_TYPE);
+            lua.GetField(stackPos, KEY_CLASS_TYPE);
             var instanceId = lua.GetString(-1);
             lua.Pop(); // Pop the instance id
 
@@ -282,7 +337,8 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Pushes a metatable onto the stack for this type (fetching it from the registry). It creates a new metatable if it doesn't exist yet.
+        /// Pushes a metatable onto the stack for this type (fetching it from the registry). 
+        /// It creates a new metatable if it doesn't exist yet.
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="type"></param>

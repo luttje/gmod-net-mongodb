@@ -4,12 +4,37 @@
         <name>GmodMongoDb</name>
     </assembly>
     <members>
+        <member name="T:GmodMongoDb.Binding.DynamicWrapper">
+            <summary>
+            Wrapper that binds a managed type's constructors, methods, properties, and fields to Lua.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.DynamicWrapper.lua">
+            <summary>
+            A reference to the Lua environment provided to the constructor.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.DynamicWrapper.baseName">
+            <summary>
+            The name of the table of which all types will be (extended) children of.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.DynamicWrapper.instanceRepository">
+            <summary>
+            A storage for managed object instances.
+            </summary>
+        </member>
         <member name="M:GmodMongoDb.Binding.DynamicWrapper.#ctor(GmodNET.API.ILua,System.String)">
             <summary>
-            Create a wrapper that can create wrappers for any type
+            Create a wrapper that can create bindings for any given type
             </summary>
             <param name="lua"></param>
             <param name="baseName"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.Dispose">
+            <summary>
+            Cleans up any handles and references by removing tables and functions.
+            </summary>
         </member>
         <member name="M:GmodMongoDb.Binding.DynamicWrapper.GetTypeTable(System.Type,System.String@)">
             <summary>
@@ -23,6 +48,12 @@
             Registers a type in sub-tables for each namespace part (seperated by dots)
             </summary>
             <param name="type"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.DynamicWrapper.RegisterTypes(System.Reflection.Assembly[])">
+            <summary>
+            Registers all types in the provided assembly, if their namespace is not null.
+            </summary>
+            <param name="assemblies"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.DynamicWrapper.SetStaticManagedMethod(System.Reflection.MethodInfo,System.Type)">
             <summary>
@@ -62,27 +93,120 @@
             <param name="field"></param>
             <param name="type"></param>
         </member>
+        <member name="T:GmodMongoDb.Binding.GenericType">
+            <summary>
+            Represents a generic type. Can be pushed as an instance to Lua, so that it can later be used to build a generic type or method.
+            </summary>
+        </member>
+        <member name="P:GmodMongoDb.Binding.GenericType.Type">
+            <summary>
+            The type this generic type represents.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.GenericType.#ctor(System.Type)">
+            <param name="type"></param>
+        </member>
+        <member name="T:GmodMongoDb.Binding.InstanceRepository">
+            <summary>
+            Stores references to instances/objects that can't live in Lua. Can later be retrieved by their ID.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.InstanceRepository.KEY_CLASS_TYPE">
+            <summary>
+            Name of the key in the class table where the type name (string) of a class is stored.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.InstanceRepository.KEY_INSTANCE_ID">
+            <summary>
+            Name of the key in the instance metatable where the id (string) of the instance is stored.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.InstanceRepository.KEY_INSTANCE_TYPE">
+            <summary>
+            Name of the key in the instance table where the type name (string) of an instance is stored.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.InstanceRepository.KEY_TYPE_META_TABLES">
+            <summary>
+            Name of the key in the registry table where the metatables for instances are stored.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.InstanceRepository.instanceIds">
+            <summary>
+            Map of instance id's to the referenced instances.
+            </summary>
+        </member>
         <member name="M:GmodMongoDb.Binding.InstanceRepository.GetInstanceId(GmodNET.API.ILua)">
             <summary>
-            Gets the instance ID from the instance on the stack
+            Gets the instance ID of the instance on the stack in the Lua environment.
             </summary>
             <param name="lua"></param>
             <returns></returns>
         </member>
+        <member name="M:GmodMongoDb.Binding.InstanceRepository.GetTypeRegistryKey(System.Type)">
+            <summary>
+            Gets the registry key for a type where the metatable will be stored.
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
         <member name="M:GmodMongoDb.Binding.InstanceRepository.CleanTypeMetaTables(GmodNET.API.ILua)">
             <summary>
-            Removes all type metatables to clear references.
+            Removes all type metatables in the Lua environment to clear references.
             </summary>
             <param name="lua"></param>
         </member>
+        <member name="M:GmodMongoDb.Binding.InstanceRepository.#ctor">
+            <summary>
+            Constructors a new instance repository.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.InstanceRepository.Cleanup(GmodNET.API.ILua)">
+            <summary>
+            Removes all added helper functions, metatables and lingering references.
+            </summary>
+            <remarks>
+            Note that a MongoCLient must have it's cluster closed manually and well before cleanup. 
+            If it's still connected it may keep a reference incorrectly and cause the module to fail to unload.
+            </remarks>
+            <param name="lua"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.InstanceRepository.RegisterInstance(System.Object)">
+            <summary>
+            Stores an instance in the registry for later retrieval, returns a unique id by which it can be retrieved.
+            </summary>
+            <param name="instance"></param>
+            <returns>Unique id by which it can be retrieved</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.InstanceRepository.GetInstanceById(System.String)">
+            <summary>
+            Retrieves the instance of an object by it's ID.
+            </summary>
+            <param name="instanceId"></param>
+            <returns>The instance or null if it could not be found in the registry.</returns>
+        </member>
+        <member name="M:GmodMongoDb.Binding.InstanceRepository.IsInstance(GmodNET.API.ILua)">
+            <summary>
+            Checks if the table on top of the stack is an instance.
+            </summary>
+            <param name="lua"></param>
+            <returns></returns>
+        </member>
         <member name="M:GmodMongoDb.Binding.InstanceRepository.Setup(GmodNET.API.ILua)">
             <summary>
-            Registers helpful Lua functions and constants
+            Registers helpful Lua functions and constants into the Lua environment.
             </summary>
+            <param name="lua"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.InstanceRepository.UnregisterHelpers(GmodNET.API.ILua)">
+            <summary>
+            Unregisters the helpers from the Lua environment.
+            </summary>
+            <param name="lua"></param>
         </member>
         <member name="M:GmodMongoDb.Binding.InstanceRepository.PullInstance(GmodNET.API.ILua,System.Int32)">
             <summary>
-            Creates a metatable for the given type. Puts it on top of the stack.
+            Pulls the instance from the Lua stack and returns it to C#.
             </summary>
             <param name="lua"></param>
             <param name="stackPos"></param>
@@ -90,7 +214,9 @@
         </member>
         <member name="M:GmodMongoDb.Binding.InstanceRepository.PushInstance(GmodNET.API.ILua,System.Object)">
             <summary>
-            Creates a table for the object, assigning the appropriate type metatable and keeping a reference to the object pointer.
+            Pushes an instance to Lua.
+            
+            This creates a table for the object, assigning the appropriate type metatable and keeping a reference to the object pointer.
             Leaves the instance table on top of the stack.
             </summary>
             <param name="lua"></param>
@@ -98,7 +224,7 @@
         </member>
         <member name="M:GmodMongoDb.Binding.InstanceRepository.CreateTypeMetaTable(GmodNET.API.ILua,System.Type)">
             <summary>
-            Creates a table for the type and puts it on top of the stack. Should be used as a metatable.
+            Creates a metatable for the given type and puts it on top of the stack.
             </summary>
             <param name="lua"></param>
             <param name="type"></param>
@@ -121,7 +247,8 @@
         </member>
         <member name="M:GmodMongoDb.Binding.InstanceRepository.PushTypeMetatable(GmodNET.API.ILua,System.Type,System.Nullable{GmodMongoDb.Binding.TypeMetaSubTables})">
             <summary>
-            Pushes a metatable onto the stack for this type (fetching it from the registry). It creates a new metatable if it doesn't exist yet.
+            Pushes a metatable onto the stack for this type (fetching it from the registry). 
+            It creates a new metatable if it doesn't exist yet.
             </summary>
             <param name="lua"></param>
             <param name="type"></param>
@@ -129,7 +256,7 @@
         </member>
         <member name="T:GmodMongoDb.Binding.LuaExtensions">
             <summary>
-            Helpful functions to debug or message in Lua
+            Helpful functions to debug or message in Lua.
             </summary>
         </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.Print(GmodNET.API.ILua,System.Object)">
@@ -153,6 +280,14 @@
             <param name="lua"></param>
             <returns>A string containing the types on the stack</returns>
         </member>
+        <member name="M:GmodMongoDb.Binding.LuaExtensions.GetTableJson(GmodNET.API.ILua,System.Int32)">
+            <summary>
+            Builds a string representation of a table (and its metatable) in the stack by calling the util.TableToJSON function.
+            </summary>
+            <param name="lua"></param>
+            <param name="stackPos"></param>
+            <returns></returns>
+        </member>
         <member name="M:GmodMongoDb.Binding.LuaExtensions.PushType(GmodNET.API.ILua,System.Object)">
             <summary>
             Creates a metatable for the given type. Puts it on top of the stack.
@@ -171,6 +306,32 @@
             <param name="isStatic"></param>
             <exception cref="T:System.Exception"></exception>
         </member>
+        <member name="T:GmodMongoDb.Binding.LuaFunction">
+            <summary>
+            Represents a Managed or Lua function that can be called from Lua or C#.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.LuaFunction.lua">
+            <summary>
+            Keeps a reference to the Lua environment this function is bound to.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.LuaFunction.reference">
+            <summary>
+            A reference to the function in Lua.
+            </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaFunction.#ctor(GmodNET.API.ILua)">
+            <summary>
+            Creates a reference to the Lua function that is currently on the top of the stack.
+            </summary>
+            <param name="lua"></param>
+        </member>
+        <member name="M:GmodMongoDb.Binding.LuaFunction.Dispose">
+            <summary>
+            Frees the Lua function reference from memory
+            </summary>
+        </member>
         <member name="M:GmodMongoDb.Binding.LuaFunction.Get(GmodNET.API.ILua,System.Int32)">
             <summary>
             Reads the Lua function at the top of the stack and returns it as a <see cref="T:GmodMongoDb.Binding.LuaFunction"/>.
@@ -186,6 +347,13 @@
             </summary>
             <param name="lua"></param>
         </member>
+        <member name="M:GmodMongoDb.Binding.LuaFunction.InvokeInLua(System.Object[])">
+            <summary>
+            Call the Lua function from C#
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
         <member name="M:GmodMongoDb.Binding.LuaFunction.GetCastsTo(System.Type)">
             <summary>
             Gets whether LuaFunction can cast to the specified type.
@@ -195,17 +363,43 @@
         </member>
         <member name="M:GmodMongoDb.Binding.LuaFunction.CastTo(System.Type)">
             <summary>
-            Returns a delegate or an expression containing a delegate that will call this Lua function.
+            Returns a callable delegate (like a Func, Action or Lamda Function expression) that will call this Lua function.
             This way a Lua function (of unknown signature) can be used for any delegate in C#.
             </summary>
+            <remarks>
+            Note that this can not be used to provide an expression to LINQ (and places that use LINQ). This is because a
+            call to a method (InvokeInLua) can not be converted to an SQL (or other) expression.
+            </remarks>
             <param name="expectedType"></param>
             <returns></returns>
             <exception cref="T:System.InvalidCastException"></exception>
         </member>
+        <member name="T:GmodMongoDb.Binding.TypeMetaSubTables">
+            <summary>
+            Types/classes have metatables and each metatable has all these subtables.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.TypeMetaSubTables.Properties">
+            <summary>
+            Subtable that contains methods that fetch properties for the type/class.
+            </summary>
+        </member>
+        <member name="F:GmodMongoDb.Binding.TypeMetaSubTables.Fields">
+            <summary>
+            Subtable that contains methods to fetch fields for the type/class.
+            </summary>
+        </member>
         <member name="T:GmodMongoDb.Binding.TypeTools">
             <summary>
-            Helps converting between .NET objects/types and Lua types
+            Helps converting between simple .NET and Lua types
             </summary>
+        </member>
+        <member name="M:GmodMongoDb.Binding.TypeTools.IsNumericType(System.Type)">
+            <summary>
+            Whether the given type is a numeric type.
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
         </member>
         <member name="M:GmodMongoDb.Binding.TypeTools.IsLuaType(System.Type)">
             <summary>
@@ -284,17 +478,32 @@
             <param name="parameterInfos"></param>
             <returns></returns>
         </member>
-        <member name="M:GmodMongoDb.Binding.TypeTools.NormalizeParameterTypes(System.Collections.Generic.List{System.Type},System.Reflection.ParameterInfo[])">
+        <member name="M:GmodMongoDb.Binding.TypeTools.NormalizeParameterTypes(System.Type[],System.Reflection.ParameterInfo[])">
             <summary>
             Converts the parameter types to the types specified in the <paramref name="parameterInfos"/> array.
             </summary>
             <param name="parameterTypes"></param>
-            <param name="constructorParameters"></param>
+            <param name="parameterInfos"></param>
             <returns></returns>
             <exception cref="T:System.NotImplementedException"></exception>
         </member>
+        <member name="M:GmodMongoDb.Binding.TypeTools.NormalizePossibleGenericTypeArguments(System.Int32,GmodMongoDb.Binding.GenericType[],System.Collections.Generic.List{System.Type})">
+            <summary>
+            Uses the provided parameter types to supplement the generic type arguments, until the desired number of generic type arguments is reached.
+            </summary>
+            <param name="genericTypeArgumentsAmount">Desired number of generic type arguments</param>
+            <param name="genericTypeArgumentValues">Already provided type arguments</param>
+            <param name="parameterTypes">Types of the parameters provided, used to suplement the generic type arguments.</param>
+            <returns>The correct amount of types for the generic type arguments</returns>
+            <exception cref="T:System.Reflection.TargetInvocationException">Fails if not enough parameters were given to supplement the generic type arugments.</exception>
+        </member>
         <member name="T:GmodMongoDb.Setup">
             <inheritdoc/>
+        </member>
+        <member name="F:GmodMongoDb.Setup.CONSTANT_PREFIX">
+            <summary>
+            Name used for prefixing global constants in Lua.
+            </summary>
         </member>
         <member name="P:GmodMongoDb.Setup.ModuleName">
             <inheritdoc/>
@@ -302,11 +511,21 @@
         <member name="P:GmodMongoDb.Setup.ModuleVersion">
             <inheritdoc/>
         </member>
+        <member name="F:GmodMongoDb.Setup.wrapper">
+            <summary>
+            Reference to the wrapper that helps with binding C# methods to Lua.
+            </summary>
+        </member>
         <member name="M:GmodMongoDb.Setup.Load(GmodNET.API.ILua,System.Boolean,GmodNET.API.ModuleAssemblyLoadContext)">
             <inheritdoc/>
         </member>
         <member name="M:GmodMongoDb.Setup.Unload(GmodNET.API.ILua)">
             <inheritdoc/>
+        </member>
+        <member name="T:GmodMongoDb.Util.ReflectionExtensions">
+            <summary>
+            Extension methods for types and members for use with reflection.
+            </summary>
         </member>
         <member name="M:GmodMongoDb.Util.ReflectionExtensions.WarnIfObsolete(System.Reflection.MemberInfo,GmodNET.API.ILua)">
             <summary>
@@ -317,10 +536,10 @@
         </member>
         <member name="M:GmodMongoDb.Util.ReflectionExtensions.GetMethodsWithBase(System.Type,System.String)">
             <summary>
-            
+            Returns all methods of a type, including inherited methods. Can optionally filter by name.
             </summary>
             <param name="type"></param>
-            <param name="name"></param>
+            <param name="name">Name to filter by</param>
             <returns></returns>
         </member>
         <member name="M:GmodMongoDb.Util.ReflectionExtensions.GetMethodSignatures(System.Type,System.String)">
