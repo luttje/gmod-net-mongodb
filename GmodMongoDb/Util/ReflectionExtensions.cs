@@ -24,7 +24,7 @@ namespace GmodMongoDb.Util
                 return;
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.GetField(-1, $"{LuaExtensions.CONSTANT_PREFIX}SUPPRESS_OBSOLETE_WARNINGS");
+            lua.GetField(-1, $"{Setup.CONSTANT_PREFIX}SUPPRESS_OBSOLETE_WARNINGS");
             if(lua.IsType(-1, TYPES.BOOL))
             {
                 var isSuppressed = lua.GetBool(-1);

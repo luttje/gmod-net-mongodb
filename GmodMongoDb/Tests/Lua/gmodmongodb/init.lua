@@ -5,6 +5,8 @@ local TEST_LOG_RESULT_PATH = "gmod_mongo_db_test_success.txt"
 file.Delete(TEST_LOG_RESULT_PATH)
 
 local closeServer = function()
+	TEST = nil -- Free resources (like TEST.client)
+
 	if(game.SinglePlayer()) then
 		return
 	end

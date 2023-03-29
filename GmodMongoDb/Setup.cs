@@ -9,6 +9,8 @@ namespace GmodMongoDb
     /// <inheritdoc/>
     public class Setup : IModule
     {
+        public const string CONSTANT_PREFIX = "GMOD_MONGODB_";
+        
         /// <inheritdoc/>
         public string ModuleName => "GmodMongoDb";
 
@@ -47,6 +49,7 @@ namespace GmodMongoDb
         public void Unload(ILua lua)
         {
             wrapper.Dispose();
+            wrapper = null;
 
             Console.WriteLine("[GmodMongoDb] unloaded.");
         }
