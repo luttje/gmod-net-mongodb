@@ -7,7 +7,7 @@ TEST.assert(type(MongoDB) == "table", "MongoDB is not a table")
 --[[
   Constants
 ]]--
-TEST.assert(type(GMOD_MONGODB_KEY_TYPE) == "string", "GMOD_MONGODB_KEY_TYPE is not a string")
+TEST.assert(type(GMOD_MONGODB_KEY_CLASS_TYPE) == "string", "GMOD_MONGODB_KEY_CLASS_TYPE is not a string")
 TEST.assert(type(GMOD_MONGODB_KEY_INSTANCE_ID) == "string", "GMOD_MONGODB_KEY_INSTANCE_ID is not a string")
 TEST.assert(type(GMOD_MONGODB_KEY_INSTANCE_TYPE) == "string", "GMOD_MONGODB_KEY_INSTANCE_TYPE is not a string")
 TEST.assert(type(GMOD_MONGODB_KEY_TYPE_META_TABLES) == "string", "GMOD_MONGODB_KEY_TYPE_META_TABLES is not a string")

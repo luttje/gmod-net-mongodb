@@ -1,27 +1,38 @@
 ﻿using GmodNET.API;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Numerics;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GmodMongoDb.Binding
 {
+    /// <summary>
+    /// Represents a Managed or Lua function that can be called from Lua or C#.
+    /// </summary>
     internal class LuaFunction : IDisposable
     {
+        /// <summary>
+        /// Keeps a reference to the Lua environment this function is bound to.
+        /// </summary>
         private readonly ILua lua;
+
+        /// <summary>
+        /// A reference to the function in Lua.
+        /// </summary>
         private readonly int reference;
 
+        /// <summary>
+        /// Creates a reference to the Lua function that is currently on the top of the stack.
+        /// </summary>
+        /// <param name="lua"></param>
         public LuaFunction(ILua lua)
         {
             this.lua = lua;
             this.reference = lua.ReferenceCreate();
         }
 
+        /// <summary>
+        /// Frees the Lua function reference from memory
+        /// </summary>
         public void Dispose()
         {
             lua.ReferenceFree(reference);
@@ -52,6 +63,11 @@ namespace GmodMongoDb.Binding
             lua.ReferencePush(reference);
         }
 
+        /// <summary>
+        /// Call the Lua function from C#
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public object InvokeInLua(object[] args)
         {
             Push(lua);
@@ -88,9 +104,13 @@ namespace GmodMongoDb.Binding
         }
 
         /// <summary>
-        /// Returns a delegate or an expression containing a delegate that will call this Lua function.
+        /// Returns a callable delegate (like a Func, Action or Lamda Function expression) that will call this Lua function.
         /// This way a Lua function (of unknown signature) can be used for any delegate in C#.
         /// </summary>
+        /// <remarks>
+        /// Note that this can not be used to provide an expression to LINQ (and places that use LINQ). This is because a
+        /// call to a method (InvokeInLua) can not be converted to an SQL (or other) expression.
+        /// </remarks>
         /// <param name="expectedType"></param>
         /// <returns></returns>
         /// <exception cref="InvalidCastException"></exception>

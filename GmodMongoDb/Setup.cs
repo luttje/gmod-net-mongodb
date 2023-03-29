@@ -1,44 +1,39 @@
 ﻿using GmodMongoDb.Binding;
 using GmodNET.API;
 using System;
-using System.Linq;
-using System.Reflection;
 
 namespace GmodMongoDb
 {
     /// <inheritdoc/>
     public class Setup : IModule
     {
+        /// <summary>
+        /// Name used for prefixing global constants in Lua.
+        /// </summary>
+        public const string CONSTANT_PREFIX = "GMOD_MONGODB_";
+        
         /// <inheritdoc/>
         public string ModuleName => "GmodMongoDb";
 
         /// <inheritdoc/>
         public string ModuleVersion => "0.9.1";
 
+        /// <summary>
+        /// Reference to the wrapper that helps with binding C# methods to Lua.
+        /// </summary>
         private DynamicWrapper wrapper = null;
 
         /// <inheritdoc/>
         public void Load(ILua lua, bool is_serverside, ModuleAssemblyLoadContext assembly_context)
         {
-            // Some types we only use to get relevant assemblies.
-            var mongoDbAssemblies = new[] {
+            wrapper = new DynamicWrapper(lua, "MongoDB");
+
+            // We just use the types to get relevant assemblies. Those will be used to reach all types that need to be bound.
+            wrapper.RegisterTypes(new[] {
                 typeof(MongoDB.Driver.MongoClient).Assembly,
                 typeof(MongoDB.Bson.BsonDocument).Assembly,
                 typeof(MongoDB.Driver.Core.Operations.AsyncCursor<>).Assembly,
-            };
-
-            wrapper = new DynamicWrapper(lua, "MongoDB");
-
-            foreach (var assembly in mongoDbAssemblies)
-            {
-                var types = assembly.GetTypes()
-                    .Where(t => t.Namespace != null);
-
-                foreach (var type in types)
-                {
-                    wrapper.RegisterType(type);
-                }
-            }
+            });
 
             Console.WriteLine("[GmodMongoDb] loaded.");
         }
@@ -47,6 +42,7 @@ namespace GmodMongoDb
         public void Unload(ILua lua)
         {
             wrapper.Dispose();
+            wrapper = null;
 
             Console.WriteLine("[GmodMongoDb] unloaded.");
         }

@@ -1,33 +1,42 @@
-﻿using Amazon.Runtime;
-using GmodMongoDb.Util;
+﻿using GmodMongoDb.Util;
 using GmodNET.API;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace GmodMongoDb.Binding
 {
+    /// <summary>
+    /// Wrapper that binds a managed type's constructors, methods, properties, and fields to Lua.
+    /// </summary>
     public class DynamicWrapper : IDisposable
     {
-        private ILua lua;
-        private string? baseName;
-
-        private Dictionary<string, int> metaTableIds = new();
+        /// <summary>
+        /// A reference to the Lua environment provided to the constructor.
+        /// </summary>
+        private readonly ILua lua;
 
         /// <summary>
-        /// Create a wrapper that can create wrappers for any type
+        /// The name of the table of which all types will be (extended) children of.
+        /// </summary>
+        private readonly string baseName;
+
+        /// <summary>
+        /// A storage for managed object instances.
+        /// </summary>
+        private InstanceRepository instanceRepository = new();
+
+        /// <summary>
+        /// Create a wrapper that can create bindings for any given type
         /// </summary>
         /// <param name="lua"></param>
         /// <param name="baseName"></param>
-        public DynamicWrapper(ILua lua, string? baseName = null)
+        public DynamicWrapper(ILua lua, string baseName = null)
         {
             this.lua = lua;
             this.baseName = baseName;
 
-            lua.RegisterHelpers();
+            instanceRepository.Setup(lua);
 
             if (baseName == null)
                 return;
@@ -37,6 +46,26 @@ namespace GmodMongoDb.Binding
 
             lua.SetField(-2, baseName); // baseName table
             lua.Pop(); // Pop the Global table
+        }
+
+        /// <summary>
+        /// Cleans up any handles and references by removing tables and functions.
+        /// </summary>
+        public void Dispose()
+        {
+            instanceRepository.Cleanup(lua);
+            instanceRepository = null;
+
+            if (baseName == null)
+                return;
+
+            // Set MongoDB to nil to release all references to the types.
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.PushNil();
+            lua.SetField(-2, baseName);
+            lua.Pop(); // Pop the global table
+
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -50,9 +79,7 @@ namespace GmodMongoDb.Binding
             var typeFullName = type.FullName;
             
             if (baseName != null)
-            {
                 typeFullName = typeFullName?.Substring(baseName.Length).TrimStart('.');
-            }
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB); // Global table
             lua.GetField(-1, baseName); // MongoDB table
@@ -65,9 +92,7 @@ namespace GmodMongoDb.Binding
                 var part = parts[i];
 
                 if(typeIsGeneric && i == parts.Length - 1)
-                {
                     part = part.Substring(0, part.IndexOf('`'));
-                }
                 
                 lua.GetField(-1, part);
                 if (lua.IsType(-1, TYPES.NIL))
@@ -80,9 +105,7 @@ namespace GmodMongoDb.Binding
 
                 // Remove all except the last
                 if (i != parts.Length - 1)
-                {
                     lua.Remove(-2);
-                }
             }
 
             lastPartName = parts.Last();
@@ -127,24 +150,25 @@ namespace GmodMongoDb.Binding
             }
             
             lua.Pop(); // Pop the type table
-
             lua.Pop(); // Pop the MongoDB table
         }
 
-        public void Dispose()
+        /// <summary>
+        /// Registers all types in the provided assembly, if their namespace is not null.
+        /// </summary>
+        /// <param name="assemblies"></param>
+        public void RegisterTypes(Assembly[] assemblies)
         {
-            metaTableIds.Clear();
+            foreach (var assembly in assemblies)
+            {
+                var types = assembly.GetTypes()
+                    .Where(t => t.Namespace != null);
 
-            if (baseName == null)
-                return;
-            
-            // Set MongoDB to nil to release all references to the types.
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.PushNil();
-            lua.SetField(-2, baseName);
-            lua.Pop(); // Pop the global table
-
-            lua.CleanTypeMetaTables();
+                foreach (var type in types)
+                {
+                    RegisterType(type);
+                }
+            }
         }
 
         /// <summary>
@@ -154,7 +178,7 @@ namespace GmodMongoDb.Binding
         /// <param name="type"></param>
         private void SetStaticManagedMethod(MethodInfo anyMethod, Type type)
         {
-            lua.PushManagedFunctionWrapper(type, anyMethod.Name, true);
+            lua.PushManagedFunctionWrapper(instanceRepository, type, anyMethod.Name, true);
             lua.SetField(-2, anyMethod.Name); // Type method
         }
 
@@ -167,8 +191,8 @@ namespace GmodMongoDb.Binding
         /// <param name="type"></param>
         private void SetManagedMethod(MethodInfo anyMethod, Type type)
         {
-            lua.PushTypeMetatable(type);
-            lua.PushManagedFunctionWrapper(type, anyMethod.Name);
+            instanceRepository.PushTypeMetatable(lua, type); // Instance meta table
+            lua.PushManagedFunctionWrapper(instanceRepository, type, anyMethod.Name);
             lua.SetField(-2, anyMethod.Name); // Type method
             
             if (anyMethod.Name == "ToString")
@@ -188,32 +212,36 @@ namespace GmodMongoDb.Binding
         /// <param name="type"></param>
         private void SetConstructorManagedMethod(ConstructorInfo anyConstructor, Type type)
         {
-            lua.CreateTypeMetaTable(type);
+            instanceRepository.CreateTypeMetaTable(lua, type); // Type meta table
             lua.PushManagedFunction((lua) =>
             {
                 var upValueCount = lua.Top();
-                var parameters = new object[upValueCount - 1];
+                var parameterValues = new object[upValueCount - 1];
                 GenericType[] genericArguments = null;
 
                 for (int i = 1; i < upValueCount; i++)
                 {
-                    var index = parameters.Length - i;
-                    var parameterValue = parameters[index] = lua.PullType();
+                    var index = parameterValues.Length - i;
+                    object parameterValue;
 
-                    if (parameterValue is GenericType)
+                    if (instanceRepository.IsInstance(lua))
+                        parameterValue = instanceRepository.PullInstance(lua);
+                    else
+                        parameterValue = TypeTools.PullType(lua);
+
+                    parameterValues[index] = parameterValue;
+
+                    if (parameterValue is GenericType genericType)
                     {
-                        if (genericArguments == null)
-                            genericArguments = new GenericType[upValueCount - parameters.Length];
+                        genericArguments ??= new GenericType[upValueCount - parameterValues.Length];
 
-                        genericArguments[index] = (GenericType)parameterValue;
+                        genericArguments[index] = genericType;
                     }
                 }
 
                 // Remove the generic types from the parameters
                 if (genericArguments != null)
-                {
-                    parameters = parameters.Where(p => !(p is GenericType)).ToArray();
-                }
+                    parameterValues = parameterValues.Where(p => p is not GenericType).ToArray();
                 
                 // Pop the table itself which is the first argument passed to __call (and thus lowest on the stack)
                 lua.Pop();
@@ -224,29 +252,33 @@ namespace GmodMongoDb.Binding
                     var genericTypes = TypeTools.NormalizePossibleGenericTypeArguments(
                         type.GetGenericArguments().Length, 
                         genericArguments,
-                        parameters.Select(p => p.GetType()).ToList()
+                        parameterValues.Select(p => p.GetType()).ToList()
                     );
+                    
                     type = type.MakeGenericType(genericTypes);
                 }
 
-                var parameterTypes = parameters.Select(p => p.GetType()).ToList();
+                var parameterTypes = parameterValues.Select(p => p.GetType()).ToList();
                 var constructor = type.GetAppropriateConstructor(ref parameterTypes);
 
                 if (constructor == null)
                 {
                     var signatures = type.GetConstructorSignatures();
                     var types = string.Join(", ", parameterTypes);
-                    throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name} Constructor! {parameters.Length} parameters were passed (of types {types}), but only the following overloads exist: \n{signatures}");
+                    
+                    throw new Exception($"Incorrect parameters passed to {type.Namespace}.{type.Name} Constructor! {parameterValues.Length} parameters were passed (of types {types}), but only the following overloads exist: \n{signatures}");
                 }
 
                 try
                 {
-                    parameters = TypeTools.NormalizeParameters(parameters, constructor.GetParameters());
+                    parameterValues = TypeTools.NormalizeParameters(parameterValues, constructor.GetParameters());
                     
                     type.WarnIfObsolete(lua);
                     constructor.WarnIfObsolete(lua);
-                    var instance = constructor.Invoke(parameters);
-                    lua.PushInstance(instance);
+                    
+                    var instance = constructor.Invoke(parameterValues);
+                    
+                    instanceRepository.PushInstance(lua, instance);
 
                     return 1;
                 }
@@ -260,7 +292,7 @@ namespace GmodMongoDb.Binding
                 }
             });
             lua.SetField(-2, "__call"); // Constructor method
-            lua.SetMetaTable(-2);
+            lua.SetMetaTable(-2); // Pop type meta table
         }
 
         /// <summary>
@@ -270,16 +302,20 @@ namespace GmodMongoDb.Binding
         /// <param name="type"></param>
         private void SetManagedProperty(PropertyInfo property, Type type)
         {
-            lua.PushTypeMetatable(type, TypeMetaSubTables.Properties);
+            instanceRepository.PushTypeMetatable(lua, type, TypeMetaSubTables.Properties); // Instance meta table
             lua.PushManagedFunction((lua) =>
             {
-                var instance = lua.PullInstance();
+                var instance = instanceRepository.PullInstance(lua);
                 var instanceProperty = instance.GetType().GetProperty(property.Name);
 
                 type.WarnIfObsolete(lua);
                 instanceProperty.WarnIfObsolete(lua);
                 var value = instanceProperty.GetValue(instance);
-                lua.PushType(value);
+
+                if (TypeTools.IsLuaType(value))
+                    lua.PushType(value);
+                else
+                    instanceRepository.PushInstance(lua, value);
 
                 return 1;
             });
@@ -294,16 +330,20 @@ namespace GmodMongoDb.Binding
         /// <param name="type"></param>
         private void SetManagedField(FieldInfo field, Type type)
         {
-            lua.PushTypeMetatable(type, TypeMetaSubTables.Fields);
+            instanceRepository.PushTypeMetatable(lua, type, TypeMetaSubTables.Fields); // Instance meta table
             lua.PushManagedFunction((lua) =>
             {
-                var instance = lua.PullInstance();
+                var instance = instanceRepository.PullInstance(lua);
                 var instanceField = instance.GetType().GetField(field.Name);
 
                 type.WarnIfObsolete(lua);
                 instanceField.WarnIfObsolete(lua);
                 var value = instanceField.GetValue(instance);
-                lua.PushType(value);
+
+                if (TypeTools.IsLuaType(value))
+                    lua.PushType(value);
+                else
+                    instanceRepository.PushInstance(lua, value);
 
                 return 1;
             });
