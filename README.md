@@ -1,12 +1,7 @@
-# Gmod MongoDB Wrapper (WIP)
+# Gmod MongoDB Wrapper (Abandoned)
 
-> ## 🏫 For Educational Purposes
-> This repository serves mostly as a Developer reference for your own projects. I no longer play Garry's Mod, so **this is a side-project that I do not intend to actively maintain.**
-
-> ## 🚧 WIP! (Unstable Code)
-> This project is under active development. Semantic versioning is only loosely being adhered to and you can only get these guarantees:
-> * **Everything will change.**
-> * **Code will change radically and break.**
+> ## 🚧 Abandoned! Unfinished and Unstable Code
+> This project is no longer maintained. It is publicly archived in the hope that it may be a useful reference to those working with [Gmod.NET](https://github.com/GmodNET/GmodDotNet).
 
 This is a Garry's Mod module that has the goal to expose all [.NET MongoDB Driver](https://docs.mongodb.com/drivers/csharp/) functionality to Lua. We do this by automatically binding all public classes, methods, properties and fields in the MongoDB .NET Driver. [&raquo; See 'Differences with the MongoDB .NET Driver'](https://luttje.github.io/gmod-net-mongodb/#differences-with-the-mongodb-net-driver)
 
@@ -36,7 +31,3 @@ This module is built using [Gmod.NET](https://github.com/GmodNET/GmodDotNet).
 The documentation contains examples, explanations and (automatically generated) references for all the exposed functionality.
 
 The API Documentation is generated when a contributor pushes to the `main` branch. This is done using a GitHub Workflow with [DocFx](https://dotnet.github.io/docfx/). You can find those docs on [this GitHub Pages Environment](https://luttje.github.io/gmod-net-mongodb/).
-
-## Contributing
-
-If you have some suggestions or questions feel free to drop an issue.
